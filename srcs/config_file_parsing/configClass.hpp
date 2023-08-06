@@ -9,7 +9,7 @@
 # include <fstream>
 # include <vector>
 
-class configClass 
+class configClass
 {
 	public:
 		configClass();
@@ -21,8 +21,6 @@ class configClass
 		std::string getKeyContent(std::string);
 	private:
 		std::map<std::string, std::string> file;
-	
-	
 };
 
 

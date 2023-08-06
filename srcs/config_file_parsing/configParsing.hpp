@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   configParsing.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rokerjea <rokerjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:42:09 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/08/05 17:27:09 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/08/06 17:19:06 by rokerjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define NAME 5
 # define VALUE 6
 
-class configParsing 
+class configParsing
 {
 	public:
 		configParsing();
@@ -45,7 +45,6 @@ class configParsing
 	private:
 		std::string _confFile;
 		std::vector<std::string> lineList;
-		
 };
 
 #endif

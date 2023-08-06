@@ -1,0 +1,20 @@
+allow				GET;
+index				index.html;
+
+server
+{
+	server_name webserv.com;
+	listen 8080;
+	allow GET, POST, DELETE;
+	autoindex	on;
+	index 		hola;
+	cli_max_size	836000;
+	error_page 404 error_page/error_page_404.html;
+}
+
+location /set_cookies
+{
+		cgi on;
+		root ./app/demo/php_script;
+		index set_cookies.php;
+}

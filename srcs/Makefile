@@ -5,11 +5,13 @@ CXX 		=	c++
 CXXFLAGS			= -Wall -Wextra -Werror -std=c++98
 
 SRCS			=		main.cpp\
-						configParsing.cpp\
-						configClass.cpp
+						config_file_parsing/configParsing.cpp\
+						config_file_parsing/configClass.cpp \
+						tcp_in_out/tcp.cpp
 
-HEADERS		=	configClass.hpp\
-				configParsing.hpp\
+HEADERS		=	config_file_parsing/configClass.hpp\
+				config_file_parsing/configParsing.hpp\
+				tcp_in_out/tcp.hpp
 
 OBJ			=	$(SRCS:.cpp=.o)
 

@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:42:09 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/08/05 17:27:09 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/08/06 16:39:09 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ class configParsing
 		configParsing();
 		~configParsing();
 		configParsing(std::string);
-		configParsing(const configParsing&);
-		configParsing &operator=(const configParsing&);
 		void	printConfFile();
 		void	printLines();
 		int		routine();

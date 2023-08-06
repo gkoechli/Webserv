@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:43:02 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/08/06 12:31:11 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/08/06 16:01:34 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ int	configParsing::routine()
 		std::vector<std::string> temp;
 		temp = stringSplitIntoWords(*it);
 		std::vector<std::string>::iterator itemp = temp.begin();
-		std::vector<std::string>::iterator itemp2 = temp.begin();
 		while (itemp != temp.end())
 		{
 			currentToken = identifyTokenType(*itemp);

@@ -3,7 +3,6 @@
 
 int main(int ac, char **av)
 {
-	int i = 0;
 	if (ac != 2)
 	{
 		std::cout << "Wrong number of arguments\n";

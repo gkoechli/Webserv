@@ -25,11 +25,12 @@ configClass::~configClass()
 
 configClass::configClass(const configClass& copy)
 {
-
+	*this = copy;
 }
 
 configClass &configClass::operator=(const configClass& obj)
 {
+	this->file = obj.file;
 	return (*this);
 
 }

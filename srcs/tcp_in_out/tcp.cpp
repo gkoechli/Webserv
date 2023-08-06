@@ -1,5 +1,6 @@
 #include "tcp.hpp"
 #include <sys/socket.h>
+#include <cstdlib>
 
 //SETUP
 Tcp_handler::Tcp_handler(char *config_file) : config_parser(config_file), settings()
@@ -9,11 +10,14 @@ Tcp_handler::Tcp_handler(char *config_file) : config_parser(config_file), settin
 	epoll_instance_fd = epoll_create(1);
 	// for (int i = 0; i < listen_port_count; i++)
 	// {
-		bind_port_to_socket(8080, INADDR_ANY);
+		// bind_port_to_socket(atoi(tmp.second.c_str()), INADDR_ANY);
 	// }
 	std::pair<std::string, std::string> tmp = settings.getListenPort();
 	std::cout << tmp.first << " ----------> " << tmp.second << std::endl;
 	std::cout << settings.getKeyContent("cli_max_size") << std::endl;
+	bind_port_to_socket(atoi(tmp.second.c_str()), INADDR_ANY);
+	//maybe need to use inet_aton() to convert ip string to correct format?
+	//probably need to reimplement it
 }
 
 Tcp_handler::~Tcp_handler() {}

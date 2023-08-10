@@ -10,7 +10,6 @@
 #include <iostream>
 #include <string.h>
 #include "../config_file_parsing/configParsing.hpp"
-#include "../config_file_parsing/configClass.hpp"
 
 // #include "client_buffer.hpp"
 # define MAX_EVENTS 5
@@ -19,7 +18,7 @@ class Tcp_handler
 {
 	private:
 		configParsing config_parser;
-		configClass settings;
+		// configClass settings;
 		// ClientBuffer buffer;
 		// setting_obj settings; // for parameters at start (listen ports and max request size)
 		int	epoll_instance_fd;

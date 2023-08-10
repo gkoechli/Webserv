@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:42:09 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/08/10 10:49:59 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/08/10 15:04:05 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,14 @@ class configParsing
 		int		routine();
 		std::vector<std::string> stringSplitIntoWords(std::string);
 		int		identifyTokenType(std::string);
+		std::pair<std::string, std::string> getListenPort();
+		std::string getKeyContent(std::string);
+		void	set_file_values();
+		void	printFileValues();
 	private:
 		std::string _confFile;
 		std::vector<std::string> lineList;
+		std::map<std::string, std::string> file;
 };
 
 #endif

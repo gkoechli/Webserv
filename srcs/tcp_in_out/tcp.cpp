@@ -3,18 +3,19 @@
 #include <cstdlib>
 
 //SETUP
-Tcp_handler::Tcp_handler(char *config_file) : config_parser(config_file), settings()
+Tcp_handler::Tcp_handler(char *config_file) : config_parser(config_file)
 {
 	//launch epoll bind for main port, depending on settings
 	//can't do too much of it without a proper setting parser yet
+	// this->settings.set_settings(this->config_parser);
 	epoll_instance_fd = epoll_create(1);
 	// for (int i = 0; i < listen_port_count; i++)
 	// {
 		// bind_port_to_socket(atoi(tmp.second.c_str()), INADDR_ANY);
 	// }
-	std::pair<std::string, std::string> tmp = settings.getListenPort();
+	std::pair<std::string, std::string> tmp = config_parser.getListenPort();
 	std::cout << tmp.first << " ----------> " << tmp.second << std::endl;
-	std::cout << settings.getKeyContent("cli_max_size") << std::endl;
+	std::cout << config_parser.getKeyContent("cli_max_size") << std::endl;
 	bind_port_to_socket(atoi(tmp.second.c_str()), INADDR_ANY);
 	//maybe need to use inet_aton() to convert ip string to correct format?
 	//probably need to reimplement it

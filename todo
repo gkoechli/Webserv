@@ -1,0 +1,13 @@
+
+TCP:
+
+
+ ☐ Converter from string to int for ip
+ ☐ bool checker for buffer
+ ☐ char vector getter for usage
+ ☐ buffer editor
+ ☐ loop of server ports binding to epoll struct (currently only 1)
+ ☐ protection with throw
+ ☐ read_from_client function
+ ☐ write_to_client function
+ ☐ boll checker is_new_connection

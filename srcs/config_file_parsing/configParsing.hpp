@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   configParsing.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rokerjea <rokerjea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:42:09 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/08/06 17:19:06 by rokerjea         ###   ########.fr       */
+/*   Updated: 2023/08/10 10:49:59 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ class configParsing
 		configParsing();
 		~configParsing();
 		configParsing(std::string);
-		configParsing(const configParsing&);
-		configParsing &operator=(const configParsing&);
 		void	printConfFile();
 		void	printLines();
 		int		routine();

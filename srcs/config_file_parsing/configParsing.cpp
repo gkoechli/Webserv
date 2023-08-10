@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:43:02 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/08/06 16:01:34 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/08/10 10:50:08 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,6 @@ configParsing::configParsing(std::string obj)
 configParsing::~configParsing()
 {
 
-}
-
-configParsing::configParsing(const configParsing& copy)
-{
-	*this = copy;
-}
-
-configParsing &configParsing::operator=(const configParsing& obj)
-{
-	this->_confFile = obj._confFile;
-	return (*this);
 }
 
 void	configParsing::printConfFile()

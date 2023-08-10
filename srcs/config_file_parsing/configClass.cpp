@@ -23,18 +23,6 @@ configClass::~configClass()
 
 }
 
-configClass::configClass(const configClass& copy)
-{
-	*this = copy;
-}
-
-configClass &configClass::operator=(const configClass& obj)
-{
-	this->file = obj.file;
-	return (*this);
-
-}
-
 void	configClass::printConfFile()
 {
 	std::map<std::string, std::string>::iterator it = this->file.begin();

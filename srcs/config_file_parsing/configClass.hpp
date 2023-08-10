@@ -14,8 +14,6 @@ class configClass
 	public:
 		configClass();
 		~configClass();
-		configClass(const configClass&);
-		configClass &operator=(const configClass&);
 		void	printConfFile();
 		std::pair<std::string, std::string> getListenPort();
 		std::string getKeyContent(std::string);

@@ -12,6 +12,7 @@ int main(int ac, char **av)
 	try
 	{
 		Tcp_handler server(av[1]);
+		server.main_tcp_loop();
 		// two.printConfFile();
 		// std::pair<std::string, std::string> tmp = two.getListenPort();
 		// std::cout << tmp.first << " ----------> " << tmp.second << std::endl;

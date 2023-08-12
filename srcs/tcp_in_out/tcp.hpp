@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string.h>
 #include "../config_file_parsing/configParsing.hpp"
+#include "./client_buffer.hpp"
 
 // #include "client_buffer.hpp"
 # define MAX_EVENTS 5
@@ -19,11 +20,10 @@ class Tcp_handler
 	private:
 		configParsing config_parser;
 		// configClass settings;
-		// ClientBuffer buffer;
+		ClientBuffer buffer;
 		// setting_obj settings; // for parameters at start (listen ports and max request size)
 		int	epoll_instance_fd;
 		struct epoll_event	epoll_ready_event_list[MAX_EVENTS];
-		// const int PORT = 8080; maybe need to use setting value?
 		std::vector<int> list_of_listen_sockets_fd;
 	public:
 		//setup/teardown step
@@ -47,8 +47,11 @@ class Tcp_handler
 
 		//actions
 		void	add_new_client_fd(struct epoll_event current_event);
-		// void	read_from_client(struct epoll_event current_event);
+
+		std::vector<char> read_request(int client_fd);
+		void	read_from_client(struct epoll_event current_event);
 		// void	write_to_client(struct epoll_event current_event);
+		void	parse_request(std::vector<char> request);
 };
 
 #endif

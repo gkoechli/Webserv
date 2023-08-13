@@ -1,23 +1,24 @@
 
 Next MVP:
-	☐ have current system read full request from buffer
+	✔ have current system read full request from buffer @done(23-08-13 17:40)
 
 TCP:
 
 	☐ mockup parser to print a vector of char
 	☐ Converter from string to int for ip
 	☐ loop of server ports binding to epoll struct (currently only 1)
-	☐ protection with throw
+	✔ protection with throw @done(23-08-13 17:40)
 	✔ read_from_client function @done(23-08-12 17:58)
 	✔ write_to_client function @done(23-08-12 18:19)
 	✔ bool checker is_new_connection @done(23-08-12 18:23)
 	✔ send_response @done(23-08-12 18:26)
 	☐ is_request_over()
-	☐ update_connection_status()
+	☐ update_connection_status() !!
+	☐ mockup of reponse for nav
 	☐ is_connection_over
 
  Buffer:
 	☐ increment_response_count
 	☐ bool checker for buffer
-	☐ char vector getter for usage
+	✔ char vector getter for usage @done(23-08-13 17:40)
 	☐ buffer editor

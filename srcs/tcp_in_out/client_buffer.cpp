@@ -7,6 +7,8 @@
 	void	ClientBuffer::add_chunk_to_request_buffer(int fd, std::vector<char> chunk)
 	{
 		std::map<int, std::vector<char> >::iterator it = request_buffer.find(fd);
+		// std::string output(chunk.begin(), chunk.end());
+		// std::cout << output;
 		if (!is_request_existing(fd))
 			request_buffer.insert(std::make_pair(fd, chunk));
 		else {

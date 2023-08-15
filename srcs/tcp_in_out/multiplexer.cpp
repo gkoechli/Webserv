@@ -135,6 +135,14 @@ bool	Multiplexer::is_event_request(struct epoll_event current_event)
 	return false;
 }
 
+
+bool	Multiplexer::is_event_response(struct epoll_event current_event)
+{
+	if (current_event.events & EPOLLOUT)
+		return true;
+	return false;
+}
+
 std::vector<char> Multiplexer::read_request(int client_fd)
 {
 	std::cout << "start of client rcv string op"<< std::endl;
@@ -149,6 +157,18 @@ std::vector<char> Multiplexer::read_request(int client_fd)
 	bufferres.resize(ret);
 	std::cout << "gate2"<< std::endl;
 	return (bufferres);
+}
+
+
+void	Multiplexer::update_connection_status(int fd, int event)
+{
+	struct epoll_event new_event;
+
+	memset((char *)&new_event, 0, sizeof(new_event));
+	new_event.events = event | EPOLLRDHUP;
+	new_event.data.fd = fd;
+	if (epoll_ctl(epoll_instance_fd, EPOLL_CTL_MOD, fd, &new_event) == -1)
+        throw (MultiplexerException(EPOLLCTLERR));
 }
 
 /** EXCEPTIONS **/

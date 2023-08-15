@@ -1,10 +1,13 @@
-
 Next MVP:
 	✔ have current system read full request from buffer @done(23-08-13 17:40)
-
+	☐ send valid mockup response to client
+	☐ send a variable response to client, with just a specific text response depending on the request : i received a GET/PUT/etc(will need request parsing)
+	☐ start implementing methods prototypes
+	☐ reponse header constructor, simple step by simple step
+	☐ after all that, it's probably possible to start automating testing, particular cases by particular cases (status, methods, CGI)
 TCP:
 
-	☐ mockup parser to print a vector of char
+	✔ mockup parser to print a vector of char @done(23-08-15 15:58)
 	☐ Converter from string to int for ip
 	☐ loop of server ports binding to epoll struct (currently only 1)
 	✔ protection with throw @done(23-08-13 17:40)
@@ -13,9 +16,10 @@ TCP:
 	✔ bool checker is_new_connection @done(23-08-12 18:23)
 	✔ send_response @done(23-08-12 18:26)
 	☐ is_request_over()
-	☐ update_connection_status() !!
+	✔ update_connection_status() !! @done(23-08-15 15:58)
 	☐ mockup of reponse for nav
 	☐ is_connection_over
+	☐ chunked encoding will need to be implemented to manage files (pictures/gif/sound/etc.) chunked request for PUT media, chunked response for GET requests
 
  Buffer:
 	☐ increment_response_count

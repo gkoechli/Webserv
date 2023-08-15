@@ -9,6 +9,7 @@
 #include <netinet/in.h>//needed for sockaddr_in
 #include <iostream>
 #include <string.h>
+#include <cstring>
 #include "../config_file_parsing/configParsing.hpp"
 #include "./client_buffer.hpp"
 #include "./multiplexer.hpp"

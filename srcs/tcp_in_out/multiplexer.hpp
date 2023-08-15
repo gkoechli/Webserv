@@ -53,13 +53,15 @@ class Multiplexer {
 		//New connection
 		//Main loop
 		void	init_epoll_events();
-		int	get_count_of_ready_connections();
+		int		get_count_of_ready_connections();
 		struct	epoll_event get_ready_event(int i);
 		void	add_new_client_fd(struct epoll_event current_event);
-		int	accept_new_fd(int new_fd);
+		int		accept_new_fd(int new_fd);
 		bool	is_valid_server_socket(struct epoll_event current_event);
 		bool	is_event_request(struct epoll_event current_event);
+		bool	is_event_response(struct epoll_event current_event);
 		std::vector<char> read_request(int client_fd);
+		void	update_connection_status(int fd, int event);
 
 };
 

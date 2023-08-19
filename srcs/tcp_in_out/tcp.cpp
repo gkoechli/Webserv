@@ -88,41 +88,37 @@ void Tcp_handler::write_to_client(struct epoll_event current_event)
 		buffer.increment_response_count(fd);
 }
 
-// void	Tcp_handler::send_response(std::vector<char> response, int fd)
-// {
-// 	if (send(fd, &request[0], request.size(), 0) <= 0)
-// 		throw;
-// }
-
 std::vector<char> response_mockup_builder()
 {
-	std::string mock = "HTTP/1.1 200 OK";
-// Content-Type: text/html; charset=utf-8
-// Content-Length: 55743
-// Connection: keep-alive
-// Cache-Control: s-maxage=300, public, max-age=0
-// Content-Language: en-US
-// Date: Thu, 06 Dec 2018 17:37:18 GMT
-// ETag: /\"2e77ad1dc6ab0b53a2996dfd4653c1c3\"
-// Server: meinheld/0.6.1
-// Strict-Transport-Security: max-age=63072000
-// X-Content-Type-Options: nosniff
-// X-Frame-Options: DENY
-// X-XSS-Protection: 1; mode=block
-// Vary: Accept-Encoding,Cookie
-// Age: 7
-
-// <!DOCTYPE html>
-// <html lang=\"en\">
-// <head>
-//   <meta charset=\"utf-8\">
-//   <title>A simple webpage</title>
-// </head>
-// <body>
-//   <h1>Simple HTML webpage</h1>
-//   <p>Hello, world!</p>
-// </body>
-// </html>"
+	std::string mock = "HTTP/1.1 200 OK\n"
+	"Content-Type: text/html; charset=utf-8\n"
+	"Content-Length: 55743\n"
+	"Connection: keep-alive\n"
+	"Cache-Control: s-maxage=300, public, max-age=0\n"
+	"Content-Language: en-US\n"
+	"Date: Thu, 06 Dec 2018 17:37:18 GMT\n"
+	"ETag: /\"2e77ad1dc6ab0b53a2996dfd4653c1c3\"\n"
+	"Server: meinheld/0.6.1\n"
+	"Strict-Transport-Security: max-age=63072000\n"
+	"X-Content-Type-Options: nosniff\n"
+	"X-Frame-Options: DENY\n"
+	"X-XSS-Protection: 1; mode=block\n"
+	"Vary: Accept-Encoding,Cookie\n"
+	"Age: 7\n"
+	"\n"
+	"<!DOCTYPE html>\n"
+	"<html lang=\"en\">\n"
+	"<head>\n"
+	"<meta charset=\"utf-8\">\n"
+	"<title>A simple webpage</title>\n"
+	"</head>\n"
+	"<body>\n"
+	"<h1>Simple HTML webpage</h1>\n"
+	"<p>Hello, world!</p>\n"
+	"</body>\n"
+	"</html>\n"
+	"\n"
+	"\n";
 	// std::string s = "Hello World!";
  
     std::vector<char> res(mock.begin(), mock.end());

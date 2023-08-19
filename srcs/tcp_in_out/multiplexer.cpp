@@ -160,6 +160,13 @@ std::vector<char> Multiplexer::read_request(int client_fd)
 }
 
 
+void	Multiplexer::send_response(std::vector<char> response, int fd)
+{
+	if (send(fd, &response[0], response.size(), 0) <= 0)
+		throw (MultiplexerException(SENDERR));
+}
+
+
 void	Multiplexer::update_connection_status(int fd, int event)
 {
 	struct epoll_event new_event;

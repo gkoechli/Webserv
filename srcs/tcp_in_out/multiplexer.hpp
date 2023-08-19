@@ -61,7 +61,10 @@ class Multiplexer {
 		bool	is_event_request(struct epoll_event current_event);
 		bool	is_event_response(struct epoll_event current_event);
 		std::vector<char> read_request(int client_fd);
+		void	send_response(std::vector <char> response, int fd);
 		void	update_connection_status(int fd, int event);
+		// bool	is_connection_over(int fd);
+		// bool	is_request_over(int fd);
 
 };
 

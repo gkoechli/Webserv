@@ -17,17 +17,26 @@ void	ClientBuffer::add_chunk_to_request_buffer(int fd, std::vector<char> chunk)
 }
 void	ClientBuffer::add_full_response_to_response_buffer(int fd, std::vector<char> response)
 {
-	response_buffer.insert(std::make_pair(fd, std::vector<char>(response.begin(), response.end())));
+	// response_buffer.insert(std::make_pair(fd, std::vector<char>(response.begin(), response.end())));
+	// int	advance = 4;
+    // int	end_header = ft::search_vector_char(response, "\r\n\r\n", 0);
+    // if (end_header == -1) {
+    //     end_header = ft::search_vector_char(response, "\n\n", 0);
+    //     advance = 2;
+    // }
+
+    response_buffer.insert(std::make_pair(fd, std::make_pair(2, std::vector<char>(response.begin(), response.end()))));
 }
+
 void	ClientBuffer::empty_request_buffer(int fd)
 {
 	request_buffer.erase(fd);
 }
 
-// void	empty_response_buffer(int fd)
-// {
-// 	response_buffer.erase(fd);
-// }
+void	ClientBuffer::empty_response_buffer(int fd)
+{
+	response_buffer.erase(fd);
+}
 
 //getter
 std::vector<char>	ClientBuffer::get_full_request(int fd)//to send full html client request to request parser/exec
@@ -36,14 +45,14 @@ std::vector<char>	ClientBuffer::get_full_request(int fd)//to send full html clie
 	return request;
 }
 
-std::vector<char>	get_next_response_bloc(int fd)//to send next part of response to client asking it
+std::vector<char>	ClientBuffer::get_next_response_bloc(int fd)//to send next part of response to client asking it
 {
 	std::vector<char>	current_response = (response_buffer.find(fd))->second.second;
 	std::vector<char>	new_response;
 	std::vector<char>	chunk_to_send;
 	int					response_size = (response_buffer.find(fd))->second.first;
 
-	if (current_response.size() && response.size() >= CHUNK_SIZEMAX)
+	if (current_response.size() && new_response.size() >= CHUNK_SIZEMAX)
 		chunk_to_send.insert(chunk_to_send.end(), current_response.begin(), current_response.begin() + CHUNK_SIZEMAX);
 	else if (current_response.size() && current_response.size() < CHUNK_SIZEMAX)
 		chunk_to_send.insert(chunk_to_send.end(), current_response.begin(), current_response.end());
@@ -79,4 +88,16 @@ bool	ClientBuffer::is_request_complete(int fd)
 	return (true);
 	//TODO
 	//if maxsize or if end char are expected for end (/r/n or something)
+}
+
+
+void	ClientBuffer::increment_response_count(int fd)
+{
+	response_buffer.find(fd)->second.first++;
+}
+
+
+int		ClientBuffer::get_count_send(int fd)
+{
+	return (response_buffer.find(fd)->second.first);
 }

@@ -30,8 +30,8 @@ void	Tcp_handler::main_tcp_loop()
 					multiplex.add_new_client_fd(current_event);
 				else if (multiplex.is_event_request(current_event))
 					read_from_client(current_event);
-				// else if (is_event_response(current_event))
-					// write_to_client(current_event);
+				else if (multiplex.is_event_response(current_event))
+					write_to_client(current_event);
 			}
 		}
 	}
@@ -70,15 +70,16 @@ void Tcp_handler::write_to_client(struct epoll_event current_event)
 {
 	int fd = current_event.data.fd;
 	std::vector<char> next_chunk = buffer.get_next_response_bloc(fd);
+	int	send_count = buffer.get_count_send(fd);
 	std::vector<char> response;
 
-	response = chunk;
+	response = next_chunk;
 	response.push_back('\r');
 	response.push_back('\n');//maybe should be done in get_next_response method?
-	send_response(response, fd);
-	if (!is_request_over())
-		update_connection_status(fd, EPOLLIN);
-	if (is_request_over() && is_connection_over(fd))
+	multiplex.send_response(response, fd);
+	if (!next_chunk.size() && send_count % 2 == 1)
+		multiplex.update_connection_status(fd, EPOLLIN);
+	if (!next_chunk.size() && send_count % 2 == 1)
 	{
 		buffer.empty_response_buffer(fd);
 		close (fd);
@@ -95,36 +96,38 @@ void Tcp_handler::write_to_client(struct epoll_event current_event)
 
 std::vector<char> response_mockup_builder()
 {
-	char *mock = "HTTP/1.1 200 OK
-Content-Type: text/html; charset=utf-8
-Content-Length: 55743
-Connection: keep-alive
-Cache-Control: s-maxage=300, public, max-age=0
-Content-Language: en-US
-Date: Thu, 06 Dec 2018 17:37:18 GMT
-ETag: "2e77ad1dc6ab0b53a2996dfd4653c1c3"
-Server: meinheld/0.6.1
-Strict-Transport-Security: max-age=63072000
-X-Content-Type-Options: nosniff
-X-Frame-Options: DENY
-X-XSS-Protection: 1; mode=block
-Vary: Accept-Encoding,Cookie
-Age: 7
+	std::string mock = "HTTP/1.1 200 OK";
+// Content-Type: text/html; charset=utf-8
+// Content-Length: 55743
+// Connection: keep-alive
+// Cache-Control: s-maxage=300, public, max-age=0
+// Content-Language: en-US
+// Date: Thu, 06 Dec 2018 17:37:18 GMT
+// ETag: /\"2e77ad1dc6ab0b53a2996dfd4653c1c3\"
+// Server: meinheld/0.6.1
+// Strict-Transport-Security: max-age=63072000
+// X-Content-Type-Options: nosniff
+// X-Frame-Options: DENY
+// X-XSS-Protection: 1; mode=block
+// Vary: Accept-Encoding,Cookie
+// Age: 7
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>A simple webpage</title>
-</head>
-<body>
-  <h1>Simple HTML webpage</h1>
-  <p>Hello, world!</p>
-</body>
-</html>
-"
+// <!DOCTYPE html>
+// <html lang=\"en\">
+// <head>
+//   <meta charset=\"utf-8\">
+//   <title>A simple webpage</title>
+// </head>
+// <body>
+//   <h1>Simple HTML webpage</h1>
+//   <p>Hello, world!</p>
+// </body>
+// </html>"
+	// std::string s = "Hello World!";
+ 
+    std::vector<char> res(mock.begin(), mock.end());
 
-	std::vector<char> res(mock, mock + strlen(mock));
+	return (res);
 }
 
 std::vector<char>	Tcp_handler::parse_request(std::vector<char> request)

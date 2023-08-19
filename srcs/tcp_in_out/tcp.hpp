@@ -36,16 +36,16 @@ class Tcp_handler
 
 		//start of main loop
 		void	main_tcp_loop();
-		// int		get_count_of_ready_connections();
+		int		get_count_of_ready_connections();
 		// struct epoll_event get_ready_event(int i);
 		// int		accept_new_fd(int new_fd);
 		// void	setup_connection(int new_connection);
 		// void	add_socket_to_epoll_list(int new_connection);
 
 		//get info
-		// bool	is_new_connection(struct epoll_event current_event);
-		// bool	is_event_request(struct epoll_event current_event);
-		// bool	is_event_response(struct epoll_event current_event);
+		bool	is_new_connection(struct epoll_event current_event);
+		bool	is_event_request(struct epoll_event current_event);
+		bool	is_event_response(struct epoll_event current_event);
 
 		//actions
 		// void	add_new_client_fd(struct epoll_event current_event);
@@ -53,8 +53,8 @@ class Tcp_handler
 		// std::vector<char> read_request(int client_fd);
 		void	read_from_client(struct epoll_event current_event);
 		std::vector<char> read_request(int client_fd);
-		// void	write_to_client(struct epoll_event current_event);
-		void	parse_request(std::vector<char> request);
+		void	write_to_client(struct epoll_event current_event);
+		std::vector<char>	parse_request(std::vector<char> request);
 };
 
 #endif

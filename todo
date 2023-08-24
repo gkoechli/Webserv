@@ -28,3 +28,12 @@ TCP:
 	☐ bool checker for buffer
 	✔ char vector getter for usage @done(23-08-13 17:40)
 	☐ buffer editor
+
+Methods:
+	☐ GET
+	☐ POST
+	☐ DELETE
+	☐ request object
+	☐ main method to call all methods
+	☐ request constructor/parser
+	☐ response constructor

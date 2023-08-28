@@ -1,6 +1,17 @@
 #include "method.hpp"
 #include <criterion.h>
+/*
+Should start by external interface before internal implementation.
+-> constructor/getter/setter first?
+->then simple operation from mock variables
+->then real operations, real implementation
+->then refactor
+Need to write a test list in text
 
+to define objectives of the current module
+-initialisation state
+
+*/
 Test(method, construct)
 {
 	Method method("../../testfiles/empty");

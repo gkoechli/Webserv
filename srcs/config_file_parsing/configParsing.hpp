@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:42:09 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/08/10 15:04:05 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/08/17 11:45:28 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # define LOCATION 4
 # define NAME 5
 # define VALUE 6
+# include "serverClass.hpp"
+# include "locationClass.hpp"
 
 class configParsing
 {
@@ -43,10 +45,13 @@ class configParsing
 		std::pair<std::string, std::string> getListenPort();
 		std::string getKeyContent(std::string);
 		void	set_file_values();
+		void	set_server_values(std::vector<std::string>::iterator);
+		std::pair<std::string, locationClass> set_location_values(std::vector<std::string>::iterator);
 		void	printFileValues();
 	private:
 		std::string _confFile;
 		std::vector<std::string> lineList;
+		std::map<std::string, serverClass> serverList;
 		std::map<std::string, std::string> file;
 };
 

@@ -120,7 +120,7 @@ std::vector<char> response_mockup_builder()
 	"\n"
 	"\n";
 	// std::string s = "Hello World!";
- 
+
     std::vector<char> res(mock.begin(), mock.end());
 
 	return (res);
@@ -128,9 +128,12 @@ std::vector<char> response_mockup_builder()
 
 std::vector<char>	Tcp_handler::parse_request(std::vector<char> request)
 {
+
 	std::vector<char> response_mockup;
 	response_mockup = response_mockup_builder();
 	//TODO
+	//Exec execution(request, &config_parser);
+	//return(execution.get_response_as_string());
 	//just need to print full request for now
 	std::string output(request.begin(), request.end());
 	std::cout << "content of request buffer = " << output << std::endl;

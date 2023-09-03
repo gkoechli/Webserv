@@ -11,18 +11,20 @@
 class Method{
 	private:
 		int	status_code;
-		// std::string content;
+		std::string response_content;
 		std::string _path;
+		//File_manip file;
+		//Request_obj &request;//need to have all infos needed to exec
 		//maybe a pointer to settings/request?
 	public:
-		Method(std::string path/*request object*/);
+		Method(std::string path/*Request_obj &request*/);
 		~Method();
 
 		bool	is_empty();
 		bool	check_error();
 		// void extract_path_from_request(/*request object*/);
 
-		// void	method_get();
+		void	method_get();
 		// void	method_post();
 		// void	method_delete();
 

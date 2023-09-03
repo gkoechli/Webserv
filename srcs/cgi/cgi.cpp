@@ -53,7 +53,7 @@ cgi::cgi(std::string obj):fct(obj)
 	pipe(pip);
 
 	pid_t pid = fork();
-	if (pid == 0) 
+	if (pid == 0)
 	{
 		close(pip[1]);
 		std::cout << this->getPathInChar() << std::endl;

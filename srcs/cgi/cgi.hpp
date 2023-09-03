@@ -1,5 +1,6 @@
 #ifndef CGI_CPP
 # define CGI_CPP
+
 # include <iostream>
 # include <iomanip>
 # include <map>
@@ -9,7 +10,8 @@
 # include <fstream>
 # include <vector>
 # include <unistd.h>
-class cgi 
+
+class cgi
 {
 	public:
 		cgi(std::string);

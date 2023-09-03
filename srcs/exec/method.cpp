@@ -26,6 +26,44 @@ bool	Method::check_error()
 	return (false);
 }
 
+/*
+get
+post -> need to create a file, check if creation and content is correct
+-> then only need to return status code,
+so void method, and status code getter
+delete -> delete file at path
+if error (access right, doesn't exist, etc) status code
+else normal status
+void method, return status
+
+whats needed to be returned in each cases?
+status code
+content if there is any
+
+response object :
+a single one, created with value depending on result of exec
+and empty variables to be filled later?
+or an intermediate object to be used in construction of response header?
+
+what does response object need?
+status code
+body content, if any
+everything else needed to construct a valid response header:
+*Content-Length:
+*Content-Type:
+*Connection: keep-alive/else
+*Content-Language:
+*Date:
+*Server:
+*HTTP/1.1 (status code) (OK)
+
+most of those can be easily determined or have default values
+need infos from request header (connection keep-alive, Server)
+
+
+
+
+*/
 // void	method_get()
 // {
 // 	std::ifstream file(path);

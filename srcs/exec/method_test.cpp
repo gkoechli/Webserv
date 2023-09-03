@@ -10,6 +10,9 @@ Need to write a test list in text
 
 to define objectives of the current module
 -initialisation state
+-type of request from input? (is get, is post, is delete)
+-exec simple requests
+-exec from construction to end, almost blackbox?
 
 */
 Test(method, construct)

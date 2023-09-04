@@ -10,7 +10,7 @@
 # include <vector>
 # include "locationClass.hpp"
 
-class serverClass 
+class serverClass
 {
 	public:
 		serverClass();

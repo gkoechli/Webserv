@@ -7,8 +7,8 @@ class Exec {
 		Request_obj	request;
 		Response_obj	response;
 		std::string	response_body;
-		Method method;
-		CGI cgi;
+		// Method method;
+		// CGI cgi;
 
 	public:
 		Exec(std::string request_string/*configParsing &config*/);
@@ -20,6 +20,8 @@ class Exec {
 		void	handle_exec();
 		void	response_build();
 		std::string get_response_as_string();//final command to get response to buffer
+		void	mockup_response_object();//intermediate system to create a "valid" response
+		//TODO: delete after final implementation!
 }
 
 #endif

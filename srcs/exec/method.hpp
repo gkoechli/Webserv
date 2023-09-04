@@ -8,6 +8,10 @@
 #include <vector>
 
 
+
+//to use only once every possible check is done on request object
+//should be garanteed do have all data necessary to at least try to exec the method
+//once executed, get status and body => no more uses for current object
 class Method{
 	private:
 		int	status_code;

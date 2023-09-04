@@ -11,6 +11,7 @@
 #include <string.h>
 #include <cstring>
 #include "../config_file_parsing/configParsing.hpp"
+#include "../exec/exec.hpp"
 #include "./client_buffer.hpp"
 #include "./multiplexer.hpp"
 

@@ -2,9 +2,9 @@
 
 Response_obj::Response_obj()
 {
-	http_code = 200
+	http_code = 200;
 }
-~Response_obj::Response_obj() {}
+Response_obj::~Response_obj() {}
 
 //setter
 void	Response_obj::setHTTPCode(int code)
@@ -27,9 +27,9 @@ void	Response_obj::setbody(std::string body_to_set)
 {
 	body = body_to_set;
 }
-void	Response_obj::insertBodyPair(std::pair<std::string, std::string> headerPair)
+void	Response_obj::insertHeaderPair(std::pair<std::string, std::string> headerPair)
 {
-	this->data.insert(headerPair);
+	this->header.insert(headerPair);
 }
 // void	setRequest(Request_obj request)
 // void	setSettings(Settings settings)
@@ -41,27 +41,42 @@ void	Response_obj::insertBodyPair(std::pair<std::string, std::string> headerPair
 // {
 // 	return ()
 // }
-const int				Response_obj::&getHTTPCode() const
+int				Response_obj::getHTTPCode() const
 {
 	return (http_code);
 }
-const std::string		Response_obj::&getPath() const
+std::string		Response_obj::getPath() const
 {
 	return (path);
 }
-const std::string		Response_obj::&getLocation() const
+std::string		Response_obj::getLocation() const
 {
 	return (location);
 }
-bool					Response_obj::isCGI() const
+bool					Response_obj::getisCGI() const
 {
 	return (isCGI);
 }
 std::string 			Response_obj::getHeaderContent(std::string HeaderKey)
 {
-	return (this->data.find(HeaderKey)->second);
+	return (this->header.find(HeaderKey)->second);
 }
-std::string 			Response_obj::getBody()
+
+std::string				Response_obj::getFullHeader()
+{
+	std::string full_response;
+	std::map<std::string, std::string>::iterator it = header.begin();
+	while (it != header.end())
+	{
+		full_response += it->first;
+		full_response += " ";
+		full_response += it->second;
+		it++;
+	}
+	return (full_response);
+}
+
+std::string 			Response_obj::getbody()
 {
 	return (body);
 }

@@ -119,8 +119,6 @@ std::vector<char> response_mockup_builder()
 	"</html>\n"
 	"\n"
 	"\n";
-	// std::string s = "Hello World!";
-
     std::vector<char> res(mock.begin(), mock.end());
 
 	return (res);
@@ -128,9 +126,13 @@ std::vector<char> response_mockup_builder()
 
 std::vector<char>	Tcp_handler::parse_request(std::vector<char> request)
 {
+	Exec	current_exec;
+	current_exec.mockup_response_object();//only for dev, not needed after finished
+	current_exec.print_response();//only for debug, TODELETE
 
 	std::vector<char> response_mockup;
-	response_mockup = response_mockup_builder();
+	// response_mockup = response_mockup_builder();
+	response_mockup = current_exec.return_final_response();
 	//TODO
 	//Exec execution(request, &config_parser);
 	//return(execution.get_response_as_string());

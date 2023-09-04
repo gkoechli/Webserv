@@ -2,6 +2,14 @@
 # define RESPONSE
 
 # include <string>
+# include <iostream>
+# include <iomanip>
+# include <map>
+# include <cstring>
+# include <sstream>
+# include <string>
+# include <fstream>
+# include <vector>
 
 class Response_obj {
 	private:
@@ -23,22 +31,23 @@ class Response_obj {
 		void	setPath(std::string path);
 		void	setLocation(std::string location);
 		void	setCGI(bool isCGI);
-		void	setbody(std string body);
-		void	insertBodyPair(std::pair<std::string, std::string>);
+		void	setbody(std::string body);
+		void	insertHeaderPair(std::pair<std::string, std::string>);
 		// void	setRequest(Request_obj request);
 		// void	setSettings(Settings settings);
 
 		//getter
 
-		const std::vector<char>	&getResponse() const;
-		const int				&getHTTPCode() const;
-		const std::string		&getPath() const;
-		const std::string		&getLocation() const;
-		bool					isCGI() const;
+		// const std::vector<char>	&getResponse() const;
+		int				getHTTPCode() const;
+		std::string		getPath() const;
+		std::string		getLocation() const;
+		bool					getisCGI() const;
 		std::string 			getHeaderContent(std::string HeaderKey);
+		std::string				getFullHeader();
+		std::string				getbody();
 		// const					&getRequest() const;
 		// const					&getSettings() const;
-		std::stri
 };
 
 #endif

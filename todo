@@ -4,7 +4,7 @@ Next MVP:
 	☐ Make final objects for request and response with only getter and setter
 	☐ Create mockup of req/resp filler to produce a valid result with the webserv
 	☐ then, for the rest of the dev cycle, we can implement "real" operations one by one, without breaking anything
-	☐ start implementing methods prototypes
+	☐ start implementing methods prototype
 	☐ send a variable response to client, with just a specific text response depending on the request : "i received a GET/PUT/etc request"(will need request parsing)
 	☐ reponse header constructor, simple step by simple step(biggest unknown for now)
 	☐ after all that, it's probably possible to start automating testing, particular cases by particular cases (status, methods, CGI)

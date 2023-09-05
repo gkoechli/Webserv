@@ -1,11 +1,32 @@
 #include "exec.hpp"
 
-Exec::Exec() //will need settings and request string as argument
+Exec::Exec(std::string request_string/* configParsing settings_arg*/)//will need settings and request string as argument
 {
+	request_as_string = request_string;
 
+	std::cout << "request string received in exec : \n" << request_as_string << std::endl; //Del
+	//settings = settings_arg;
+	//need to create request obj with request_string as arg, with constructor or a builder object
 }
 
 Exec::~Exec() {}
+
+void	Exec::main_exec_loop()
+{
+	//start of exec, current data: request_string, settings
+	//empty data: request and response objects
+	//STEP 1
+	//use request string to fill request object
+	//instanciate a response builder to do it?
+	//STEP 2, request object is complete
+	//handle request => fill response object as much as possible
+	//real exec => from request obj, determine method/CGI, execute it
+	//from result, get statuscode and set it in response
+	//get body as string and set it in response
+	//finish now and tcp use it by doing Exec(arg); exec.main_exec_loop(); Exec.return_final_response();
+	//wich is easier to use step by step
+	//we can know immediatly what's the current state of everything after each step
+}
 
 void Exec::print_response()
 {
@@ -44,7 +65,7 @@ void	Exec::mockup_response_object()
 	"</html>\n"
 	"\n"
 	"\n");
-	response.insertHeaderPair(std::make_pair("HTTP/1.1", "200 OK\n"));
+	// response.insertHeaderPair(std::make_pair("HTTP/1.1", "200 OK\n"));
 	response.insertHeaderPair(std::make_pair("Content-Type:", "text/html; charset=utf-8\n"));
 	response.insertHeaderPair(std::make_pair("Content-Length:", "55743\n"));
 	response.insertHeaderPair(std::make_pair("Connection:", "keep-alive\n"));
@@ -58,10 +79,20 @@ void	Exec::mockup_response_object()
 	//i might have made a mistake somewhere with pair or map, maybe an error of initialisation
 }
 
+std::string int_to_string(int i)
+{
+    std::stringstream ss;
+    ss << i;
+    return ss.str();
+}
+
 std::vector<char> Exec::return_final_response()
 {
 	std::string full_response;
-	full_response = response.getFullHeader();
+	full_response = "HTTP/1.1 ";
+	full_response += int_to_string(response.getHTTPCode());//TODO: check status and add OK or fail depending on value
+	full_response += " OK\n";
+	full_response += response.getFullHeader();
 	full_response += response.getbody();
     std::vector<char> res(full_response.begin(), full_response.end());
 	return (res);

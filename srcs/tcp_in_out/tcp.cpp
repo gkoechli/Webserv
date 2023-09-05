@@ -88,7 +88,7 @@ void Tcp_handler::write_to_client(struct epoll_event current_event)
 		buffer.increment_response_count(fd);
 }
 
-std::vector<char> response_mockup_builder()
+std::vector<char> response_mockup_builder() //del
 {
 	std::string mock = "HTTP/1.1 200 OK\n"
 	"Content-Type: text/html; charset=utf-8\n"
@@ -126,19 +126,20 @@ std::vector<char> response_mockup_builder()
 
 std::vector<char>	Tcp_handler::parse_request(std::vector<char> request)
 {
-	Exec	current_exec;
+	std::string request_as_string(request.begin(), request.end());
+	Exec	current_exec(request_as_string);//create with request string and settings as args
 	current_exec.mockup_response_object();//only for dev, not needed after finished
-	current_exec.print_response();//only for debug, TODELETE
+	// current_exec.print_response();//only for debug, TODELETE
 
 	std::vector<char> response_mockup;
-	// response_mockup = response_mockup_builder();
+	// response_mockup = response_mockup_builder(); //del
 	response_mockup = current_exec.return_final_response();
 	//TODO
 	//Exec execution(request, &config_parser);
 	//return(execution.get_response_as_string());
 
 	//just need to print full request for now
-	std::string output(request.begin(), request.end());
-	std::cout << "content of request buffer = " << output << std::endl;
+	// std::string output(request.begin(), request.end());
+	// std::cout << "content of request buffer = " << output << std::endl;
 	return(response_mockup);
 }

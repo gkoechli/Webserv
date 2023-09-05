@@ -62,6 +62,7 @@ std::string 			Response_obj::getHeaderContent(std::string HeaderKey)
 	return (this->header.find(HeaderKey)->second);
 }
 
+
 std::string				Response_obj::getFullHeader()
 {
 	std::string full_response;

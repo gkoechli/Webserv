@@ -1,8 +1,8 @@
 Next MVP:
 	✔ have current system read full request from buffer @done(23-08-13 17:40)
 	✔ send valid mockup response to client @done(23-08-19 17:59)
-	☐ Make final objects for request and response with only getter and setter
-	☐ Create mockup of req/resp filler to produce a valid result with the webserv
+	✔ Make final objects for request and response with only getter and setter @done(23-09-05 15:09)
+	✔ Create mockup of req/resp filler to produce a valid result with the webserv @done(23-09-05 15:09)
 	☐ then, for the rest of the dev cycle, we can implement "real" operations one by one, without breaking anything
 	☐ start implementing methods prototype
 	☐ send a variable response to client, with just a specific text response depending on the request : "i received a GET/PUT/etc request"(will need request parsing)

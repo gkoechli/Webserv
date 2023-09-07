@@ -19,33 +19,44 @@ ClientRequest::ClientRequest(std::string obj)
 {
 	fill_basic_content(*this);
 	
-	// std::pair<std::string, std::vector<std::string>> ret;   // to split the line we will retrieve into token / arg(s) format
 	std::string temp;
 	int first = 1;
+	int body = 0;
 	int method = 1;
 	std::string word;
 	std::string token;
 	std::stringstream ss(obj);
 	while (std::getline(ss, temp))
 	{
-		if (method == 1)
+		if (body == 1)
 		{
-			this->setMethod(temp);
-			method = 0;
+			this->setBody(temp);
+			break;
 		}
-		std::vector<std::string> tab;
-		std::stringstream wording(temp);
-		while (wording >> word)
+		if (temp == "")
+			body = 1;
+		else
 		{
-			if (first == 1)
+			std::vector<std::string> tab;
+			std::stringstream wording(temp);
+			while (wording >> word)
 			{
-				token = word;
-				first = 0;
+				if (first == 1)
+				{
+					token = word;
+					first = 0;
+				}
+				else
+					tab.push_back(word);
 			}
-			else
-				tab.push_back(word);
+			this->setHeader(pair_Token_Vector(token, tab));
+			if (method == 1)
+			{
+				this->setMethod(temp);
+				this->setHttpVersion(tab.back());
+				method = 0;
+			}
 		}
-		this->setHeader(pair_Token_Vector(token, tab));
 		first = 1;
 	}	
 	// if (tab.begin()->find("GET") == std::string::npos && tab.begin()->find("POST") == std::string::npos && tab.begin()->find("DELETE") == std::string::npos)
@@ -85,7 +96,6 @@ const std::string ClientRequest::getBody() const
 {
 	return (body);
 }
-
 // const std::map<std::string, std::string>	ClientRequest::getHeader() const
 // {
 // 	return (header);

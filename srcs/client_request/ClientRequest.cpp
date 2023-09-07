@@ -30,11 +30,22 @@ ClientRequest::ClientRequest(std::string obj)
 	{
 		if (body == 1) // if last line was empty we parse the body
 		{
-			this->setBody(temp);
-			break;
+			if (first == 2)
+			{
+				first = 1;
+				this->body = temp;
+			}
+			else
+			{
+				this->body += "\n";
+				this->body += temp;		
+			}
 		}
-		if (temp == "")
+		else if (temp == "")
+		{
 			body = 1;
+			first = 2;
+		}	
 		else 
 		{
 			std::vector<std::string> tab;
@@ -56,8 +67,8 @@ ClientRequest::ClientRequest(std::string obj)
 				this->setHttpVersion(tab.back());
 				method = 0;
 			}
+			first = 1;
 		}
-		first = 1;
 	}	
 	// if (tab.begin()->find("GET") == std::string::npos && tab.begin()->find("POST") == std::string::npos && tab.begin()->find("DELETE") == std::string::npos)
 	// 	throw std::exception();

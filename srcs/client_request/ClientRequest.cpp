@@ -28,29 +28,29 @@ ClientRequest::ClientRequest(std::string obj)
 	std::stringstream ss(obj);
 	while (std::getline(ss, temp))
 	{
-		if (body == 1)
+		if (body == 1) // if last line was empty we parse the body
 		{
 			this->setBody(temp);
 			break;
 		}
 		if (temp == "")
 			body = 1;
-		else
+		else 
 		{
 			std::vector<std::string> tab;
 			std::stringstream wording(temp);
 			while (wording >> word)
 			{
-				if (first == 1)
+				if (first == 1) // each first element of line will be the token
 				{
 					token = word;
 					first = 0;
 				}
 				else
-					tab.push_back(word);
+					tab.push_back(word); // the rest is setup as std::vector<string> and added as value to the map
 			}
 			this->setHeader(pair_Token_Vector(token, tab));
-			if (method == 1)
+			if (method == 1) // if its the first line we get the method and version. it is still added to the map -> change it ?
 			{
 				this->setMethod(temp);
 				this->setHttpVersion(tab.back());

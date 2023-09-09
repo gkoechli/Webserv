@@ -24,6 +24,11 @@ void	Exec::main_exec_loop()
 	//STEP 2, request object is complete
 	//handle request => fill response object as much as possible
 	//real exec => from request obj, determine method/CGI, execute it
+	//note: we need all the info we need to select if CGI/method
+	//AAND what they should do precisely
+	//after exec CGI/method, all operations should be over, fd closed.
+	exec_method();
+	build_response();//just set body/httpcode
 	//from result, get statuscode and set it in response
 	//get body as string and set it in response
 	//finish now and tcp use it by doing Exec(arg); exec.main_exec_loop(); Exec.return_final_response();

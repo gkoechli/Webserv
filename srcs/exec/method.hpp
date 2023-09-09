@@ -38,4 +38,8 @@ class Method{
 
 };
 
+// maybe make all that's possible here
+//have CGI as a submodule of this object
+//keep all datas here until response build step in exec;
+
 #endif

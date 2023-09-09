@@ -6,16 +6,16 @@
 # include <string>
 # include <iostream>
 
-std::pair<std::string, std::vector<std::string>> pair_Token_Vector(std::string key, std::vector<std::string> value);
+std::pair<std::string, std::vector<std::string> > pair_Token_Vector(std::string key, std::vector<std::string> value);
 
-class ClientRequest 
+class ClientRequest
 {
 	protected:
 		std::string											method;
 		std::string											path;
 		std::string											http_version;
 		std::string											body;
-		std::map<std::string, std::vector<std::string>>	 	header;
+		std::map<std::string, std::vector<std::string> >	 	header;
 
 
 	public:
@@ -38,7 +38,7 @@ class ClientRequest
 		void	setMethod(const std::string method);
 		void	setHttpVersion(const std::string http_version);
 		void	setBody(const std::string body);
-		void	setHeader(std::pair<std::string, std::vector<std::string>>);
+		void	setHeader(std::pair<std::string, std::vector<std::string> >);
 
 		void printPath() const;    //d
 		void printMethod() const;    //d

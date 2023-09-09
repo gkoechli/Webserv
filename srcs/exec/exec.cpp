@@ -1,9 +1,9 @@
 #include "exec.hpp"
 
-Exec::Exec(std::string request_string/* configParsing settings_arg*/)//will need settings and request string as argument
+Exec::Exec(std::string request_string/* configParsing settings_arg*/) :
+	request(request_string)//will need settings and request string as argument
 {
 	request_as_string = request_string;
-
 	std::cout << "request string received in exec : \n" << request_as_string << std::endl; //Del
 	//settings = settings_arg;
 	//need to create request obj with request_string as arg, with constructor or a builder object
@@ -17,7 +17,10 @@ void	Exec::main_exec_loop()
 	//empty data: request and response objects
 	//STEP 1
 	//use request string to fill request object
-	//instanciate a response builder to do it?
+	//instanciate a request builder to do it?
+
+	std::cout << "exec parsed request" << std::endl;
+	// request.print();
 	//STEP 2, request object is complete
 	//handle request => fill response object as much as possible
 	//real exec => from request obj, determine method/CGI, execute it

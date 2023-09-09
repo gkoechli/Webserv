@@ -9,16 +9,16 @@
 # include <vector>
 
 void	fill_basic_content(ClientRequest &obj);
-std::pair<std::string, std::vector<std::string>> pair_Token_Vector(std::string key, std::vector<std::string> value)
+std::pair<std::string, std::vector<std::string> > pair_Token_Vector(std::string key, std::vector<std::string> value)
 {
-	std::pair<std::string, std::vector<std::string>> ret(key, value);
+	std::pair<std::string, std::vector<std::string> > ret(key, value);
 	return ret;
 }
 
 ClientRequest::ClientRequest(std::string obj)
 {
 	fill_basic_content(*this);
-	
+
 	std::string temp;
 	int first = 1;
 	int body = 0;
@@ -38,15 +38,15 @@ ClientRequest::ClientRequest(std::string obj)
 			else
 			{
 				this->body += "\n";
-				this->body += temp;		
+				this->body += temp;
 			}
 		}
 		else if (temp == "")
 		{
 			body = 1;
 			first = 2;
-		}	
-		else 
+		}
+		else
 		{
 			std::vector<std::string> tab;
 			std::stringstream wording(temp);
@@ -134,7 +134,7 @@ void	ClientRequest::setBody(const std::string body)
 	this->body = body;
 }
 
-void	ClientRequest::setHeader(std::pair<std::string, std::vector<std::string>> head)
+void	ClientRequest::setHeader(std::pair<std::string, std::vector<std::string> > head)
 {
 	this->header.insert(head);
 }
@@ -161,7 +161,7 @@ void ClientRequest::printBody() const   // d
 
 void ClientRequest::printHeader()   // d
 {
-	std::map<std::string,std::vector<std::string>>::iterator it = this->header.begin();
+	std::map<std::string,std::vector<std::string> >::iterator it = this->header.begin();
 	while (it != this->header.end())
 	{
 		std::cout << it->first << " // ";

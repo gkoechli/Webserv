@@ -5,6 +5,8 @@ CXX 		=	c++
 CXXFLAGS			= -Wall -Wextra -Werror -std=c++98
 
 SRCS			=		main.cpp\
+						client_request/ClientRequest.cpp \
+						client_request/ClientBaseSettings.cpp \
 						config_file_parsing/configParsing.cpp\
 						config_file_parsing/serverClass.cpp\
 						config_file_parsing/locationClass.cpp\

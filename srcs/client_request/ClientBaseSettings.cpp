@@ -10,11 +10,11 @@
 
 void	fill_basic_content(ClientRequest &obj);
 
-std::pair<std::string, std::string> pairIt(std::string key, std::string value)
-{
-	std::pair<std::string, std::string> ret(key, value);
-	return ret;
-}
+// std::pair<std::string, std::string> pairIt(std::string key, std::string value)
+// {
+// 	std::pair<std::string, std::string> ret(key, value);
+// 	return ret;
+// }
 
 // std::vector<std::string> clientParsing(std::string obj)
 // {

@@ -15,6 +15,8 @@ std::pair<std::string, std::vector<std::string> > pair_Token_Vector(std::string 
 	return ret;
 }
 
+
+
 ClientRequest::ClientRequest(std::string obj)
 {
 	fill_basic_content(*this);
@@ -69,7 +71,7 @@ ClientRequest::ClientRequest(std::string obj)
 			}
 			first = 1;
 		}
-	}	
+	}
 	// if (tab.begin()->find("GET") == std::string::npos && tab.begin()->find("POST") == std::string::npos && tab.begin()->find("DELETE") == std::string::npos)
 	// 	throw std::exception();
 
@@ -79,6 +81,13 @@ ClientRequest::ClientRequest(std::string obj)
 	this->printHttpVersion();  //d
 	this->printHeader();  //d
 	this->printBody();  //d
+}
+
+
+ClientRequest::ClientRequest(ClientRequest &request_to_copy)
+{
+	if (this != &request_to_copy)
+		*this = request_to_copy;
 }
 
 ClientRequest::~ClientRequest()

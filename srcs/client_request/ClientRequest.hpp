@@ -20,6 +20,7 @@ class ClientRequest
 
 	public:
 		ClientRequest(std::string);
+		ClientRequest(ClientRequest &to_copy);
 		~ClientRequest();
 
 		void	print();

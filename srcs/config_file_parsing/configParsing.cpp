@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:43:02 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/08/27 15:42:26 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/09/11 16:55:48 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,7 @@ void	configParsing::set_server_values(std::vector<std::string>::iterator itori)
 {
 	// std::cout << "================================= SET_SERVER_VALUES ======================================\n";
 	serverClass new_server;
+	int flag = 0;
 	std::string one;
 	std::string two;
 	std::vector<std::string>::iterator it = itori;
@@ -220,11 +221,15 @@ void	configParsing::set_server_values(std::vector<std::string>::iterator itori)
 		}
 		if (identifyTokenType(*itemp) == LOCATION)
 		{
+			std::cout << "SPOTTED A LOCATION\n";
 			new_server.insert_location(set_location_values(it));
+			while (*it != "}\n" && it != this->lineList.end())
+				it++;
+			flag = LOCATION;
 			if (it == this->lineList.end())
 				break;
 		}
-		if (identifyTokenType(*itemp) == CLOSEDBRACKET) // end of server scope
+		if (identifyTokenType(*itemp) == CLOSEDBRACKET || flag == LOCATION) // end of server scope
 		{
 			std::pair<std::string, serverClass> ret(new_server.getName(), new_server);
 			this->serverList.insert(ret);
@@ -233,18 +238,19 @@ void	configParsing::set_server_values(std::vector<std::string>::iterator itori)
 		}
 		it++;
 	}
-	std::map<std::string, serverClass>::iterator mop = this->serverList.begin();
-	while (mop != serverList.end())
-	{
-		std::cout << mop->first << std::endl;
-		mop->second.printServerValues();
-		mop++;
-	}
+	// std::map<std::string, serverClass>::iterator mop = this->serverList.begin();
+	// while (mop != serverList.end())
+	// {
+	// 	std::cout << mop->first << std::endl;
+	// 	mop->second.printServerValues();
+	// 	mop++;
+	// }
+	// ajouter un compte de brackets pour savoir quand close le parsing
 }
 
 std::pair<std::string, locationClass>	configParsing::set_location_values(std::vector<std::string>::iterator it)
 {
-	std::cout << "================================= SET_LOCATION_VALUES ======================================\n";
+	// std::cout << "================================= SET_LOCATION_VALUES ======================================\n";
 	locationClass new_location;
 	std::string one;
 	std::string two;
@@ -307,15 +313,21 @@ std::string configParsing::getKeyContent(std::string key)
 	return (ret);
 }
 
-void	configParsing::printFileValues()
+void	configParsing::printServerInfo()
 {
-	std::map<std::string, std::string>::iterator it = this->file.begin();
-	while (it != this->file.end())
+	std::map<std::string, serverClass>::iterator it = this->serverList.begin();
+	while (it != this->serverList.end())
 	{
-		std::cout << it->first << " || " << it->second << std::endl << std::endl;
+		it->second.printServerValues();
 		it++;
 	}
 }
-
- // rajout check  } puis location ? new server, repeat et fill une class check;
- // add a server list somewhere ? mb in configParsing ?
+void	configParsing::printServerList()
+{
+	std::map<std::string, serverClass>::iterator it = this->serverList.begin();
+	while (it != this->serverList.end())
+	{
+		std::cout << it->first << std::endl;
+		it++;
+	}
+}

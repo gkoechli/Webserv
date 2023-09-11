@@ -11,6 +11,8 @@ int main(int ac, char **av)
 	try
 	{
 		configParsing test(av[1]);
+		test.printServerInfo();
+		
 	}
 	catch(std::exception &e)
 	{

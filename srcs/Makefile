@@ -13,15 +13,20 @@ SRCS			=		main.cpp\
 						tcp_in_out/tcp.cpp \
 						tcp_in_out/multiplexer.cpp \
 						tcp_in_out/client_buffer.cpp \
+						Model/Model.cpp \
+						Model/file_manager.cpp \
 						exec/exec.cpp \
 						exec/response.cpp
 
 HEADERS		=	config_file_parsing/configParsing.hpp\
 				config_file_parsing/serverClass.hpp\
 				config_file_parsing/locationClass.hpp\
+				client_request/ClientRequest.hpp \
 				tcp_in_out/tcp.hpp \
 				tcp_in_out/multiplexer.hpp \
 				tcp_in_out/client_buffer.hpp \
+				Model/Model.hpp \
+				Model/file_manager.hpp \
 				exec/exec.hpp \
 				exec/response.hpp
 

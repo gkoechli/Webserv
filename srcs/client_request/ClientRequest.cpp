@@ -9,6 +9,7 @@
 # include <vector>
 
 void	fill_basic_content(ClientRequest &obj);
+
 std::pair<std::string, std::vector<std::string> > pair_Token_Vector(std::string key, std::vector<std::string> value)
 {
 	std::pair<std::string, std::vector<std::string> > ret(key, value);
@@ -63,8 +64,28 @@ ClientRequest::ClientRequest(std::string obj)
 			this->setHeader(pair_Token_Vector(token, tab));
 			if (method == 1) // if its the first line we get the method and version. it is still added to the map -> change it ?
 			{
-				this->setMethod(temp);
+				this->setMethod(token);
 				this->setHttpVersion(tab.back());
+
+				tab.pop_back();
+				std::vector<std::string>::iterator it = tab.begin();
+				std::string targ = "";
+				int i = 1;
+				while (it != tab.end())
+				{
+					if (i == 1)
+					{
+						targ = *it;
+						i = 0;
+					}
+					else
+					{
+						targ += " ";
+						targ += *it;
+					}
+					it++;
+				}
+				this->setTarget(targ);
 				method = 0;
 			}
 			first = 1;
@@ -107,6 +128,11 @@ const std::string ClientRequest::getBody() const
 {
 	return (body);
 }
+
+const std::string ClientRequest::getTarget() const
+{
+	return (target);
+}
 // const std::map<std::string, std::string>	ClientRequest::getHeader() const
 // {
 // 	return (header);
@@ -134,6 +160,11 @@ void	ClientRequest::setBody(const std::string body)
 	this->body = body;
 }
 
+void	ClientRequest::setTarget(const std::string targ)
+{
+	this->target = targ;
+}
+
 void	ClientRequest::setHeader(std::pair<std::string, std::vector<std::string> > head)
 {
 	this->header.insert(head);
@@ -157,6 +188,11 @@ void ClientRequest::printHttpVersion() const   // d
 void ClientRequest::printBody() const   // d
 {
 	std::cout << this->getBody() << std::endl;
+}
+
+void ClientRequest::printTarget() const   // d
+{
+	std::cout << this->getTarget() << std::endl;
 }
 
 void ClientRequest::printHeader()   // d

@@ -15,6 +15,7 @@ class ClientRequest
 		std::string											path;
 		std::string											http_version;
 		std::string											body;
+		std::string											target;
 		std::map<std::string, std::vector<std::string> >	 	header;
 
 
@@ -31,10 +32,12 @@ class ClientRequest
 		const std::string getMethod() const;
 		const std::string getHttpVersion() const;
 		const std::string getBody() const;
+		const std::string getTarget() const;
 		// const std::map<std::string, std::vector<std::string>> getHeader() const;
 
 		//set
 		void	setPath(const std::string path);
+		void	setTarget(const std::string path);
 		void	setMethod(const std::string method);
 		void	setHttpVersion(const std::string http_version);
 		void	setBody(const std::string body);
@@ -42,6 +45,7 @@ class ClientRequest
 
 		void printPath() const;    //d
 		void printMethod() const;    //d
+		void printTarget() const;    //d
 		void printHttpVersion() const;    //d
 		void printBody() const;    //d
 		void printHeader();    //d

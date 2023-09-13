@@ -26,9 +26,9 @@ class Model {
 		std::vector<char> get_full_response_str();
 		void	mockup_response_object();
 		//handle operation()
-		void get();
+		void method_get();
+		void method_delete();
 		//post
-		//delete
 		//build error response
 		// move response mockup here
 		//cgi operation() //CGI obj only need to be instanciated here, not kept in private member

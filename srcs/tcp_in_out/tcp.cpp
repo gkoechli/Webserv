@@ -14,7 +14,7 @@ Tcp_handler::~Tcp_handler() {}
 
 void	Tcp_handler::main_tcp_loop()
 {
-	 try {
+	try {
         multiplex.init_epoll_events();
 		while (1) //possibly signal catch to stop program correctly?
 		{

@@ -19,6 +19,7 @@ std::string int_to_string(int i)
 
 std::vector<char> Model::get_full_response_str()
 {
+	response.setHTTPCode(status_code);
 	std::string full_response;
 
 	full_response = request.getHttpVersion();
@@ -31,12 +32,32 @@ std::vector<char> Model::get_full_response_str()
 	return (res);
 }
 
-void Model::get()
+void Model::method_get()
 {
 	file.open();
 	response.setbody(file.get_content_from_file());
 	file.close();
-	response.setHTTPCode(200);
+	status_code = 200;
+}
+
+void Model::method_delete()
+{
+	if (!file.exist())
+	{
+		status_code = 404;
+		return;
+	}
+	file.open();
+	file.unlink();
+	file.close();
+	response.setbody("\n<!DOCTYPE html>\n\
+            <html>\n\
+            <body>\n\
+              <h1>File deleted</h1>\n\
+            </body>\n\
+            </html>\n\n\n");
+	//TODO : add length of body and format of response (html)
+	status_code = 200;
 }
 
 void	Model::mockup_response_object()

@@ -51,23 +51,40 @@ std::vector<char>	ClientBuffer::get_full_request(int fd)//to send full html clie
 
 std::vector<char>	ClientBuffer::get_next_response_bloc(int fd)//to send next part of response to client asking it
 {
-	std::vector<char>	current_response = (response_buffer.find(fd))->second.second;
-	std::vector<char>	new_response;
-	std::vector<char>	chunk_to_send;
-	int					response_size = (response_buffer.find(fd))->second.first;
+	// std::vector<char>	current_response = (response_buffer.find(fd))->second.second;
+	// std::vector<char>	new_response;
+	// std::vector<char>	chunk_to_send;
+	// int					response_size = (response_buffer.find(fd))->second.first;
 
-	if (current_response.size() && new_response.size() >= CHUNK_SIZEMAX)
-		chunk_to_send.insert(chunk_to_send.end(), current_response.begin(), current_response.begin() + CHUNK_SIZEMAX);
-	else if (current_response.size() && current_response.size() < CHUNK_SIZEMAX)
-		chunk_to_send.insert(chunk_to_send.end(), current_response.begin(), current_response.end());
-	//last 4 lines should be extracted
-	if (response_size %2 == 0)//no idea how that work, it seems to detect if it's the last chunk, but how?
-		return(chunk_to_send);
-	if (current_response.size() >= CHUNK_SIZEMAX)
-	new_response.insert(new_response.end(), current_response.begin() + CHUNK_SIZEMAX, current_response.end());
-	response_buffer.erase(fd);//there's already a function for that (empty_response_buffer)
-	response_buffer.insert(std::make_pair(fd, std::make_pair(response_size, new_response)));
-	return(chunk_to_send);
+	// if (current_response.size() && current_response.size() >= CHUNK_SIZEMAX)
+	// 	chunk_to_send.insert(chunk_to_send.end(), current_response.begin(), current_response.begin() + CHUNK_SIZEMAX);
+	// else if (current_response.size() && current_response.size() < CHUNK_SIZEMAX)
+	// 	chunk_to_send.insert(chunk_to_send.end(), current_response.begin(), current_response.end());
+	// //last 4 lines should be extracted
+	// // if (response_size %2 == 0)//no idea how that work, it seems to detect if it's the last chunk, but how?
+	// // 	return(chunk_to_send);
+	// if (current_response.size() >= CHUNK_SIZEMAX)
+	// new_response.insert(new_response.end(), current_response.begin() + CHUNK_SIZEMAX, current_response.end());
+	// response_buffer.erase(fd);//there's already a function for that (empty_response_buffer)
+	// response_buffer.insert(std::make_pair(fd, std::make_pair(response_size, new_response)));
+	// return(chunk_to_send);
+
+	std::vector<char>   response = (response_buffer.find(fd))->second.second;
+    std::vector<char>   new_response;
+    std::vector<char>   chunk;
+    int                 size_return = (response_buffer.find(fd))->second.first;
+
+    if (response.size() && response.size() >= CHUNK_SIZEMAX)
+        chunk.insert(chunk.end(), response.begin(), response.begin() + CHUNK_SIZEMAX);
+    else if (response.size() && response.size() < CHUNK_SIZEMAX)
+        chunk.insert(chunk.end(), response.begin(), response.end());
+    if (size_return % 2 == 0)
+        return (chunk);
+    if (response.size() >= CHUNK_SIZEMAX)
+        new_response.insert(new_response.end(), response.begin() + CHUNK_SIZEMAX, response.end());
+    response_buffer.erase(fd);
+    response_buffer.insert(std::make_pair(fd, std::make_pair(size_return, new_response)));
+    return (chunk);
 }
 
 //will probably need subfunctions to work

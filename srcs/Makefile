@@ -24,6 +24,7 @@ HEADERS		=	config_file_parsing/configParsing.hpp\
 				client_request/ClientRequest.hpp \
 				tcp_in_out/tcp.hpp \
 				tcp_in_out/multiplexer.hpp \
+				tcp_in_out/utils.hpp \
 				tcp_in_out/client_buffer.hpp \
 				Model/Model.hpp \
 				Model/file_manager.hpp \

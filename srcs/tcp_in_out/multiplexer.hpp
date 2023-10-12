@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string.h>
 #include "../config_file_parsing/configParsing.hpp"
+#include "utils.hpp"
 
 # define INITSOCKERR            "Socket() failed."
 # define SETSOCKOPTERR          "setsockopt() failed."
@@ -65,6 +66,9 @@ class Multiplexer {
 		void	update_connection_status(int fd, int event);
 		// bool	is_connection_over(int fd);
 		// bool	is_request_over(int fd);
+
+
+		uint32_t convert_ip_to_int(std::string string_ip);
 
 };
 

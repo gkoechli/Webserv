@@ -8,16 +8,13 @@ Multiplexer::Multiplexer(configParsing config_parser) : epoll_instance_fd(-1)
 		std::cout << config_parser.getKeyContent("cli_max_size") << std::endl;
 		// for (int i = 0; i < listen_port_count; i++)//need a loop to manage multiple server/ip/port
 	// {
-			int	server_socket = create_server_socket(atoi(tmp.second.c_str()), 16777343);
+			int	server_socket = create_server_socket(atoi(tmp.second.c_str()), convert_ip_to_int(tmp.first.c_str()));
 	// }
 		list_of_listen_sockets_fd.push_back(server_socket);
-		//maybe need to use inet_aton() to convert ip string to correct format?
-		//probably need to reimplement it
 	}
 	catch (const std::exception &e) {
         throw (MultiplexerException(LISTENERR));
     }
-	// std::cout << "multiplexer constructed"<< std::endl;
 }
 
 Multiplexer::~Multiplexer() {
@@ -37,6 +34,23 @@ int	Multiplexer::create_server_socket(int port, int ip)
 	if (listen(server_fd, 100) < 0)
         throw (MultiplexerException(LISTENERR));
 	return (server_fd);
+}
+
+
+uint32_t Multiplexer::convert_ip_to_int(std::string string_ip)
+{
+	uint32_t	ip_value = 0;
+	std::istringstream  str_stream(string_ip);
+	std::string			line;
+
+	for (unsigned int i = 0; i < 4; i++)
+	{
+		getline(str_stream, line, '.');
+		// if (line.empty() || !str_stream)
+        //     throw (SocketCreationException(IPERR));
+        ip_value += (ft::lexical_cast<uint32_t>(line) << 8 * (3 - i));
+	}
+	return (ip_value);
 }
 
 struct sockaddr_in Multiplexer::init_address(int port, int ip)
@@ -119,9 +133,10 @@ bool	Multiplexer::is_valid_server_socket(struct epoll_event current_event)
 	int fd = current_event.data.fd;
 	for (std::vector<int>::iterator it = list_of_listen_sockets_fd.begin(); it != list_of_listen_sockets_fd.end(); it++)
 	{
+			// std::cout << "it = "<< *it << std::endl;
 		if (fd == *it)
 		{
-			std::cout << "i got a new connection, fd = "<< fd << std::endl;
+			// std::cout << "i got a new connection, fd = "<< fd << std::endl;
 			return true;
 		}
 	}

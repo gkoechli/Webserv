@@ -40,6 +40,8 @@ void Model::method_get()
 	status_code = 200;
 }
 
+//void Model::method_post()
+
 void Model::method_delete()
 {
 	if (!file.exist())

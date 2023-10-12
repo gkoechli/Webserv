@@ -61,8 +61,6 @@ most of those can be easily determined or have default values
 need infos from request header (connection keep-alive, Server)
 
 
-
-
 */
 // void	method_get()
 // {

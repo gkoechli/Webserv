@@ -26,6 +26,7 @@ class ClientBuffer{
 		//getter
 		std::vector<char>	get_full_request(int fd);//to send full html client request to request parser/exec
 		std::vector<char>	get_next_response_bloc(int fd);//to send next part of response to client asking it
+
 		//will probably need subfunctions to work
 		void	increment_response_count(int fd);
 		int		get_count_send(int fd);

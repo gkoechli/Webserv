@@ -20,10 +20,10 @@ void	Tcp_handler::main_tcp_loop()
 		{
 			int	ready_fd_count;
 			ready_fd_count = multiplex.get_count_of_ready_connections();//function to get num of ready fd from epoll struct (epoll_wait)
-			// std::cout << "ready_fd = "<< ready_fd_count << std::endl;
+			std::cout << "ready_fd = "<< ready_fd_count << std::endl;
 			for (int i = 0; i < ready_fd_count; i++)
 			{
-				// std::cout << "event found"<< std::endl;
+				std::cout << "event found"<< std::endl;
 				struct epoll_event current_event;
 				current_event = multiplex.get_ready_event(i);//function to get event 'i' in the list of ready events
 				if (multiplex.is_valid_server_socket(current_event))
@@ -68,19 +68,25 @@ void	Tcp_handler::read_from_client(struct epoll_event current_event)
 
 void Tcp_handler::write_to_client(struct epoll_event current_event)
 {
+
+	std::cout << "start of write to client"<< std::endl;
 	int fd = current_event.data.fd;
 	std::vector<char> next_chunk = buffer.get_next_response_bloc(fd);
-	int	send_count = buffer.get_count_send(fd);
+	// int	send_count = buffer.get_count_send(fd);
 	std::vector<char> response;
 
 	response = next_chunk;
 	response.push_back('\r');
 	response.push_back('\n');//maybe should be done in get_next_response method?
+
+	std::string output(response.begin(), response.end());
+	std::cout << output <<std::endl;
 	multiplex.send_response(response, fd);
-	if (!next_chunk.size() && send_count % 2 == 1)
-		multiplex.update_connection_status(fd, EPOLLIN);
-	if (!next_chunk.size() && send_count % 2 == 1)
+	// if (!next_chunk.size() && send_count % 2 == 1)
+	if (!next_chunk.size() || buffer.get_count_send(fd) > 0)
 	{
+		std::cerr << "finished writing to client to client"<< std::endl;
+		multiplex.update_connection_status(fd, EPOLLIN);
 		buffer.empty_response_buffer(fd);
 		close (fd);
 	}

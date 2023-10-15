@@ -8,12 +8,12 @@ Next MVP:
 	☐ send a variable response to client, with just a specific text response depending on the request : "i received a GET/PUT/etc request"(will need request parsing)
 	☐ reponse header constructor, simple step by simple step(biggest unknown for now)
 	☐ after all that, it's probably possible to start automating testing, particular cases by particular cases (status, methods, CGI)
-	☐ exec CGI (should not be terribly hard,it's an established process)
+	✔ exec CGI (should not be terribly hard,it's an established process) @done(23-10-15 17:59)
 	☐ manage exceptions and error (http code, etc.)
 TCP:
 
 	✔ mockup parser to print a vector of char @done(23-08-15 15:58)
-	☐ Converter from string to int for ip
+	✔ Converter from string to int for ip @done(23-10-15 17:58)
 	☐ loop of server ports binding to epoll struct (currently only 1)
 	✔ protection with throw @done(23-08-13 17:40)
 	✔ read_from_client function @done(23-08-12 17:58)
@@ -33,10 +33,18 @@ TCP:
 	☐ buffer editor
 
 Methods:
-	☐ GET
-	☐ POST
-	☐ DELETE
+	✔ GET @done(23-10-15 17:59)
+	✔ POST @done(23-10-15 17:59)
+	✔ DELETE @done(23-10-15 17:59)
 	☐ request object
 	☐ main method to call all methods
 	☐ request constructor/parser
 	☐ response constructor
+
+	//use getline or ifstream to read the file or the pipe after execve
+	//remove use of read outside of TCP class -> (currently in file manip and cgi exec)
+Note:
+	//adding pipe fd to epoll manager seems absolutly disgusting
+	//and way more complex than needed, but possible in theory
+	//it sound like a super bad practice though
+	 

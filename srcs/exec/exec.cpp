@@ -3,7 +3,7 @@
 Exec::Exec(std::string request_string/* configParsing settings_arg*/) :
 	request(request_string)//will need settings and request string as argument
 {
-	request.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test_copy.html");
+	request.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test.html");
 	request_as_string = request_string;
 	std::cout << "request string received in exec : \n" << request_as_string << std::endl; //Del
 	//settings = settings_arg;
@@ -100,9 +100,9 @@ std::vector<char> Exec::return_final_response()
 {
 	//model.exec_action();
 	Model model_handler(request);
-	model_handler.mockup_response_object();//will be replaced by "execute request"
-	// model_handler.method_get();//work, but exceptions aren't managed
-	model_handler.method_delete();
+	// model_handler.mockup_response_object();//will be replaced by "execute request"
+	model_handler.method_get();//work, but exceptions aren't managed
+	// model_handler.method_delete();
 	return (model_handler.get_full_response_str());
 	// std::string full_response;
 	// full_response = "HTTP/1.1 ";

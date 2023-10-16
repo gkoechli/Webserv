@@ -21,30 +21,65 @@ TCP:
 	✔ bool checker is_new_connection @done(23-08-12 18:23)
 	✔ send_response @done(23-08-12 18:26)
 	☐ is_request_over()
+	//current implementation is not working
 	✔ update_connection_status() !! @done(23-08-15 15:58)
 	☐ mockup of reponse for nav
 	☐ is_connection_over
 	☐ chunked encoding will need to be implemented to manage files (pictures/gif/sound/etc.) chunked request for PUT media, chunked response for GET requests
+	☐ if a read/write to client return an error, the client should be removed (and it's buffer purged too)
+	☐ if read/write return an error, it should check both 0 and -1
 
+Configuration:
+	☐ possibility to setup multiple server with different ports and hostname
+	☐ possibility to setup a default error page
+	☐ manage a request body size limit
+	☐ setup routes to different directories
+	☐ limit valid methods depending on routes used
  Buffer:
 	☐ increment_response_count
+	//currently work but is completly useless,
+	
+	//maybe it should count an objective number of send and an effective num, and use the differenece as a stop condition
 	☐ bool checker for buffer
 	✔ char vector getter for usage @done(23-08-13 17:40)
-	☐ buffer editor
+	✔ buffer editor @done(23-10-16 14:19)
+
+Control:
+	☐ path editor to find real path from requested one
+	☐ need a check somewhere to determine if the requested server is accessed from 
 
 Methods:
 	✔ GET @done(23-10-15 17:59)
 	✔ POST @done(23-10-15 17:59)
 	✔ DELETE @done(23-10-15 17:59)
+	☐ UNKNOWN methods should be managed without crashes
+	☐ status codes for various actions should be correct
+	☐ we can POST a file and GET it back after
+	☐ Is_CGI method needed
 	☐ request object
-	☐ main method to call all methods
+	☐ main method to call all methods (exec in model) @started(23-10-16 14:23)
 	☐ request constructor/parser
 	☐ response constructor
-
-	//use getline or ifstream to read the file or the pipe after execve
+CGI:
+	☐ cGI  should be run in the correct directory
+	☐ CGI work with POST and GET methods
+	☐ CGI errors should be managed properly (files with error, infinite loop, etc.)
+Browser:
+	☐ browser should be able to conect to server with "network" tab
+	☐ trying a wrong URL should be managed properly
+	☐ accessing a directory should be managed too
+	☐ try a redirect URL??(no idea what that mean here)
+Port:
+	☐ if multiple website uses multiple ports, the browser see the expected website
+	☐ if config try t use same port multiple times, it should not work
+	☐ if multiple webserv with different config use same port, the first ne should probably work
+	and the next one shouldn't
+Siege:
+	☐ learn how to use siege
+	//use getline or ifstream to read the file (GET) or the pipe after execve
 	//remove use of read outside of TCP class -> (currently in file manip and cgi exec)
 Note:
 	//adding pipe fd to epoll manager seems absolutly disgusting
 	//and way more complex than needed, but possible in theory
-	//it sound like a super bad practice though
+	//it sound like a super bad practice though so i'm not ding that
 	 

@@ -50,75 +50,73 @@ Exec::~Exec()
 // 	std::cout << "end of response object." << std::endl;
 // }
 
-// void	Exec::mockup_response_object()
-// {
-// 	response.setHTTPCode(404);
-// 	response.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test.html");
-// 	response.setLocation("Website/folder/file.extension");
-// 	response.setCGI(false);
-// 	response.setbody("\n"
-// 	"<!DOCTYPE html>\n"
-// 	"<html lang=\"en\">\n"
-// 	"<head>\n"
-// 	"<meta charset=\"utf-8\">\n"
-// 	"<title>A simple webpage</title>\n"
-// 	"</head>\n"
-// 	"<body>\n"
-// 	"<h1>Simple HTML webpage</h1>\n"
-// 	"<p>Hello, world!</p>\n"
-// 	"</body>\n"
-// 	"</html>\n"
-// 	"\n"
-// 	"\n");
-// 	// response.insertHeaderPair(std::make_pair("HTTP/1.1", "200 OK\n"));
-// 	response.insertHeaderPair(std::make_pair("Content-Type:", "text/html; charset=utf-8\n"));
-// 	response.insertHeaderPair(std::make_pair("Content-Length:", "55743\n"));
-// 	response.insertHeaderPair(std::make_pair("Connection:", "keep-alive\n"));
-// 	response.insertHeaderPair(std::make_pair("Content-Language:", "en-US\n"));
-// 	response.insertHeaderPair(std::make_pair("Date:", "Thu, 06 Dec 2018 17:37:18 GMT\n"));
-// 	response.insertHeaderPair(std::make_pair("Server:", "meinheld/0.6.1\n"));
-// 	// std::string test = response.getPath();
-// 	// test = response.getbody();
-// 	//ERROR, if i delete last line exec fail immediatly
-// 	//wich means a memory error usually
-// 	//i might have made a mistake somewhere with pair or map, maybe an error of initialisation
-// }
+void	Exec::mockup_response_object()
+{
+	response.setHTTPCode(404);
+	response.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test.html");
+	response.setLocation("Website/folder/file.extension");
+	response.setCGI(false);
+	response.setbody("\n"
+	"<!DOCTYPE html>\n"
+	"<html lang=\"en\">\n"
+	"<head>\n"
+	"<meta charset=\"utf-8\">\n"
+	"<title>A simple webpage</title>\n"
+	"</head>\n"
+	"<body>\n"
+	"<h1>Simple HTML webpage</h1>\n"
+	"<p>Hello, world!</p>\n"
+	"</body>\n"
+	"</html>\n"
+	"\n"
+	"\n");
+	// response.insertHeaderPair(std::make_pair("HTTP/1.1", "200 OK\n"));
+	response.insertHeaderPair(std::make_pair("Content-Type:", "text/html; charset=utf-8\n"));
+	response.insertHeaderPair(std::make_pair("Content-Length:", "55743\n"));
+	response.insertHeaderPair(std::make_pair("Connection:", "keep-alive\n"));
+	response.insertHeaderPair(std::make_pair("Content-Language:", "en-US\n"));
+	response.insertHeaderPair(std::make_pair("Date:", "Thu, 06 Dec 2018 17:37:18 GMT\n"));
+	response.insertHeaderPair(std::make_pair("Server:", "meinheld/0.6.1\n"));
+	// std::string test = response.getPath();
+	// test = response.getbody();
+	//ERROR, if i delete last line exec fail immediatly
+	//wich means a memory error usually
+	//i might have made a mistake somewhere with pair or map, maybe an error of initialisation
+}
 
-// std::string int_to_string(int i)
-// {
-//     std::stringstream ss;
-//     ss << i;
-//     return ss.str();
-// }
-
-
-	
+std::string int_to_string(int i)
+{
+    std::stringstream ss;
+    ss << i;
+    return ss.str();
+}
 
 std::vector<char> Exec::return_final_response()
 {
-	
 	//model.exec_action();	
 	// model_handler.mockup_response_object();//will be replaced by "execute request"
-	// ClientRequest();
+
 	Model model_handler(request);
-	void	(Model::*ptr[])(void) = {&Model::method_get, &Model::method_delete}; // &Model::method_post, 
+	void	(Model::*ptr[])(void) = {&model_handler.method_get(), &Model::method_delete}; // &Model::method_post, 
 	std::string	level_method[] = {"GET", "POST", "DELETE"};
- try
-	for (int i = 0; i < 3; i++)
+ 
+ 	try
 	{
-		if (this->request.getMethod() == level_method[i])
-			(this->*ptr[i])();
-		i++;
+		for (int i = 0; i < 3; i++)
+		{
+			if (this->request.getMethod() == level_method[i])
+				(this->*ptr[i])();
+		}
 	}
 	catch (int )
 	{
-		// this->status_code//
+		std::cerr << model_handler.status_code;
 	}
 
 	// if dire si get alors on fait get -> fouiller dans ce que gaspard me donne et executer la methode 
 	// + gerer les erreurs ex statut erreur.. get et delete marchent mais pb pour renvoyer les erreurs.
 	// post il marche pas.
-	 model_handler.method_get();//work, but exceptions aren't managed
+	model_handler.method_get();//work, but exceptions aren't managed
 	// model_handler.method_delete();
 
 	return (model_handler.get_full_response_str());
@@ -126,4 +124,27 @@ std::vector<char> Exec::return_final_response()
 }
 
 //  + faire les cgi.
-// ouis consturire la reponse en string a [partir de l'objet de reponse]
+// puis consturire la reponse en string a [partir de l'objet de reponse]
+
+// std::string	status_code_message(int	status_code)
+// {
+// 	switch (status_code)
+// 	{
+// 		case 202
+// 			return ("Everything is OK.");
+// 		case 400
+// 			return ("Bad Request.");
+// 		case 401
+// 			return ("Unauthorized.");
+// 		case 403
+// 			return ("Access to that resource is forbidden.");
+// 		case 404
+// 			return ("The requested resource was not found.");
+// 		case 405
+// 			return ("Method not allowed.");
+// 		case 500
+// 			return ("There was an error on the server and the request could not be completed.");
+// 	default:
+// 		break;
+// 	}
+// }

@@ -40,17 +40,11 @@ std::vector<char> Model::get_full_response_str()
 // 500 : Internal server error.
 void Model::method_get()
 {
-	if (this->file.open() == -1)
-	{
-		access
-		throw (this->status_code = 401);// precise
-	}
+	if (this->file.open() == 0)
+		throw (this->status_code);// precise= 401		// access
 	this->response.setbody(this->file.get_content_from_file());
 	if (this->file.close() == -1)
-	{
-		this->status_code = 500;
-		throw (EXCEPTION);
-	}
+		throw (this->status_code);	//	 = 500;
 	this->status_code = 200;
 }
 

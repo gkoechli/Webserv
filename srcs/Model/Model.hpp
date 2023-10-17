@@ -16,9 +16,10 @@ class Model {
 		Response_obj response;
 		//settings, maybe this should be inside request object
 		file_manager file;
-		int status_code;
 
-	public:
+
+	public:	
+		int status_code;
 		Model(ClientRequest &request);
 		~Model();
 		//isCGI

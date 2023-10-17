@@ -1,5 +1,5 @@
 #include "file_manager.hpp"
-
+#include <fstream>
 file_manager::file_manager(std::string path_to_file): fd(0)
 {
 	path = path_to_file;
@@ -28,19 +28,20 @@ bool file_manager::open()
 {
 	close();//should not be necessary, normally
 	fd = ::open(path.c_str(), O_RDONLY);
-	return fd > 0;
+	return fd > 0; // pas clair
 }
 
 void file_manager::close()
 {
 	if (fd > 0)
 	{
-		::close(fd);
+		std::ofstream::close(fd);
 		fd = 0;
 	}
 }
 
-void file_manager::append(std::string &file_content) {
+void file_manager::append(std::string &file_content) 
+{
 	close();
 	fd = ::open(path.c_str(), O_RDWR | O_APPEND);
 	if (fd < 0)
@@ -69,6 +70,9 @@ void file_manager::parse_name()
 	// std::string extension = name_with_extension;
 	// extension.erase(0, file,find("."));
 }
+
+// read write pas allowed
+// changer en getline, 
 
 bool file_manager::is_directory()
 {

@@ -33,6 +33,7 @@ class ClientBuffer{
 
 		//bool function
 		bool	is_request_existing(int fd);
+		bool	is_request_fully_sent(int fd);
 		// bool	is_request_oversized(int fd);
 		bool	is_request_complete(int fd);
 };

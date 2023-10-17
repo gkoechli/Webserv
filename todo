@@ -20,14 +20,15 @@ TCP:
 	✔ write_to_client function @done(23-08-12 18:19)
 	✔ bool checker is_new_connection @done(23-08-12 18:23)
 	✔ send_response @done(23-08-12 18:26)
-	☐ is_request_over()
+	☐ is_request_over() //needed for read_from_client
+	✔ is_response_over() @done(23-10-17 16:00)
 	//current implementation is not working
 	✔ update_connection_status() !! @done(23-08-15 15:58)
-	☐ mockup of reponse for nav
 	☐ is_connection_over
-	☐ chunked encoding will need to be implemented to manage files (pictures/gif/sound/etc.) chunked request for PUT media, chunked response for GET requests
-	☐ if a read/write to client return an error, the client should be removed (and it's buffer purged too)
-	☐ if read/write return an error, it should check both 0 and -1
+	//not sure it's totally needed, there should be a timeout somewhere right?
+	//☐ chunked encoding will need to be implemented to manage files (pictures/gif/sound/etc.) chunked request for PUT media, chunked response for GET requests
+	✔ if a read/write to client return an error, the client should be removed (and it's buffer purged too) @done(23-10-17 18:26)
+	✔ if read/write return an error, it should check both 0 and -1 @done(23-10-17 18:26)
 
 Configuration:
 	☐ possibility to setup multiple server with different ports and hostname
@@ -40,7 +41,7 @@ Configuration:
 	//currently work but is completly useless,
 	
 	//maybe it should count an objective number of send and an effective num, and use the differenece as a stop condition
-	☐ bool checker for buffer
+	✔ bool checker for buffer @done(23-10-17 17:23)
 	✔ char vector getter for usage @done(23-08-13 17:40)
 	✔ buffer editor @done(23-10-16 14:19)
 

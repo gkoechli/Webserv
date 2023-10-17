@@ -4,14 +4,12 @@
 
 //SETUP
 Tcp_handler::Tcp_handler(char *config_file) : config_parser(config_file), multiplex(config_parser)
-{
+{}
 
-}
-
-Tcp_handler::~Tcp_handler() {}
+Tcp_handler::~Tcp_handler()
+{}
 
 //MAIN LOOP
-
 void	Tcp_handler::main_tcp_loop()
 {
 	try {
@@ -20,10 +18,10 @@ void	Tcp_handler::main_tcp_loop()
 		{
 			int	ready_fd_count;
 			ready_fd_count = multiplex.get_count_of_ready_connections();//function to get num of ready fd from epoll struct (epoll_wait)
-			std::cout << "ready_fd = "<< ready_fd_count << std::endl;
+			std::cout << "ready_fd = "<< ready_fd_count << std::endl;//only for debug, TODELETE
 			for (int i = 0; i < ready_fd_count; i++)
 			{
-				std::cout << "event found"<< std::endl;
+				std::cout << "event found"<< std::endl;//only for debug, TODELETE
 				struct epoll_event current_event;
 				current_event = multiplex.get_ready_event(i);//function to get event 'i' in the list of ready events
 				if (multiplex.is_valid_server_socket(current_event))
@@ -43,12 +41,13 @@ void	Tcp_handler::main_tcp_loop()
 
 void	Tcp_handler::read_from_client(struct epoll_event current_event)
 {
-	std::cout << "start or read op"<< std::endl;
+	std::cout << "start or read op"<< std::endl;//only for debug, TODELETE
 	int fd = current_event.data.fd;
 	std::vector<char> client_request_chunk = multiplex.read_request(fd);
 	if (!client_request_chunk.size())
 	{
-		std::cout << "client_request_chunk empty"<< std::endl;
+		std::cout << "client_request_chunk empty"<< std::endl;//only for debug, TODELETE
+		//TODO throw error
 		return ;
 	}
 	buffer.add_chunk_to_request_buffer(fd, client_request_chunk);
@@ -60,7 +59,7 @@ void	Tcp_handler::read_from_client(struct epoll_event current_event)
 		// } catch {
 			// manage_error()
 		// }
-		multiplex.update_connection_status(fd, EPOLLOUT);//TODO!
+		multiplex.update_connection_status(fd, EPOLLOUT);
 		buffer.empty_request_buffer(fd);
 		buffer.add_full_response_to_response_buffer(fd, response);
 	}
@@ -68,33 +67,38 @@ void	Tcp_handler::read_from_client(struct epoll_event current_event)
 
 void Tcp_handler::write_to_client(struct epoll_event current_event)
 {
+	try {
+		std::cout << "start of write to client"<< std::endl;//only for debug, TODELETE
+		int fd = current_event.data.fd;
+		std::vector<char> next_chunk = buffer.get_next_response_bloc(fd);
+		std::vector<char> response;
 
-	std::cout << "start of write to client"<< std::endl;
-	int fd = current_event.data.fd;
-	std::vector<char> next_chunk = buffer.get_next_response_bloc(fd);
-	// int	send_count = buffer.get_count_send(fd);
-	std::vector<char> response;
+		response = next_chunk;
+		response.push_back('\r');
+		response.push_back('\n');//maybe should be done in get_next_response method?
 
-	response = next_chunk;
-	response.push_back('\r');
-	response.push_back('\n');//maybe should be done in get_next_response method?
-
-	std::string output(response.begin(), response.end());
-	std::cout << output <<std::endl;
-	multiplex.send_response(response, fd);
-	// if (!next_chunk.size() && send_count % 2 == 1)
-	if (!next_chunk.size() || buffer.get_count_send(fd) > 0)
-	{
-		std::cerr << "finished writing to client to client"<< std::endl;
-		multiplex.update_connection_status(fd, EPOLLIN);
-		buffer.empty_response_buffer(fd);
-		close (fd);
+		std::string output(response.begin(), response.end());//only for debug, TODELETE
+		std::cout << output <<std::endl;//only for debug, TODELETE
+		multiplex.send_response(response, fd);
+		if (!next_chunk.size() || buffer.is_request_fully_sent(fd))
+		{
+			std::cerr << "finished writing to client"<< std::endl;//only for debug, TODELETE
+			multiplex.update_connection_status(fd, EPOLLIN);
+			buffer.empty_response_buffer(fd);
+			close (fd);
+			return;
+		}
+		else
+			buffer.increment_response_count(fd);
 	}
-	else
-		buffer.increment_response_count(fd);
+	catch(const std::exception& e) {
+		close(current_event.data.fd);
+		buffer.empty_response_buffer(current_event.data.fd);
+		std::cerr << "Exception: "<< e.what() << '\n';
+	}
 }
 
-std::vector<char> response_mockup_builder() //del
+std::vector<char> response_mockup_builder() //only for debug, TODELETE
 {
 	std::string mock = "HTTP/1.1 200 OK\n"
 	"Content-Type: text/html; charset=utf-8\n"

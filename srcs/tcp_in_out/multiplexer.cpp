@@ -167,10 +167,13 @@ std::vector<char> Multiplexer::read_request(int client_fd)
 
 	std::cout << "gate0 fd = "<< client_fd << std::endl;
 	if ((ret = recv(client_fd, &bufferres[0], bufferres.size(), 0)) < 0)
-        throw (MultiplexerException(RECEIVEERR));
-	std::cout << "gate1 "<<std::endl;
+    {
+		//destroy buffer and close fd for current client
+		throw (MultiplexerException(RECEIVEERR));
+	}
+	// std::cout << "gate1 "<<std::endl;
 	bufferres.resize(ret);
-	std::cout << "gate2"<< std::endl;
+	// std::cout << "gate2"<< std::endl;
 	return (bufferres);
 }
 
@@ -178,7 +181,10 @@ std::vector<char> Multiplexer::read_request(int client_fd)
 void	Multiplexer::send_response(std::vector<char> response, int fd)
 {
 	if (send(fd, &response[0], response.size(), 0) <= 0)
+	{
+		//destroy buffer and close fd for current client
 		throw (MultiplexerException(SENDERR));
+	}
 }
 
 

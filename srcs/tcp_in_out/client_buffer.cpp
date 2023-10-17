@@ -17,14 +17,6 @@ void	ClientBuffer::add_chunk_to_request_buffer(int fd, std::vector<char> chunk)
 }
 void	ClientBuffer::add_full_response_to_response_buffer(int fd, std::vector<char> response)
 {
-	// response_buffer.insert(std::make_pair(fd, std::vector<char>(response.begin(), response.end())));
-	// int	advance = 4;
-    // int	end_header = ft::search_vector_char(response, "\r\n\r\n", 0);
-    // if (end_header == -1) {
-    //     end_header = ft::search_vector_char(response, "\n\n", 0);
-    //     advance = 2;
-    // }
-
     response_buffer.insert(std::make_pair(fd, std::make_pair(2, std::vector<char>(response.begin(), response.end()))));
 
 	std::vector<char> response_in_buffer = (response_buffer.find(fd))->second.second;
@@ -51,23 +43,6 @@ std::vector<char>	ClientBuffer::get_full_request(int fd)//to send full html clie
 
 std::vector<char>	ClientBuffer::get_next_response_bloc(int fd)//to send next part of response to client asking it
 {
-	// std::vector<char>	current_response = (response_buffer.find(fd))->second.second;
-	// std::vector<char>	new_response;
-	// std::vector<char>	chunk_to_send;
-	// int					response_size = (response_buffer.find(fd))->second.first;
-
-	// if (current_response.size() && current_response.size() >= CHUNK_SIZEMAX)
-	// 	chunk_to_send.insert(chunk_to_send.end(), current_response.begin(), current_response.begin() + CHUNK_SIZEMAX);
-	// else if (current_response.size() && current_response.size() < CHUNK_SIZEMAX)
-	// 	chunk_to_send.insert(chunk_to_send.end(), current_response.begin(), current_response.end());
-	// //last 4 lines should be extracted
-	// // if (response_size %2 == 0)//no idea how that work, it seems to detect if it's the last chunk, but how?
-	// // 	return(chunk_to_send);
-	// if (current_response.size() >= CHUNK_SIZEMAX)
-	// new_response.insert(new_response.end(), current_response.begin() + CHUNK_SIZEMAX, current_response.end());
-	// response_buffer.erase(fd);//there's already a function for that (empty_response_buffer)
-	// response_buffer.insert(std::make_pair(fd, std::make_pair(response_size, new_response)));
-	// return(chunk_to_send);
 
 	std::vector<char>   response = (response_buffer.find(fd))->second.second;
     std::vector<char>   new_response;
@@ -111,6 +86,13 @@ bool	ClientBuffer::is_request_complete(int fd)
 	//if maxsize or if end char are expected for end (/r/n or something)
 }
 
+bool ClientBuffer::is_request_fully_sent(int fd)
+{
+	std::vector<char> response = (response_buffer.find(fd))->second.second;
+	if ((response_buffer.find(fd))->second.first * CHUNK_SIZEMAX >= static_cast<int>(response.size()))
+    return true;
+	return false;
+}
 
 void	ClientBuffer::increment_response_count(int fd)
 {

@@ -1,5 +1,3 @@
-#include "config_file_parsing/configParsing.hpp"
-// #include "config_file_parsing/configClass.hpp"
 #include "tcp_in_out/tcp.hpp"
 
 int main(int ac, char **av)
@@ -18,7 +16,7 @@ int main(int ac, char **av)
 	}
 	catch(std::exception &e)
 	{
-		std::cerr << "smtg went wrong!\n";
+		std::cerr << "Exception caught in main: " << e.what() << std::endl;
 		return (ERROR);
 	}
 	return (SUCCESS);

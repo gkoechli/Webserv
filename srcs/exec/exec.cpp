@@ -4,7 +4,7 @@ Exec::Exec(std::string request_string/* configParsing settings_arg*/) :
 	request(request_string)//will need settings and request string as argument
 {
 	// recuperer le vrai path : virer le server neame et remplacer par path absolu.
-	request.setPath("/mnt/nfs/homes/lduheron/Documents/Cercle 6/Webserv_folder/Webserv/demosite/test.html");
+	request.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test.html");
 	request_as_string = request_string;
 	std::cout << "request string received in exec : \n" << request_as_string << std::endl; //Del
 }
@@ -98,9 +98,9 @@ std::vector<char> Exec::return_final_response()
 {
 	
 	//model.exec_action();	
-	// model_handler.mockup_response_object();//will be replaced by "execute request"
-	// ClientRequest();
 	Model model_handler(request);
+	model_handler.mockup_response_object();//will be replaced by "execute request"
+	// ClientRequest();
 	// void	(Model::*ptr[])(void) = {&Model::method_get, &Model::method_delete}; // &Model::method_post, 
 	// std::string	level_method[] = {"GET", "POST", "DELETE"};
 
@@ -114,7 +114,7 @@ std::vector<char> Exec::return_final_response()
 	// if dire si get alors on fait get -> fouiller dans ce que gaspard me donne et executer la methode 
 	// + gerer les erreurs ex statut erreur.. get etdelete marchent mais pb pour renvoyer les erreurs.
 	// post il marche pas.
-	 model_handler.method_get();//work, but exceptions aren't managed
+	model_handler.method_get();//work, but exceptions aren't managed
 	// model_handler.method_delete();
 
 	return (model_handler.get_full_response_str());

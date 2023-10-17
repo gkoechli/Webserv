@@ -35,7 +35,7 @@ void file_manager::close()
 {
 	if (fd > 0)
 	{
-		std::ofstream::close(fd);
+		::close(fd);
 		fd = 0;
 	}
 }

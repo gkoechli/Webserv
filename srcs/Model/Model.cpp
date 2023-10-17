@@ -39,6 +39,7 @@ void Model::method_get()
 	file.close();
 	status_code = 200;
 }
+// proteger de recuperer les passwords, proteger du timeout.
 
 // void Model::method_post()
 // {
@@ -87,6 +88,7 @@ void Model::method_delete()
 // 		binary_name = path;
 // 	return (binary_name.c_str());
 // }
+
 
 // void Model::cgi_operation()
 // {

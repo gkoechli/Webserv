@@ -15,6 +15,9 @@
 #include "./client_buffer.hpp"
 #include "./multiplexer.hpp"
 
+#define ERROR 1
+#define SUCCESS 0 
+
 class Tcp_handler
 {
 	private:

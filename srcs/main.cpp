@@ -4,20 +4,22 @@
 
 int main(int ac, char **av)
 {
+	// add signal management, sigint
 	if (ac != 2)
 	{
-		std::cout << "Wrong number of arguments\n";
-		return (1);
+		std::cerr << "Error : Usage is " << av[0] << " <config_file>.\n";
+		return (ERROR);
 	}
 	try
 	{
 		Tcp_handler server(av[1]);
+		std::cout << "Press ctrl+c to exit.\n";
 		server.main_tcp_loop();
 	}
 	catch(std::exception &e)
 	{
-		std::cout << "smtg went wrong!\n";
-		return (1);
+		std::cerr << "smtg went wrong!\n";
+		return (ERROR);
 	}
-	return (0);
+	return (SUCCESS);
 }

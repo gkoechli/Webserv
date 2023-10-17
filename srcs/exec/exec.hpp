@@ -9,21 +9,13 @@
 
 class Exec {
 	private:
-		std::string request_as_string;
+		std::string request_as_string; // del
 		ClientRequest	request;
-		// Response_obj	response;
-		// Model	exec_handler;//to rename
-		// std::string	response_body; //not needed?
-		// Method method; //Maybe not needed here, can be instanciated in exec handler?
-		// CGI cgi; //Same as method
 
 	public:
 		Exec(std::string request_string/*configParsing &config*/);
 		~Exec();
 
-		// void	request_parse();
-		//checking step, everything that can be checked from request obj and settings
-		//exec step: Method and CGI
 		void	main_exec_loop();
 		// void	response_build();
 		// void	print_response(); //Del

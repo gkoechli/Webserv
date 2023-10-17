@@ -101,18 +101,22 @@ std::vector<char> Exec::return_final_response()
 	// model_handler.mockup_response_object();//will be replaced by "execute request"
 	// ClientRequest();
 	Model model_handler(request);
-	// void	(Model::*ptr[])(void) = {&Model::method_get, &Model::method_delete}; // &Model::method_post, 
-	// std::string	level_method[] = {"GET", "POST", "DELETE"};
-
-	// for (int i = 0; i < 3; i++)
-	// {
-	// 	if (this->request.getMethod() == level_method[i])
-	// 		(this->*ptr[i])();
-	// 	i++;
-	// }
+	void	(Model::*ptr[])(void) = {&Model::method_get, &Model::method_delete}; // &Model::method_post, 
+	std::string	level_method[] = {"GET", "POST", "DELETE"};
+ try
+	for (int i = 0; i < 3; i++)
+	{
+		if (this->request.getMethod() == level_method[i])
+			(this->*ptr[i])();
+		i++;
+	}
+	catch (int )
+	{
+		// this->status_code//
+	}
 
 	// if dire si get alors on fait get -> fouiller dans ce que gaspard me donne et executer la methode 
-	// + gerer les erreurs ex statut erreur.. get etdelete marchent mais pb pour renvoyer les erreurs.
+	// + gerer les erreurs ex statut erreur.. get et delete marchent mais pb pour renvoyer les erreurs.
 	// post il marche pas.
 	 model_handler.method_get();//work, but exceptions aren't managed
 	// model_handler.method_delete();

@@ -32,13 +32,28 @@ std::vector<char> Model::get_full_response_str()
 	return (res);
 }
 
+
+// https://kinsta.com/blog/http-status-codes/
+// 401 Unauthorized.
+// 403 access to that ressource is forbidden.
+// 404 Request ressource was not found.
+// 500 : Internal server error.
 void Model::method_get()
 {
-	file.open();
-	response.setbody(file.get_content_from_file());
-	file.close();
-	status_code = 200;
+	if (this->file.open() == -1)
+	{
+		access
+		throw (this->status_code = 401);// precise
+	}
+	this->response.setbody(this->file.get_content_from_file());
+	if (this->file.close() == -1)
+	{
+		this->status_code = 500;
+		throw (EXCEPTION);
+	}
+	this->status_code = 200;
 }
+
 // proteger de recuperer les passwords, proteger du timeout.
 
 // void Model::method_post()

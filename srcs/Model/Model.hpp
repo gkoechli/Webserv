@@ -28,7 +28,9 @@ class Model {
 		//handle operation()
 		void method_get();
 		void method_delete();
-		// void method_post();
+		void method_post();
+		void set_status_code(int code);
+		
 		//build error response
 		// move response mockup here
 		//cgi operation() //CGI obj only need to be instanciated here, not kept in private member

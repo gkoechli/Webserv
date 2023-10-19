@@ -12,27 +12,6 @@ Exec::Exec(std::string request_string, configParsing &settings_arg) :
 Exec::~Exec()
 {}
 
-	//start of exec, current data: request_string, settings
-	//empty data: request and response objects
-	//STEP 1
-	//use request string to fill request object
-	//instanciate a request builder to do it?
-	// request.print();
-	//STEP 2, request object is complete
-	//handle request => fill response object as much as possible
-	//real exec => from request obj, determine method/CGI, execute it
-	//note: we need all the info we need to select if CGI/method
-	//AAND what they should do precisely
-	//after exec CGI/method, all operations should be over, fd closed.
-	// exec_method();
-	// build_response();//just set body/httpcode
-	//from result, get statuscode and set it in response
-	//get body as string and set it in response
-	//finish now and tcp use it by doing Exec(arg); exec.main_exec_loop(); Exec.return_final_response();
-	//wich is easier to use step by step
-	//we can know immediatly what's the current state of everything after each step
-
-
 // void Exec::print_response()
 // {
 // 	std::cout << "current content of response object:" << std::endl;
@@ -92,34 +71,47 @@ Exec::~Exec()
 // }
 
 
-	
+
+int	identifiy_cases (std::string method)
+{
+	std::string type[3] = {"GET", "POST", "DELETE"};
+	for (int i = 0; i < 3; i++)
+	{
+		if (method == type[i])
+			return (i);
+	}
+	return (3);
+}
+
+typedef void(Model::*ptr_func)(void);
 
 std::vector<char> Exec::return_final_response()
 {
-	
-	//model.exec_action();	
+	// do i instanciate request here or in exec constructor ?
+	//try
+	//{
+	// ClientRequest request(request_as_string);
+	//}
+	//catch (int error_code)
+	// {
+	// 	create error response here and return it?
+		// error error_response(error_code);
+		// return (error_response.get_full_response_str());
+	// }
 	Model model_handler(request);
 	model_handler.mockup_response_object();//will be replaced by "execute request"
-	// ClientRequest();
-	// void	(Model::*ptr[])(void) = {&Model::method_get, &Model::method_delete}; // &Model::method_post, 
-	// std::string	level_method[] = {"GET", "POST", "DELETE"};
 
-	// for (int i = 0; i < 3; i++)
-	// {
-	// 	if (this->request.getMethod() == level_method[i])
-	// 		(this->*ptr[i])();
-	// 	i++;
-	// }
-
-	// if dire si get alors on fait get -> fouiller dans ce que gaspard me donne et executer la methode 
-	// + gerer les erreurs ex statut erreur.. get etdelete marchent mais pb pour renvoyer les erreurs.
-	// post il marche pas.
-	model_handler.method_get();//work, but exceptions aren't managed
+	// model_handler.method_get();//work, but exceptions aren't managed
+	// model_handler.method_post();//work, but exceptions aren't managed
 	// model_handler.method_delete();
-
+	try {
+		ptr_func functions[3] = {&Model::method_get, &Model::method_post, &Model::method_delete};
+		int cases = identifiy_cases (request.getMethod());
+		if (cases <= 2)
+			(model_handler.*functions[cases])();
+	}
+	catch (int error_code) {
+		model_handler.set_status_code(error_code);
+	}
 	return (model_handler.get_full_response_str());
-
 }
-
-//  + faire les cgi.
-// ouis consturire la reponse en string a [partir de l'objet de reponse]

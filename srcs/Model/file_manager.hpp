@@ -32,8 +32,8 @@ class file_manager {
 		file_manager(std::string path_to_file);
 		~file_manager();
 
-		void create(std::string &file_content);
-		void append(std::string &file_content);
+		void create(const std::string &file_content);
+		void append(const std::string &file_content);
 		bool open();
 		void close();
 		void unlink();

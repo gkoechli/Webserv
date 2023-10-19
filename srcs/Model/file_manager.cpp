@@ -11,7 +11,7 @@ file_manager::~file_manager()
 	close();
 }
 
-void file_manager::create(std::string &file_content)
+void file_manager::create(const std::string &file_content)
 {
 	fd = ::open(path.c_str(), O_CREAT | O_RDWR | O_TRUNC, 00755);
 	if (fd == 0)
@@ -28,6 +28,7 @@ bool file_manager::open()
 {
 	close();//should not be necessary, normally
 	fd = ::open(path.c_str(), O_RDONLY);
+	//TODO manage error: can't open file
 	return fd > 0;
 }
 
@@ -40,7 +41,7 @@ void file_manager::close()
 	}
 }
 
-void file_manager::append(std::string &file_content) {
+void file_manager::append(const std::string &file_content) {
 	close();
 	fd = ::open(path.c_str(), O_RDWR | O_APPEND);
 	if (fd < 0)

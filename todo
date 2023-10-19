@@ -45,7 +45,9 @@ Configuration:
 	✔ char vector getter for usage @done(23-08-13 17:40)
 	✔ buffer editor @done(23-10-16 14:19)
 
-Control:
+Control/exec:
+	☐ check if request parsing failed and send a 400 error
+	☐ maybe a simple method to create a simple error response
 	☐ path editor to find real path from requested one
 	☐ need a check somewhere to determine if the requested server is accessed from the correct port
 
@@ -55,12 +57,12 @@ Methods:
 	✔ DELETE @done(23-10-15 17:59)
 	☐ UNKNOWN methods should be managed without crashes
 	☐ status codes for various actions should be correct
-	☐ we can POST a file and GET it back after
+	✔ we can POST a file and GET it back after @done(23-10-19 18:26)
 	☐ Is_CGI method needed
-	☐ request object
-	☐ main method to call all methods (exec in model) @started(23-10-16 14:23)
+	✔ request object @done(23-10-19 18:26)
+	✔ main method to call all methods (exec in model) @started(23-10-16 14:23) @done(23-10-19 18:26) @lasted(3d4h3m47s)
 	☐ request constructor/parser
-	☐ response constructor
+	✔ response constructor @done(23-10-19 18:26)
 CGI:
 	☐ cGI  should be run in the correct directory
 	☐ CGI work with POST and GET methods

@@ -24,7 +24,7 @@ class Tcp_handler
 		configParsing config_parser;
 		ClientBuffer buffer;
 		Multiplexer multiplex;
-		// setting_obj settings; // for parameters at start (listen ports and max request size)
+
 	public:
 		Tcp_handler(char *config_file);//builder, will need settings to properly setup
 		~Tcp_handler();

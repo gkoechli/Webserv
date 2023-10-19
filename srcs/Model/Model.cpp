@@ -4,7 +4,6 @@ Model::Model(ClientRequest &request) : request(request), file(request.getPath())
 {
 	status_code = 200;
 	//response should stay empty until there is something to set inside
-
 }
 
 Model::~Model()
@@ -17,10 +16,16 @@ std::string int_to_string(int i)
     return ss.str();
 }
 
+void	Model::set_status_code(int code)
+{
+	status_code = code;
+}
+
 std::vector<char> Model::get_full_response_str()
 {
 	response.setHTTPCode(status_code);
 	std::string full_response;
+	response.insertHeaderPair(std::make_pair("Content-Length:", int_to_string(response.getbody().size()) + "\n"));
 
 	full_response = request.getHttpVersion();
 	full_response += " ";
@@ -39,24 +44,25 @@ void Model::method_get()
 	file.close();
 	status_code = 200;
 }
-// proteger de recuperer les passwords, proteger du timeout.
 
-// void Model::method_post()
-// {
-// 	//check if exist
-// 	file.open();
-// 	file.append(request.getbody());
-// 	file.close();
-// 	response.setbody("\n<!DOCTYPE html>\n\
-// 			<html>\n\
-// 			<body>\n\
-// 			  <h1>File modified</h1>\n\
-// 			</body>\n\
-// 			</html>\n\n\n");
-// 	//TODO : add length of body and format of response (html)
-
-// 	status_code = 200;
-// }
+void Model::method_post()
+{
+	if (!file.exist())
+		file.create(request.getBody());
+	else
+	{
+		file.open();
+		file.append(request.getBody());
+		file.close();
+	}
+	response.setbody("\n<!DOCTYPE html>\n\
+			<html>\n\
+			<body>\n\
+			  <h1>File modified</h1>\n\
+			</body>\n\
+			</html>\n\n\n");
+	status_code = 201;
+}
 
 void Model::method_delete()
 {
@@ -192,7 +198,7 @@ void	Model::mockup_response_object()
 	"\n");
 	// response.insertHeaderPair(std::make_pair("HTTP/1.1", "200 OK\n"));
 	response.insertHeaderPair(std::make_pair("Content-Type:", "text/html; charset=utf-8\n"));
-	response.insertHeaderPair(std::make_pair("Content-Length:", "55743\n"));
+	// response.insertHeaderPair(std::make_pair("Content-Length:", "55743\n"));
 	response.insertHeaderPair(std::make_pair("Connection:", "keep-alive\n"));
 	response.insertHeaderPair(std::make_pair("Content-Language:", "en-US\n"));
 	response.insertHeaderPair(std::make_pair("Date:", "Thu, 06 Dec 2018 17:37:18 GMT\n"));

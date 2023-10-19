@@ -98,42 +98,6 @@ void Tcp_handler::write_to_client(struct epoll_event current_event)
 	}
 }
 
-std::vector<char> response_mockup_builder() //only for debug, TODELETE
-{
-	std::string mock = "HTTP/1.1 200 OK\n"
-	"Content-Type: text/html; charset=utf-8\n"
-	"Content-Length: 55743\n"
-	"Connection: keep-alive\n"
-	"Cache-Control: s-maxage=300, public, max-age=0\n"
-	"Content-Language: en-US\n"
-	"Date: Thu, 06 Dec 2018 17:37:18 GMT\n"
-	"ETag: /\"2e77ad1dc6ab0b53a2996dfd4653c1c3\"\n"
-	"Server: meinheld/0.6.1\n"
-	"Strict-Transport-Security: max-age=63072000\n"
-	"X-Content-Type-Options: nosniff\n"
-	"X-Frame-Options: DENY\n"
-	"X-XSS-Protection: 1; mode=block\n"
-	"Vary: Accept-Encoding,Cookie\n"
-	"Age: 7\n"
-	"\n"
-	"<!DOCTYPE html>\n"
-	"<html lang=\"en\">\n"
-	"<head>\n"
-	"<meta charset=\"utf-8\">\n"
-	"<title>A simple webpage</title>\n"
-	"</head>\n"
-	"<body>\n"
-	"<h1>Simple HTML webpage</h1>\n"
-	"<p>Hello, world!</p>\n"
-	"</body>\n"
-	"</html>\n"
-	"\n"
-	"\n";
-    std::vector<char> res(mock.begin(), mock.end());
-
-	return (res);
-}
-
 std::vector<char>	Tcp_handler::parse_request(std::vector<char> request)
 {
 	std::string request_as_string(request.begin(), request.end());
@@ -141,15 +105,10 @@ std::vector<char>	Tcp_handler::parse_request(std::vector<char> request)
 	// current_exec.mockup_response_object();//only for dev, not needed after finished
 	// current_exec.print_response();//only for debug, TODELETE
 
-	std::vector<char> response_mockup;
-	// response_mockup = response_mockup_builder(); //del
-	response_mockup = current_exec.return_final_response();
-	//TODO
-	//Exec execution(request, &config_parser);
-	//return(execution.get_response_as_string());
+	std::vector<char> response;
+	response = current_exec.return_final_response();
 
-	//just need to print full request for now
-	// std::string output(request.begin(), request.end());
+	// std::string output(request.begin(), request.end());//just to print full request
 	// std::cout << "content of request buffer = " << output << std::endl;
-	return(response_mockup);
+	return(response);
 }

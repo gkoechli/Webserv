@@ -4,6 +4,7 @@
 #include "response.hpp"
 #include "../Model/Model.hpp"
 #include "../client_request/ClientRequest.hpp"
+#include "../config_file_parsing/configParsing.hpp"
 #include <utility>
 #include <string>
 
@@ -13,7 +14,7 @@ class Exec {
 		ClientRequest	request;
 
 	public:
-		Exec(std::string request_string/*configParsing &config*/);
+		Exec(std::string request_string, configParsing &config);
 		~Exec();
 
 		void	main_exec_loop();

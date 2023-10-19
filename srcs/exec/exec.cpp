@@ -1,7 +1,7 @@
 #include "exec.hpp"
 
-Exec::Exec(std::string request_string/* configParsing settings_arg*/) :
-	request(request_string)//will need settings and request string as argument
+Exec::Exec(std::string request_string, configParsing &settings_arg) :
+	request(request_string, settings_arg)//will need settings and request string as argument
 {
 	// recuperer le vrai path : virer le server neame et remplacer par path absolu.
 	request.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test.html");

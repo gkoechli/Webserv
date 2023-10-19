@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   configParsing.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rokerjea <rokerjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:43:02 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/10/19 11:52:08 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/10/19 14:20:02 by rokerjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ configParsing::~configParsing()
 
 }
 
-configParsing::configParsing(configParsing &obj):lineList(obj.lineList), serverList(obj.serverList), file(obj.file), _confFile(obj._confFile)
-{
+// configParsing::configParsing(configParsing &obj):lineList(obj.lineList), serverList(obj.serverList), file(obj.file), _confFile(obj._confFile)
+// {
 	
-}
+// }
 
 void	configParsing::printConfFile()
 {

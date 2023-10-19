@@ -47,7 +47,7 @@ Configuration:
 
 Control:
 	☐ path editor to find real path from requested one
-	☐ need a check somewhere to determine if the requested server is accessed from 
+	☐ need a check somewhere to determine if the requested server is accessed from the correct port
 
 Methods:
 	✔ GET @done(23-10-15 17:59)

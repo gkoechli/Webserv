@@ -137,7 +137,7 @@ std::vector<char> response_mockup_builder() //only for debug, TODELETE
 std::vector<char>	Tcp_handler::parse_request(std::vector<char> request)
 {
 	std::string request_as_string(request.begin(), request.end());
-	Exec	current_exec(request_as_string /*,configParsing  settings*/);//create with request string and settings as args
+	Exec	current_exec(request_as_string, config_parser);//create with request string and settings as args
 	// current_exec.mockup_response_object();//only for dev, not needed after finished
 	// current_exec.print_response();//only for debug, TODELETE
 

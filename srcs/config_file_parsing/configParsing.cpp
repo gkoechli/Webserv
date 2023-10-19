@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:43:02 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/09/11 16:55:48 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/10/19 11:52:08 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,6 @@ std::pair<std::string, std::string> pairIt(std::string key, std::string value)
 	return ret;
 }
 
-configParsing::configParsing()
-{
-
-}
 
 configParsing::configParsing(std::string obj)
 {
@@ -35,7 +31,8 @@ configParsing::configParsing(std::string obj)
 	{	
 		std::getline(file, tmp);
 		this->_confFile += tmp += "\n";
-		lineList.push_back(tmp);
+		if (tmp != "\n")
+			lineList.push_back(tmp);
 	}
 	this->file.insert(pairIt("allow","PUT GET DELETE POST"));
 	this->file.insert(pairIt("listen", "127.0.0.1:8080"));
@@ -52,6 +49,11 @@ configParsing::configParsing(std::string obj)
 configParsing::~configParsing()
 {
 
+}
+
+configParsing::configParsing(configParsing &obj):lineList(obj.lineList), serverList(obj.serverList), file(obj.file), _confFile(obj._confFile)
+{
+	
 }
 
 void	configParsing::printConfFile()
@@ -221,7 +223,6 @@ void	configParsing::set_server_values(std::vector<std::string>::iterator itori)
 		}
 		if (identifyTokenType(*itemp) == LOCATION)
 		{
-			std::cout << "SPOTTED A LOCATION\n";
 			new_server.insert_location(set_location_values(it));
 			while (*it != "}\n" && it != this->lineList.end())
 				it++;
@@ -309,7 +310,9 @@ std::pair<std::string, std::string> configParsing::getListenPort()
 
 std::string configParsing::getKeyContent(std::string key)
 {
-	std::string ret = this->file.find(key)->second;
+	std::string ret;
+	if (key.empty())
+		ret = this->file.find(key)->second;
 	return (ret);
 }
 
@@ -330,4 +333,16 @@ void	configParsing::printServerList()
 		std::cout << it->first << std::endl;
 		it++;
 	}
+}
+
+int		configParsing::findServer(std::string name)
+{
+	if (name.empty() == true)
+		return (3500);
+	if (this->serverList.find(name) != this->serverList.end())
+	{
+		std::cout <<  "server found : " << this->serverList.find(name)->first << std::endl;
+		return (200);
+	}	
+	return (5000);
 }

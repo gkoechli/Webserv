@@ -5,6 +5,9 @@
 # include <vector>
 # include <string>
 # include <iostream>
+# include "../config_file_parsing/configParsing.hpp"
+
+class configParsing;
 
 std::pair<std::string, std::vector<std::string> > pair_Token_Vector(std::string key, std::vector<std::string> value);
 
@@ -16,11 +19,11 @@ class ClientRequest
 		std::string											http_version;
 		std::string											body;
 		std::string											target;
-		std::map<std::string, std::vector<std::string> >	 	header;
-
+		std::map<std::string, std::vector<std::string> >	header;
+		configParsing 										&ptr;
 
 	public:
-		ClientRequest(std::string);
+		ClientRequest(std::string, configParsing&);
 		ClientRequest(ClientRequest &to_copy);
 		~ClientRequest();
 
@@ -34,6 +37,7 @@ class ClientRequest
 		const std::string getHttpVersion() const;
 		const std::string getBody() const;
 		const std::string getTarget() const;
+		std::string getHeaderContent(std::string);
 		// const std::map<std::string, std::vector<std::string>> getHeader() const;
 
 		//set
@@ -42,14 +46,15 @@ class ClientRequest
 		void	setMethod(const std::string method);
 		void	setHttpVersion(const std::string http_version);
 		void	setBody(const std::string body);
-		void	setHeader(std::pair<std::string, std::vector<std::string> >);
+		void	setHeader(std::pair< std::string, std::vector<std::string> >);
+		void	check_errors();
 
 		void printPath() const;    //d
 		void printMethod() const;    //d
 		void printTarget() const;    //d
 		void printHttpVersion() const;    //d
 		void printBody() const;    //d
-		void printHeader();    //d
+		void printHeader();   //d
 };
 
 #endif

@@ -9,12 +9,36 @@ server
 	autoindex	on;
 	index 		hola;
 	cli_max_size	836000;
-	error_page 404 error_page/error_page_404.html;
+	error_page 404 error_page/error_page_404.html;	
+
+	location /set_cookies
+	{
+			cgi on;
+			root ./app/demo/php_script;
+			index set_cookies.php;
+	}
 }
 
-location /set_cookies
+server
 {
-		cgi on;
-		root ./app/demo/php_script;
-		index set_cookies.php;
+	server_name random.com;
+	listen 4343;
+	allow GET;
+	autoindex	on;
+	index 		hola;
+	cli_max_size	777777;
+	error_page 404 error_page/error_page_404.html;
+	location /randomplace
+	{
+			cgi on;
+			root ./app/demo/randomscript;
+			index random.php;
+	}
+
+	location /verypreciseplace
+	{
+			cgi on;
+			root ./app/demo/veryprecisescript;
+			index veryprecise.php;
+	}
 }

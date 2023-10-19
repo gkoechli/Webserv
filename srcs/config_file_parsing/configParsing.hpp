@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:42:09 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/09/10 15:59:09 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/10/14 18:03:30 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@
 class configParsing
 {
 	public:
-		configParsing();
 		~configParsing();
 		configParsing(std::string);
+		configParsing(configParsing &);
 		void	printConfFile();
 		void	printLines();
 		int		routine();
@@ -47,6 +47,7 @@ class configParsing
 		void	set_file_values();
 		void	set_server_values(std::vector<std::string>::iterator);
 		std::pair<std::string, locationClass> set_location_values(std::vector<std::string>::iterator);
+		int		findServer(std::string);
 		void	printServerInfo();
 		void	printServerList();
 	private:

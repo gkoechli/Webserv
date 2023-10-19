@@ -36,8 +36,12 @@ void	fill_basic_content(ClientRequest &obj);
 
 void	fill_basic_content(ClientRequest &obj)
 {
+	std::vector<std::string> temp;
+	temp.push_back("webserv.com");
 	obj.setPath("/dev/nul");
 	obj.setHttpVersion("HTTP/1.1");
 	obj.setMethod("GET /fr/docs/Glossary/Simple_header HTTP/1.1");
 	obj.setBody("<THIS IS THE BODY>\n");
+	std::pair<std::string, std::vector<std::string> > ret("Host", temp);
+	obj.setHeader(ret);
 }

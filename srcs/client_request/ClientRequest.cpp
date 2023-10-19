@@ -18,10 +18,9 @@ std::pair<std::string, std::vector<std::string> > pair_Token_Vector(std::string 
 
 
 
-ClientRequest::ClientRequest(std::string obj)
+ClientRequest::ClientRequest(std::string obj, configParsing &confptr):ptr(confptr)
 {
 	fill_basic_content(*this);
-
 	std::string temp;
 	int first = 1;
 	int body = 0;
@@ -93,22 +92,24 @@ ClientRequest::ClientRequest(std::string obj)
 			first = 1;
 		}
 	}
+	// this->check_errors();
 	// if (tab.begin()->find("GET") == std::string::npos && tab.begin()->find("POST") == std::string::npos && tab.begin()->find("DELETE") == std::string::npos)
 	// 	throw std::exception();
 
 	// penser a check si methode existe.
-	this->printMethod();  //d
-	this->printPath();  //d
-	this->printHttpVersion();  //d
-	this->printHeader();  //d
-	this->printBody();  //d
+	// this->printMethod();  //d
+	// this->printPath();  //d
+	// this->printHttpVersion();  //d
+	// this->printHeader();  //d
+	// this->printBody();  //d
 }
 
 
-ClientRequest::ClientRequest(ClientRequest &request_to_copy)
+ClientRequest::ClientRequest(ClientRequest &request_to_copy):ptr(request_to_copy.ptr)
 {
-	if (this != &request_to_copy)
-		*this = request_to_copy;
+	this->ptr = request_to_copy.ptr;
+	(void)request_to_copy;
+	
 }
 
 ClientRequest::~ClientRequest()
@@ -142,12 +143,23 @@ const std::string ClientRequest::getTarget() const
 {
 	return (target);
 }
-// const std::map<std::string, std::string>	ClientRequest::getHeader() const
-// {
-// 	return (header);
-// }
 
-//set
+std::string ClientRequest::getHeaderContent(std::string contentkey)
+{
+	std::string ret = "";
+	if (this->header.find(contentkey) != this->header.end())
+	{
+		std::vector<std::string>::iterator it = this->header.find(contentkey)->second.begin();
+		while (it != this->header.find(contentkey)->second.end())
+		{
+			// std::cout << *it << std::endl;
+			ret += *it;
+			it++;
+		}
+	}
+	// std::cout << "ret  = "  << ret << std::endl;
+	return ret;
+}
 
 void	ClientRequest::setPath(const std::string path)
 { 
@@ -214,5 +226,16 @@ void ClientRequest::printHeader()   // d
 			std::cout << *itx << " ";
 		std::cout << std::endl;
 		it++;
+	}
+}
+
+void	ClientRequest::check_errors()
+{
+	int i;
+	i = ptr.findServer(ptr.getKeyContent(this->getHeaderContent("server_name")));
+	std::cout << "i = " << i << std::endl;
+	if ( i != 200)
+	{
+		throw std::exception();
 	}
 }

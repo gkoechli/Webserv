@@ -92,21 +92,16 @@ bool file_manager::exist()
 
 std::string file_manager::get_content_from_file()
 {
-	std::string content;
-	char buffer[4096 + 1];
-	int read_return;
-
-	lseek(fd, 0, SEEK_SET);
-	while (( read_return = read(fd, buffer, 4096)) != 0)
+	if (access(path.c_str(), R_OK) == -1)
 	{
-		if (read_return < 0)
-		{
-			return "";
-		}
-		buffer[read_return] = '\0';
-		content.insert(content.length(), buffer, read_return);
+		throw 403;
 	}
-	return content;
+	std::ifstream file(path.c_str());
+	if (not file.good())
+	{
+		throw 503;
+	}
+	return (std::string((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>()));
 }
 
 // int file_manager::get_fd()

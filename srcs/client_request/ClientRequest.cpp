@@ -229,13 +229,32 @@ void ClientRequest::printHeader()   // d
 	}
 }
 
-void	ClientRequest::check_errors()
+void	ClientRequest::check_method()
 {
-	int i;
-	i = ptr.findServer(ptr.getKeyContent(this->getHeaderContent("server_name")));
-	std::cout << "i = " << i << std::endl;
-	if ( i != 200)
+	std::string  getHeaderContentRet;
+	std::string allowed;
+	getHeaderContentRet = this->getHeaderContent("Host");
+	allowed = ptr.getServerRef(getHeaderContentRet).getKeyContent("allow");
+	// std::cout << "allowed = " << allowed << std::endl;  
+	// std::cout << "getmethod = " << this->getMethod() << std::endl;
+	if (allowed.find(this->getMethod()) == std::string::npos)
 	{
+		std::cout << "Method not allowed or non existant\n";
 		throw std::exception();
 	}
+}
+
+void	ClientRequest::check_errors()
+{
+	// rajouter une fonction ou deux pour gere les retours (code d'erreur)
+	int i;
+	i = ptr.findServer(this->getHeaderContent("Host"));
+	if ( i != 200)
+	{
+		std::cerr << "Couldn't find " << this->getHeaderContent("Host") << std::endl;
+		throw std::exception();
+	}
+	// else
+	// 	std::cout << "FOUND " << this->getHeaderContent("Host") << std::endl;
+	this->check_method();
 }

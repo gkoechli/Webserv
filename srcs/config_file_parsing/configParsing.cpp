@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   configParsing.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rokerjea <rokerjea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:43:02 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/10/19 14:20:02 by rokerjea         ###   ########.fr       */
+/*   Updated: 2023/10/22 14:20:23 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,6 @@ configParsing::configParsing(std::string obj)
 		if (tmp != "\n")
 			lineList.push_back(tmp);
 	}
-	this->file.insert(pairIt("allow","PUT GET DELETE POST"));
-	this->file.insert(pairIt("listen", "127.0.0.1:8080"));
-	this->file.insert(pairIt("cli_max_size","1200000"));
-	this->file.insert(pairIt("error_page","404 error.html"));
-	this->file.insert(pairIt("server_name", "rokekoe"));
-	this->file.insert(pairIt("index","index.html"));
-	this->file.insert(pairIt("cgi_pass","/usr/bin/php-cgi"));
-	this->file.insert(pairIt("autoindex", "on"));
 	this->routine();
 	this->set_file_values();
 }
@@ -51,10 +43,10 @@ configParsing::~configParsing()
 
 }
 
-// configParsing::configParsing(configParsing &obj):lineList(obj.lineList), serverList(obj.serverList), file(obj.file), _confFile(obj._confFile)
-// {
+configParsing::configParsing(configParsing &obj):lineList(obj.lineList), serverList(obj.serverList), file(obj.file), _confFile(obj._confFile)
+{
 	
-// }
+}
 
 void	configParsing::printConfFile()
 {
@@ -311,8 +303,11 @@ std::pair<std::string, std::string> configParsing::getListenPort()
 std::string configParsing::getKeyContent(std::string key)
 {
 	std::string ret;
-	if (key.empty())
+	if (key.empty() != 0)
+	{
 		ret = this->file.find(key)->second;
+	}
+	// std::cout << "ret in getKeyContent = " << ret << std::endl;
 	return (ret);
 }
 
@@ -335,14 +330,23 @@ void	configParsing::printServerList()
 	}
 }
 
+
+serverClass&	configParsing::getServerRef(std::string name)
+{
+	if (this->serverList.find(name) != this->serverList.end())
+		return this->serverList[name];
+	else
+		throw std::exception();
+}
+
 int		configParsing::findServer(std::string name)
 {
 	if (name.empty() == true)
 		return (3500);
 	if (this->serverList.find(name) != this->serverList.end())
 	{
-		std::cout <<  "server found : " << this->serverList.find(name)->first << std::endl;
+		// std::cout <<  "server found : " << this->serverList.find(name)->first << std::endl;
 		return (200);
-	}	
+	}
 	return (5000);
 }

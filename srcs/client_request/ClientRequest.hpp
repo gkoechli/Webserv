@@ -47,6 +47,7 @@ class ClientRequest
 		void	setHttpVersion(const std::string http_version);
 		void	setBody(const std::string body);
 		void	setHeader(std::pair< std::string, std::vector<std::string> >);
+		void	check_method();
 		void	check_errors();
 
 		void printPath() const;    //d

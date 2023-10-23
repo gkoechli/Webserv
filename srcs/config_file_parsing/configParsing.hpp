@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   configParsing.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rokerjea <rokerjea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:42:09 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/10/19 14:19:57 by rokerjea         ###   ########.fr       */
+/*   Updated: 2023/10/22 14:10:42 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ class configParsing
 	public:
 		~configParsing();
 		configParsing(std::string);
-		// configParsing(configParsing &);
+		configParsing(configParsing &);
 		void	printConfFile();
 		void	printLines();
 		int		routine();
@@ -50,10 +50,11 @@ class configParsing
 		int		findServer(std::string);
 		void	printServerInfo();
 		void	printServerList();
+		serverClass&	getServerRef(std::string);
 	private:
+		std::map<std::string, serverClass> serverList;
 		std::string _confFile;
 		std::vector<std::string> lineList;
-		std::map<std::string, serverClass> serverList;
 		std::map<std::string, std::string> file;
 };
 

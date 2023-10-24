@@ -38,7 +38,6 @@ class ClientRequest
 		const std::string getBody() const;
 		const std::string getTarget() const;
 		std::string getHeaderContent(std::string);
-		// const std::map<std::string, std::vector<std::string>> getHeader() const;
 
 		//set
 		void	setPath(const std::string path);

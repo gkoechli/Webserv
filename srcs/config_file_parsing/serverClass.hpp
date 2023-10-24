@@ -20,6 +20,9 @@ class serverClass
 		std::string getKeyContent(std::string);
 		void	insert_location(std::pair<std::string, locationClass>);
 		void	printServerValues();
+		void 	printServerData();
+		void 	printLocationList();
+		
 	private:
 		std::string server_name;
 		std::map<std::string, std::string> data;

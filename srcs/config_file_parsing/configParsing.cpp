@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:43:02 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/10/22 14:20:23 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:08:55 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ configParsing::~configParsing()
 
 }
 
-configParsing::configParsing(configParsing &obj):lineList(obj.lineList), serverList(obj.serverList), file(obj.file), _confFile(obj._confFile)
+configParsing::configParsing(configParsing &obj): serverList(obj.serverList), _confFile(obj._confFile), lineList(obj.lineList), file(obj.file)
 {
 	
 }
@@ -226,7 +226,6 @@ void	configParsing::set_server_values(std::vector<std::string>::iterator itori)
 		{
 			std::pair<std::string, serverClass> ret(new_server.getName(), new_server);
 			this->serverList.insert(ret);
-			// new_server.printServerValues();
 			break;
 		}
 		it++;

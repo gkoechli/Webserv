@@ -92,16 +92,6 @@ ClientRequest::ClientRequest(std::string obj, configParsing &confptr):ptr(confpt
 			first = 1;
 		}
 	}
-	// this->check_errors();
-	// if (tab.begin()->find("GET") == std::string::npos && tab.begin()->find("POST") == std::string::npos && tab.begin()->find("DELETE") == std::string::npos)
-	// 	throw std::exception();
-
-	// penser a check si methode existe.
-	// this->printMethod();  //d
-	// this->printPath();  //d
-	// this->printHttpVersion();  //d
-	// this->printHeader();  //d
-	// this->printBody();  //d
 }
 
 
@@ -246,7 +236,6 @@ void	ClientRequest::check_method()
 
 void	ClientRequest::check_errors()
 {
-	// rajouter une fonction ou deux pour gere les retours (code d'erreur)
 	int i;
 	i = ptr.findServer(this->getHeaderContent("Host"));
 	if ( i != 200)

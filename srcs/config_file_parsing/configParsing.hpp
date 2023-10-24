@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:42:09 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/10/22 14:10:42 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/10/24 11:34:53 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ class configParsing
 		void	printServerInfo();
 		void	printServerList();
 		serverClass&	getServerRef(std::string);
+
 	private:
 		std::map<std::string, serverClass> serverList;
 		std::string _confFile;

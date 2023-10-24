@@ -29,6 +29,8 @@ void	serverClass::insertPair(std::pair<std::string, std::string> obj)
 
 void	serverClass::printServerValues()
 {
+	this->printServerData();
+	this->printLocationList();
 	std::map<std::string, std::string>::iterator it = this->data.begin();
 	std::cout << "SERVER : " << this->getName() << std::endl;
 	while (it != this->data.end())
@@ -51,3 +53,26 @@ void serverClass::insert_location(std::pair<std::string, locationClass> obj)
 	this->locationList.insert(obj);
 }
 
+void serverClass::printServerData()
+{
+	std::cout << "[SERVERDATA]\n";
+	std::map<std::string, std::string>::iterator it = this->data.begin();
+	while (it != this->data.end())
+	{
+		std::cout << it->first << " " << it->second << std::endl; 
+		it++;
+	}
+	std::cout << " ....................................................... <\n";
+}
+
+void serverClass::printLocationList()
+{
+	std::cout << "[LOCATIONLIST]\n";
+	std::map<std::string, locationClass>::iterator it = this->locationList.begin();
+	while (it != this->locationList.end())
+	{
+		std::cout << it->first << std::endl;
+		it++;
+	}
+	std::cout << " ....................................................... <\n";
+}

@@ -3,24 +3,16 @@
 Multiplexer::Multiplexer(configParsing config_parser) : epoll_instance_fd(-1)
 {
 	try {
-		std::map<std::string, serverClass>::iterator it = config_parser.serverList.begin();
-		while (it != config_parser.serverList.end())
+		std::map<std::string, serverClass>::iterator it = config_parser.getBeginServerListIterator();
+		while (it != config_parser.getEndServerListIterator())
 		{
 			std::string tmp = it->first;
 			std::string value = config_parser.getServerRef(tmp).getKeyContent("listen");
-			//  std::cout << value << std::endl;
+			 std::cout << value << std::endl;
 			int	server_socket = create_server_socket(atoi(value.c_str()), convert_ip_to_int("127.0.0.1"));
 			list_of_listen_sockets_fd.push_back(server_socket);
 			it++;
 		}
-		// config_parser.serverList.begin()
-		// std::pair<std::string, std::string> tmp = config_parser.getListenPort();
-		// std::cout << tmp.first << " ----------> " << tmp.second << std::endl;
-		// std::cout << config_parser.getKeyContent("cli_max_size") << std::endl;
-		// for (int i = 0; i < listen_port_count; i++)//need a loop to manage multiple server/ip/port
-	// {
-			// int	server_socket = create_server_socket(atoi(tmp.second.c_str()), convert_ip_to_int(tmp.first.c_str()));
-	// }
 	}
 	catch (const std::exception &e) {
         throw (MultiplexerException(LISTENERR));

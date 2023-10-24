@@ -5,7 +5,6 @@ Exec::Exec(std::string request_string, configParsing &settings_arg) : config(set
 	request_as_string = request_string;
 	// config = settings_arg;
 	// recuperer le vrai path : virer le server neame et remplacer par path absolu.
-	// request.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test.html");
 	// request_as_string = request_string;
 	std::cout << "request string received in exec : \n" << request_as_string << std::endl; //Del
 }
@@ -64,13 +63,6 @@ Exec::~Exec()
 // 	//i might have made a mistake somewhere with pair or map, maybe an error of initialisation
 // }
 
-// std::string int_to_string(int i)
-// {
-//     std::stringstream ss;
-//     ss << i;
-//     return ss.str();
-// }
-
 std::string int_to_string2(int i)
 {
     std::stringstream ss;
@@ -121,6 +113,10 @@ std::vector<char> Exec::return_final_response()
 	try
 	{
 		ClientRequest request(request_as_string, config);
+		request.printPath();
+		request.printTarget();
+		request.printHeader();
+		request.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test.html");
 		Model model_handler(request);
 		model_handler.mockup_response_object(); //will be replaced by "execute request"
 

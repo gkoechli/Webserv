@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   configParsing.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rokerjea <rokerjea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:43:02 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/10/24 14:32:03 by rokerjea         ###   ########.fr       */
+/*   Updated: 2023/10/24 16:07:25 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,4 +347,20 @@ int		configParsing::findServer(std::string name)
 		return (200);
 	}
 	return (5000);
+}
+
+std::map<std::string, serverClass>::iterator configParsing::getBeginServerListIterator()
+{
+	std::map<std::string, serverClass>::iterator it;
+
+	it = this->serverList.begin();
+	return it;
+}
+
+std::map<std::string, serverClass>::iterator configParsing::getEndServerListIterator()
+{
+	std::map<std::string, serverClass>::iterator it;
+
+	it = this->serverList.end();
+	return it;
 }

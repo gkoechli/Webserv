@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   configParsing.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rokerjea <rokerjea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:42:09 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/10/24 15:19:00 by rokerjea         ###   ########.fr       */
+/*   Updated: 2023/10/24 16:09:11 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ class configParsing
 		int		identifyTokenType(std::string);
 		std::pair<std::string, std::string> getListenPort();
 		std::string getKeyContent(std::string);
+		std::map<std::string, serverClass>::iterator getBeginServerListIterator();
+		std::map<std::string, serverClass>::iterator getEndServerListIterator();
 		void	set_file_values();
 		void	set_server_values(std::vector<std::string>::iterator);
 		std::pair<std::string, locationClass> set_location_values(std::vector<std::string>::iterator);
@@ -51,9 +53,9 @@ class configParsing
 		void	printServerInfo();
 		void	printServerList();
 		serverClass&	getServerRef(std::string);
-		std::map<std::string, serverClass> serverList;
 
 	private:
+		std::map<std::string, serverClass> serverList;
 		std::string _confFile;
 		std::vector<std::string> lineList;
 		std::map<std::string, std::string> file;

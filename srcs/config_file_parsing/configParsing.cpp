@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   configParsing.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rokerjea <rokerjea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:43:02 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/10/24 14:08:55 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:32:03 by rokerjea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,10 +288,9 @@ std::pair<std::string, locationClass>	configParsing::set_location_values(std::ve
 std::pair<std::string, std::string> configParsing::getListenPort()
 {
 	std::string tmp = this->file.find("listen")->second;
-	
+
 	std::string pop1;
 	std::string pop2;
-	
 
 	pop1 = tmp.substr(0, tmp.find(":"));
 	pop2 = tmp.substr(tmp.find(":") + 1, tmp.size() - tmp.find(":"));

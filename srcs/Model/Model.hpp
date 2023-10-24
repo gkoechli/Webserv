@@ -7,6 +7,7 @@
 #include "file_manager.hpp"
 
 #include <utility>
+#include "../tcp_in_out/utils.hpp"
 #include <string>
 
 
@@ -35,6 +36,7 @@ class Model {
 		// move response mockup here
 		//cgi operation() //CGI obj only need to be instanciated here, not kept in private member
 		// void cgi_operation();
+		
 };
 
 #endif

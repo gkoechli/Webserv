@@ -1,11 +1,12 @@
 #include "exec.hpp"
 
-Exec::Exec(std::string request_string, configParsing &settings_arg) :
-	request(request_string, settings_arg)//will need settings and request string as argument
+Exec::Exec(std::string request_string, configParsing &settings_arg) : config(settings_arg)
 {
-	// recuperer le vrai path : virer le server neame et remplacer par path absolu.
-	request.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test.html");
 	request_as_string = request_string;
+	// config = settings_arg;
+	// recuperer le vrai path : virer le server neame et remplacer par path absolu.
+	// request.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test.html");
+	// request_as_string = request_string;
 	std::cout << "request string received in exec : \n" << request_as_string << std::endl; //Del
 }
 
@@ -70,7 +71,12 @@ Exec::~Exec()
 //     return ss.str();
 // }
 
-
+std::string int_to_string2(int i)
+{
+    std::stringstream ss;
+    ss << i;
+    return ss.str();
+}
 
 int	identifiy_cases (std::string method)
 {
@@ -85,33 +91,48 @@ int	identifiy_cases (std::string method)
 
 typedef void(Model::*ptr_func)(void);
 
+std::vector<char> Exec::error_response_constructor(int error_code)
+{
+	std::string error_message;
+	std::string response_str;
+	if (error_code == 400)
+		error_message = "Bad Request";
+	else if (error_code == 404)
+		error_message = "Not Found";
+	else if (error_code == 405)
+		error_message = "Method Not Allowed";
+	else if (error_code == 413)
+		error_message = "Request Entity Too Large";
+	else if (error_code == 500)
+		error_message = "Internal Server Error";
+	else if (error_code == 501)
+		error_message = "Not Implemented";
+	else
+		error_message = "Unknown Error";
+
+	response_str = std::string("HTTP/1.1 " + int_to_string2(error_code) + " " + error_message + "\r\n\r\n").c_str();
+    std::vector<char> res(response_str.begin(), response_str.end());
+	return res;
+}
+
 std::vector<char> Exec::return_final_response()
 {
-	// do i instanciate request here or in exec constructor ?
-	//try
-	//{
-	// ClientRequest request(request_as_string);
-	//}
-	//catch (int error_code)
-	// {
-	// 	create error response here and return it?
-		// error error_response(error_code);
-		// return (error_response.get_full_response_str());
-	// }
-	Model model_handler(request);
-	model_handler.mockup_response_object();//will be replaced by "execute request"
+	std::vector<char> response_str;
+	try
+	{
+		ClientRequest request(request_as_string, config);
+		Model model_handler(request);
+		model_handler.mockup_response_object(); //will be replaced by "execute request"
 
-	// model_handler.method_get();//work, but exceptions aren't managed
-	// model_handler.method_post();//work, but exceptions aren't managed
-	// model_handler.method_delete();
-	try {
 		ptr_func functions[3] = {&Model::method_get, &Model::method_post, &Model::method_delete};
-		int cases = identifiy_cases (request.getMethod());
+		int cases = identifiy_cases(request.getMethod());
 		if (cases <= 2)
 			(model_handler.*functions[cases])();
+		response_str = model_handler.get_full_response_str();
 	}
-	catch (int error_code) {
-		model_handler.set_status_code(error_code);
+	catch (int error_code)
+	{
+		response_str = error_response_constructor(error_code);
 	}
-	return (model_handler.get_full_response_str());
+	return response_str;
 }

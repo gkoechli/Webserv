@@ -9,18 +9,19 @@ Model::Model(ClientRequest &request) : request(request), file(request.getPath())
 Model::~Model()
 {}
 
-std::string int_to_string(int i)
-{
-    std::stringstream ss;
-    ss << i;
-    return ss.str();
-}
+
 
 void	Model::set_status_code(int code)
 {
 	status_code = code;
 }
 
+std::string int_to_string(int i)
+{
+    std::stringstream ss;
+    ss << i;
+    return ss.str();
+}
 std::vector<char> Model::get_full_response_str()
 {
 	response.setHTTPCode(status_code);
@@ -39,6 +40,7 @@ std::vector<char> Model::get_full_response_str()
 
 void Model::method_get()
 {
+	//need check autoindex folder and redirect to defined html
 	file.open();
 	response.setbody(file.get_content_from_file());
 	file.close();

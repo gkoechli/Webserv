@@ -40,7 +40,7 @@ inline std::string getTimeFormated()
 	return buf;
 }
 
-
 }; // NAMESPACE FT
+
 
 #endif // UTILITY_HPP

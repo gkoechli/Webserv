@@ -14,13 +14,13 @@ file_manager::~file_manager()
 void file_manager::create(const std::string &file_content)
 {
 	fd = ::open(path.c_str(), O_CREAT | O_RDWR | O_TRUNC, 00755);
-	if (fd == 0)
+	if (fd <= 0)
 	{
 		//TODO error to manage:  can't create file
 	}
 	if (file_content.length() && write(fd, file_content.c_str(), file_content.length()) <= 0)
 	{
-	//TODO error to manage:  can't write to new file that has been created*/
+		//TODO error to manage:  can't write to new file that has been created
 	}
 }
 
@@ -28,7 +28,7 @@ bool file_manager::open()
 {
 	close();//should not be necessary, normally
 	fd = ::open(path.c_str(), O_RDONLY);
-	//TODO manage error: can't open file
+		//TODO manage error: can't open file
 	return fd > 0;
 }
 

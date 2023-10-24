@@ -48,7 +48,7 @@ Configuration:
 Control/exec:
 	☐ check if request parsing failed and send a 400 error
 	☐ maybe a simple method to create a simple error response
-	☐ check if error is 404 and use the defined error page in that case
+	☐ check if error is 404 and use the defined error page in that case (just hardcoded body with int variable and approriate message, same for status code)
 	☐ path editor to find real path from requested one
 	☐ need a check somewhere to determine if the requested server is accessed from the correct port
 

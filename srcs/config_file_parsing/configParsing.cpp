@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:43:02 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/10/24 16:07:25 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/10/26 18:24:08 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,6 +280,7 @@ std::pair<std::string, locationClass>	configParsing::set_location_values(std::ve
 		if (identifyTokenType(*itemp) == CLOSEDBRACKET)
 			break;
 	}
+	new_location.insertPair(pairIt("index", "index.html"));
 	std::pair<std::string, locationClass> ret(new_location.getName(), new_location);
 	return ret;
 

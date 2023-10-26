@@ -12,7 +12,9 @@ serverClass::~serverClass()
 
 std::string serverClass::getKeyContent(std::string key)
 {
-	return (this->data.find(key)->second);
+	if (data.find(key) != data.end())
+		return this->data.find(key)->second;
+	return ("");
 }
 
 std::string serverClass::getName()
@@ -75,4 +77,28 @@ void serverClass::printLocationList()
 		it++;
 	}
 	std::cout << " ....................................................... <\n";
+}
+
+locationClass&	serverClass::getLocationRef(std::string name)
+{
+	if (this->locationList.find(name) != this->locationList.end())
+		return this->locationList[name];
+	else
+		throw std::exception();
+}
+
+std::map<std::string, locationClass>::iterator serverClass::getBeginLocationListIterator()
+{
+	std::map<std::string, locationClass>::iterator it;
+
+	it = this->locationList.begin();
+	return it;
+}
+
+std::map<std::string, locationClass>::iterator serverClass::getEndLocationListIterator()
+{
+	std::map<std::string, locationClass>::iterator it;
+
+	it = this->locationList.end();
+	return it;
 }

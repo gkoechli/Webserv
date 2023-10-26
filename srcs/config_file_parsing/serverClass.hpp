@@ -18,14 +18,18 @@ class serverClass
 		void	insertPair(std::pair<std::string, std::string>);
 		std::string getName();
 		std::string getKeyContent(std::string);
+		std::map<std::string, locationClass>::iterator getBeginLocationListIterator();
+		std::map<std::string, locationClass>::iterator getEndLocationListIterator();
 		void	insert_location(std::pair<std::string, locationClass>);
 		void	printServerValues();
 		void 	printServerData();
 		void 	printLocationList();
+		locationClass&	getLocationRef(std::string);
 		
 	private:
 		std::string server_name;
 		std::map<std::string, std::string> data;
 		std::map<std::string, locationClass> locationList;
 };
+
 #endif

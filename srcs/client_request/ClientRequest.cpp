@@ -87,9 +87,7 @@ ClientRequest::ClientRequest(std::string obj, configParsing &confptr):ptr(confpt
 					it++;
 				}
 				this->setTarget(targ);
-				std::string path = "./demosite/";
-				path += targ;
-				this->setPath(path);
+				this->setPath(targ);
 				method = 0;
 			}
 			first = 1;
@@ -155,8 +153,46 @@ std::string ClientRequest::getHeaderContent(std::string contentkey)
 }
 
 void	ClientRequest::setPath(const std::string path)
-{ 
-	this->path = path;
+{
+	int found = 0;
+	std::string tmp = "./demosite/";
+	tmp += path;
+	if (tmp.back() == '/') // if autoindex -> on rajoute l'index du server s'il existe, sinon index.html
+	{
+		std::map<std::string, serverClass>::iterator it = this->ptr.getBeginServerListIterator();
+		std::map<std::string, serverClass>::iterator ite = this->ptr.getEndServerListIterator();
+		while (it != ite)
+		{
+			if (it->second.getKeyContent("autoindex") != "on")
+			{
+				found = 1;
+				it++;
+			}
+			else
+			{
+				if (path.find(it->first) != std::string::npos)
+				{
+					std::map<std::string, locationClass>::iterator itl = it->second.getBeginLocationListIterator();
+					std::map<std::string, locationClass>::iterator itel = it->second.getEndLocationListIterator();
+					while (itl != itel)
+					{
+						if (path.find(it->second.getLocationRef((itl->second.getName())).getName()) != std::string::npos)
+						{
+							tmp += itl->second.getKeyContent("index");
+							found = 1;
+							break;
+						}
+						itl++;
+					}
+					break;
+				}	
+				it++;
+			}
+		}
+		if (found == 0)
+			tmp += "index.html";
+	}
+	this->path = tmp;
 }
 
 void	ClientRequest::setMethod(const std::string method)

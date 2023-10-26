@@ -157,7 +157,7 @@ void	ClientRequest::setPath(const std::string path)
 	int found = 0;
 	std::string tmp = "./demosite/";
 	tmp += path;
-	if (tmp.back() == '/') // if autoindex -> on rajoute l'index du server s'il existe, sinon index.html
+	if (*tmp.rbegin() == '/') // if autoindex -> on rajoute l'index du server s'il existe, sinon index.html
 	{
 		std::map<std::string, serverClass>::iterator it = this->ptr.getBeginServerListIterator();
 		std::map<std::string, serverClass>::iterator ite = this->ptr.getEndServerListIterator();

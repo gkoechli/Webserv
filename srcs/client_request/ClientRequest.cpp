@@ -87,6 +87,9 @@ ClientRequest::ClientRequest(std::string obj, configParsing &confptr):ptr(confpt
 					it++;
 				}
 				this->setTarget(targ);
+				std::string path = "./demosite/";
+				path += targ;
+				this->setPath(path);
 				method = 0;
 			}
 			first = 1;

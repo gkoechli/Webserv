@@ -49,6 +49,7 @@ class ClientRequest
 		void	check_method();
 		void	check_errors();
 
+		void printAll() const; // d
 		void printPath() const;    //d
 		void printMethod() const;    //d
 		void printTarget() const;    //d

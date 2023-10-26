@@ -20,7 +20,7 @@ std::pair<std::string, std::vector<std::string> > pair_Token_Vector(std::string 
 
 ClientRequest::ClientRequest(std::string obj, configParsing &confptr):ptr(confptr)
 {
-	fill_basic_content(*this);
+	// fill_basic_content(*this);
 	std::string temp;
 	int first = 1;
 	int body = 0;
@@ -198,7 +198,7 @@ void ClientRequest::printHttpVersion() const   // d
 
 void ClientRequest::printBody() const   // d
 {
-	std::cout << this->getBody() << std::endl;
+	std::cout << "|" << this->getBody() << "|" << std::endl;
 }
 
 void ClientRequest::printTarget() const   // d
@@ -246,4 +246,18 @@ void	ClientRequest::check_errors()
 	// else
 	// 	std::cout << "FOUND " << this->getHeaderContent("Host") << std::endl;
 	this->check_method();
+}
+
+void ClientRequest::printAll() const
+{
+	std::cout << "Path = ";
+	this->printPath();
+	std::cout << "Method = ";
+	this->printMethod();
+	std::cout << "Target = ";
+	this->printTarget();
+	std::cout << "HttpVersion = ";
+	this->printHttpVersion();
+	std::cout << "Body = ";
+	this->printBody();
 }

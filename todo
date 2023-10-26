@@ -10,6 +10,11 @@ Next MVP:
 	☐ after all that, it's probably possible to start automating testing, particular cases by particular cases (status, methods, CGI)
 	✔ exec CGI (should not be terribly hard,it's an established process) @done(23-10-15 17:59)
 	☐ manage exceptions and error (http code, etc.)
+	☐ error page by default
+	☐ split listen arg if IP and Port
+	☐ CGI
+	☐ routing, autoindex, etc.
+
 TCP:
 
 	✔ mockup parser to print a vector of char @done(23-08-15 15:58)

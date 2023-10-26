@@ -86,97 +86,167 @@ void Model::method_delete()
 	status_code = 200;
 }
 
-// char* get_binary_name(std::string path)
+// char* get_binary_path(std::string path)
 // {
-// 	std::string binary_name;
+// 	std::string binary_path;
 // 	size_t pos = path.find_last_of('/');
 // 	if (pos != std::string::npos)
-// 		binary_name = path.substr(pos + 1);
+// 		binary_path = path.substr(pos + 1);
 // 	else
-// 		binary_name = path;
-// 	return (binary_name.c_str());
+// 		binary_path = path;
+// 	return (binary_path.c_str());
 // }
 
 
-// void Model::cgi_operation()
-// {
-// 	int pid, fd[2];
-// 	if (access(request.getPath().c_str(), X_OK) == -1)
-// 	{
-// 		status_code = 403;
-// 		return;
-// 	}
-// 	if (pipe(fd) == -1)
-// 	{
-// 		status_code = 503;
-// 		return;
-// 	}
+char** Model::mapToEnvp(const std::map<std::string, std::string>& m)
+{
+	std::vector<std::string> v;
+	for (std::map<std::string, std::string>::const_iterator it = m.begin() ; it != m.end() ; it++)
+		v.push_back(it->first + "=" + it->second);
+	char** arr = (char**)malloc((v.size() + 1) * sizeof(*arr));
+	if (arr == NULL)
+		exit(500);
+	std::vector<std::string>::size_type index = 0;
+	for (std::vector<std::string>::iterator it = v.begin() ; it != v.end() ; it++)
+	{
+		arr[index] = strdup(it->c_str());
+		if (arr[index] == NULL)
+			exit(500);
+		index++;
+	}
+	arr[index] = NULL;
+	return arr;
+}
 
-// 	pid = fork();
-// 	if (pid == -1)
-// 	{
-// 		status_code = 500;
-// 		return;
-// 	}
-// 	if (pid == 0)//child
-// 	{
-// 		close(fd[0]);
-// 		close(STDOUT_FILENO);
-// 		close(STDIN_FILENO);
-// 		//need dup2 for stdin to get the body of the request to the cgi
-// 		std::string body = request.getbody();
-// 		std::FILE* body_file = std::tmpfile();
-// 		std::fputs(body.c_str(), body_file);
-// 		std::rewind(body_file);
-// 		if (dup2(body_file, STDIN_FILENO) == -1)
-// 			exit(1);
-// 		if (dup2(fd[1], STDOUT_FILENO) == -1)
-// 			exit(1);
+char** Model::create_envp()
+{
+	std::map<std::string, std::string> envp;
 
-// 		char* binary_name = strdup(get_binary_name(request.getPath()).c_str());
-// 		char* binary_path = strdup(request.getPath().c_str());
-// 		char* argv[3] = {binary_name, binary_path, NULL};
-// 		execve(binary_path, argv, envp);
-// 		for (int i = 0; envp[i] != NULL; i++)
-// 			free(envp[i]);
-// 		free(binary_path);
-// 		free(argv);
-// 		free(envp);
-// 		exit(0);
-// 	}
-// 	else if (pid > 0) //parent
-// 	{
-// 		close(fd[1]);
-// 		waitpid(pid, &status, 0);
-// 		if (WIFEXITED(status))
-// 		{
-// 			if (WEXITSTATUS(status) == 0)
-// 			{
-// 				status_code = 200;
-// 				response.setbody("CGI OK");
-// 			}
-// 			else
-// 			{
-// 				status_code = 500;
-// 				response.setbody("CGI ERROR");
-// 			}
-// 		}
-// 		int ret = 0;
-// 		std::vector	<char> buffer(4096 + 1, 0);
-// 		while ((ret = read(fd[0], buffer.data(), 4096)) > 0)//need to use something else than read
-// 		{
-// 			response.setbody(response.getbody() + std::string(buffer.begin(), buffer.end()));
-// 			buffer.clear();
-// 			buffer.resize(4096 + 1, 0);
-// 		}
-// 		if (ret == -1)
-// 		{
-// 			status_code = 500;
-// 			response.setbody("CGI ERROR");
-// 		}
-// 		close(fd[0]);
-// 	}
-// }
+	// SERVER VARIABLES
+	envp["SERVER_SOFTWARE"] = "WEBSERV/42.0";
+	envp["SERVER_NAME"] = "127.0.0.1";//need ip from current server(maybe name of server?)
+	envp["GATEWAY_INTERFACE"] = "CGI/1.1";
+
+	// REQUEST DEFINED VARIABLES
+	envp["SERVER_PROTOCOL"] = "HTTP/1.1";
+	envp["SERVER_PORT"] = "8080";//need port from current server
+	envp["REQUEST_METHOD"] = "GET";//need method from client request : GET or POST only
+	envp["REDIRECT_STATUS"] = ft::itostr(200);
+	envp["PATH_INFO"] = request.getPath();;
+	envp["PATH_TRANSLATED"] = request.getPath();;
+	envp["SCRIPT_NAME"] = request.getPath();;
+	envp["SCRIPT_FILENAME"] = request.getPath();
+	envp["QUERY_STRING"] = "";//args of exec, from target string, after ? char
+	envp["REMOTE_HOST"] = "";
+	envp["REMOTE_ADDR"] = "";
+	envp["AUTH_TYPE"] = "";
+	envp["REMOTE_USER"] = "";
+	// if (client_req.getHeader().count("content-type"))
+	// 	envp["CONTENT_TYPE"] = client_req.getHeader().find("content-type")->second[0];
+	// else
+		envp["CONTENT_TYPE"] = "application/x-www-form-urlencoded";
+
+	envp["CONTENT_LENGTH"] = ft::itostr(request.getBody().size());
+
+	// CLIENT VARIABLES
+	envp["HTTP_ACCEPT"] = "*/*";
+	envp["HTTP_ACCEPT_LANGUAGE"] = "en-US,en";
+	// if (client_req.getHeader().count("user-agent"))
+	// 	envp["HTTP_USER_AGENT"] = joinStrVector(client_req.getHeader().find("user-agent")->second, ",");
+	// if (client_req.getHeader().count("cookie"))
+	// 	envp["HTTP_COOKIE"] = joinStrVector(client_req.getHeader().find("cookie")->second, ",");
+	envp["HTTP_REFERER"] = "";
+
+	return mapToEnvp(envp);
+}
+
+void print_envp(char** envp)
+{
+	std::cerr << "this is the env :" << std::endl;
+	for (int i = 0; envp[i] != NULL; i++)
+		std::cerr << envp[i] << std::endl;
+	std::cerr << "end of env :" << std::endl;
+}
+
+void Model::cgi_operation()
+{
+	int pid, fd[2];
+	if (access(request.getPath().c_str(), X_OK) == -1)
+		throw 403;
+	if (pipe(fd) == -1)
+		throw 503;
+
+	pid = fork();
+	if (pid == -1)
+		throw 503;
+	if (pid == 0)//child
+	{
+		close(fd[0]);
+		close(STDOUT_FILENO);
+		close(STDIN_FILENO);
+		//need dup2 for stdin to get the body of the request to the cgi
+		std::string body = request.getBody();
+		std::FILE* body_file = std::tmpfile();
+		std::fputs(body.c_str(), body_file);
+		std::rewind(body_file);
+		if (dup2(fileno(body_file), STDIN_FILENO) == -1)
+			exit(1);
+		if (dup2(fd[1], STDOUT_FILENO) == -1)
+			exit(1);
+		std::string name = "/usr/bin/php-cgi";//maybe need to change this to a config variable, or if it's a Python CGI
+		char* binary_path = strdup(name.c_str());
+		char* progPath = strdup(request.getPath().c_str());
+		char* argv[3] = {binary_path, progPath, NULL};
+		char** envp = create_envp();
+		print_envp(envp);
+	// std::cout << "start of execve " << std::endl;
+		execve(binary_path, argv, envp);
+	// 	int err = errno;
+	// std::cout << "exevce failed : " << err  << std::endl;
+		for (int i = 0; envp[i] != NULL; i++)
+			free(envp[i]);
+		free(binary_path);
+		free(progPath);
+		free(envp);
+		exit(0);
+	}
+	else if (pid > 0) //parent
+	{
+		int status;
+		close(fd[1]);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+		{
+			if (WEXITSTATUS(status) == 0)
+			{
+				status_code = 200;
+				response.setbody("CGI OK");
+			}
+			else
+			{
+				status_code = 500;
+				response.setbody("CGI ERROR");
+			}
+		}
+		int ret = 0;
+		std::vector	<char> buffer(4096 + 1, 0);
+		while ((ret = read(fd[0], buffer.data(), 4096)) > 0)//need to use something else than read
+		{
+			response.setbody(response.getbody() + std::string(buffer.begin(), buffer.end()));
+			buffer.clear();
+			buffer.resize(4096 + 1, 0);
+		}
+		if (ret == -1)
+		{
+			status_code = 500;
+			response.setbody("CGI ERROR");
+		}
+		close(fd[0]);
+	}
+
+	std::cout << "after CGI, Body = " << std::endl;
+	std::cout << response.getbody() << std::endl;
+}
 
 void	Model::mockup_response_object()
 {

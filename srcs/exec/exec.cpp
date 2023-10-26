@@ -116,14 +116,17 @@ std::vector<char> Exec::return_final_response()
 		request.printPath();
 		request.printTarget();
 		request.printHeader();
-		request.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test.html");
+		request.setPath("index.php");
+		request.printPath();
 		Model model_handler(request);
 		model_handler.mockup_response_object(); //will be replaced by "execute request"
 
-		ptr_func functions[3] = {&Model::method_get, &Model::method_post, &Model::method_delete};
-		int cases = identifiy_cases(request.getMethod());
-		if (cases <= 2)
-			(model_handler.*functions[cases])();
+		// ptr_func functions[3] = {&Model::method_get, &Model::method_post, &Model::method_delete};
+		// int cases = identifiy_cases(request.getMethod());
+		// if (cases <= 2)
+		model_handler.cgi_operation();
+		//	(model_handler.*functions[cases])();//
+
 		response_str = model_handler.get_full_response_str();
 	}
 	catch (int error_code)

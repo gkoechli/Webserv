@@ -9,7 +9,7 @@ server
 	autoindex	on;
 	index 		hola;
 	cli_max_size	836000;
-	error_page 404 error_page/error_page_404.html;	
+	error_page 404 error_page/error_page_404.html;
 
 	location /set_cookies
 	{

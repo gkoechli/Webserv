@@ -198,7 +198,7 @@ void Model::cgi_operation()
 		char* progPath = strdup(request.getPath().c_str());
 		char* argv[3] = {binary_path, progPath, NULL};
 		char** envp = create_envp();
-		print_envp(envp);
+		// print_envp(envp);
 	// std::cout << "start of execve " << std::endl;
 		execve(binary_path, argv, envp);
 	// 	int err = errno;
@@ -244,8 +244,8 @@ void Model::cgi_operation()
 		close(fd[0]);
 	}
 
-	std::cout << "after CGI, Body = " << std::endl;
-	std::cout << response.getbody() << std::endl;
+	// std::cout << "after CGI, Body = " << std::endl;
+	// std::cout << response.getbody() << std::endl;
 }
 
 void	Model::mockup_response_object()

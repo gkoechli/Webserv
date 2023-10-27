@@ -83,8 +83,27 @@ int	identifiy_cases (std::string method)
 
 typedef void(Model::*ptr_func)(void);
 
+
+
 std::vector<char> Exec::error_response_constructor(int error_code)
 {
+
+	/*
+	if(errorcodeisdefined_in_settings() && error_path_defined_valid())
+	{
+		request.setPath(error_path);
+		model_handler.*functions[0];
+		return (model_handler.get_full_response_str());
+	}
+	else //no error page defined in settings
+	{
+		std::string error_message;
+		error_message = get_error_message(error_code);;
+		std::string response_str;
+		response_str = std::string("HTTP/1.1 " + int_to_string2(error_code) + " " + error_message + "\r\n\r\n").c_str();
+		std::vector<char> res(response_str.begin(), response_str.end());
+		return res;
+	}*/
 	std::string error_message;
 	std::string response_str;
 	if (error_code == 400)

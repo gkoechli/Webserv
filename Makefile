@@ -16,6 +16,7 @@ SRCS			=		srcs/main.cpp\
 						srcs/Model/Model.cpp \
 						srcs/Model/file_manager.cpp \
 						srcs/exec/exec.cpp \
+						srcs/exec/HttpCodes.cpp \
 						srcs/exec/response.cpp
 
 HEADERS		=	srcs/config_file_parsing/configParsing.hpp\
@@ -29,6 +30,7 @@ HEADERS		=	srcs/config_file_parsing/configParsing.hpp\
 				srcs/Model/Model.hpp \
 				srcs/Model/file_manager.hpp \
 				srcs/exec/exec.hpp \
+				srcs/exec/HttpCodes.hpp \
 				srcs/exec/response.hpp
 
 OBJ			=	$(SRCS:.cpp=.o)

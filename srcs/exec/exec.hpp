@@ -2,6 +2,7 @@
 # define EXEC
 
 #include "response.hpp"
+#include "HttpCodes.hpp"
 #include "../Model/Model.hpp"
 #include "../client_request/ClientRequest.hpp"
 #include "../config_file_parsing/configParsing.hpp"
@@ -20,11 +21,11 @@ class Exec {
 
 		void	main_exec_loop();
 		// void	response_build();
-		// void	print_response(); //Del
-		void	mockup_response_object();//intermediate system to create a "valid" response //Del
+
+		bool is_cgi(ClientRequest &request);
+		//void	mockup_response_object();//intermediate system to create a "valid" response //Del
 		std::vector<char> return_final_response();
 		std::vector<char> error_response_constructor(int error_code);
-		//TODO: delete after final implementation!
 };
 
 #endif

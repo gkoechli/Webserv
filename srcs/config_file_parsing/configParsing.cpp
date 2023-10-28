@@ -201,7 +201,7 @@ void	configParsing::set_server_values(std::vector<std::string>::iterator itori)
 {
 	// std::cout << "================================= SET_SERVER_VALUES ======================================\n";
 	serverClass new_server;
-	int flag = 0;
+	// int flag = 0;
 	std::string one;
 	std::string two;
 	std::vector<std::string>::iterator it = itori;

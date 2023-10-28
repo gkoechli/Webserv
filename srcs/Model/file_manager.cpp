@@ -92,6 +92,10 @@ bool file_manager::exist()
 
 std::string file_manager::get_content_from_file()
 {
+	if (!exist() || is_directory())
+	{
+		throw 404;
+	}
 	if (access(path.c_str(), R_OK) == -1)
 	{
 		throw 403;

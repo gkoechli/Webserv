@@ -3,13 +3,10 @@
 Model::Model(ClientRequest &request) : request(request), file(request.getPath())
 {
 	status_code = 200;
-	//response should stay empty until there is something to set inside
 }
 
 Model::~Model()
 {}
-
-
 
 void	Model::set_status_code(int code)
 {
@@ -27,10 +24,11 @@ std::vector<char> Model::get_full_response_str()
 	response.setHTTPCode(status_code);
 	std::string full_response;
 	response.insertHeaderPair(std::make_pair("Content-Length:", int_to_string(response.getbody().size()) + "\n"));
-
+	response.insertHeaderPair(std::make_pair("Content-Type:", "text/html; charset=utf-8\n"));
+	response.insertHeaderPair(std::make_pair("server:", "name o server, TODO\n"));//name of server TODO
 	full_response = request.getHttpVersion();
 	full_response += " ";
-	full_response += int_to_string(response.getHTTPCode());//TODO: check status and add OK or fail depending on value
+	full_response += int_to_string(response.getHTTPCode());
 	full_response += " OK\n";
 	full_response += response.getFullHeader();
 	full_response += response.getbody();
@@ -40,7 +38,6 @@ std::vector<char> Model::get_full_response_str()
 
 void Model::method_get()
 {
-	//need check autoindex folder and redirect to defined html
 	file.open();
 	response.setbody(file.get_content_from_file());
 	file.close();
@@ -82,21 +79,8 @@ void Model::method_delete()
               <h1>File deleted</h1>\n\
             </body>\n\
             </html>\n\n\n");
-	//TODO : add length of body and format of response (html)
 	status_code = 200;
 }
-
-// char* get_binary_path(std::string path)
-// {
-// 	std::string binary_path;
-// 	size_t pos = path.find_last_of('/');
-// 	if (pos != std::string::npos)
-// 		binary_path = path.substr(pos + 1);
-// 	else
-// 		binary_path = path;
-// 	return (binary_path.c_str());
-// }
-
 
 char** Model::mapToEnvp(const std::map<std::string, std::string>& m)
 {
@@ -124,37 +108,32 @@ char** Model::create_envp()
 
 	// SERVER VARIABLES
 	envp["SERVER_SOFTWARE"] = "WEBSERV/42.0";
-	envp["SERVER_NAME"] = "127.0.0.1";//need ip from current server(maybe name of server?)
+	envp["SERVER_NAME"] = "127.0.0.1";//need ip from current server(or maybe name of server?) TODO
 	envp["GATEWAY_INTERFACE"] = "CGI/1.1";
 
 	// REQUEST DEFINED VARIABLES
 	envp["SERVER_PROTOCOL"] = "HTTP/1.1";
-	envp["SERVER_PORT"] = "8080";//need port from current server
-	envp["REQUEST_METHOD"] = "GET";//need method from client request : GET or POST only
+	envp["SERVER_PORT"] = "8080";//need port from current server TODO
+	if (request.getMethod() == "GET")
+		envp["REQUEST_METHOD"] = "GET";
+	else if (request.getMethod() == "POST")
+		envp["REQUEST_METHOD"] = "POST";
 	envp["REDIRECT_STATUS"] = ft::itostr(200);
 	envp["PATH_INFO"] = request.getPath();;
 	envp["PATH_TRANSLATED"] = request.getPath();;
 	envp["SCRIPT_NAME"] = request.getPath();;
 	envp["SCRIPT_FILENAME"] = request.getPath();
-	envp["QUERY_STRING"] = "";//args of exec, from target string, after ? char
+	envp["QUERY_STRING"] = "";//args of exec, from target string, after ? char //TODO if not automaticly done by PHP
 	envp["REMOTE_HOST"] = "";
 	envp["REMOTE_ADDR"] = "";
 	envp["AUTH_TYPE"] = "";
 	envp["REMOTE_USER"] = "";
-	// if (client_req.getHeader().count("content-type"))
-	// 	envp["CONTENT_TYPE"] = client_req.getHeader().find("content-type")->second[0];
-	// else
-		envp["CONTENT_TYPE"] = "application/x-www-form-urlencoded";
-
+	envp["CONTENT_TYPE"] = "application/x-www-form-urlencoded";
 	envp["CONTENT_LENGTH"] = ft::itostr(request.getBody().size());
 
 	// CLIENT VARIABLES
 	envp["HTTP_ACCEPT"] = "*/*";
 	envp["HTTP_ACCEPT_LANGUAGE"] = "en-US,en";
-	// if (client_req.getHeader().count("user-agent"))
-	// 	envp["HTTP_USER_AGENT"] = joinStrVector(client_req.getHeader().find("user-agent")->second, ",");
-	// if (client_req.getHeader().count("cookie"))
-	// 	envp["HTTP_COOKIE"] = joinStrVector(client_req.getHeader().find("cookie")->second, ",");
 	envp["HTTP_REFERER"] = "";
 
 	return mapToEnvp(envp);
@@ -175,7 +154,6 @@ void Model::cgi_operation()
 		throw 403;
 	if (pipe(fd) == -1)
 		throw 503;
-
 	pid = fork();
 	if (pid == -1)
 		throw 503;
@@ -230,54 +208,48 @@ void Model::cgi_operation()
 		}
 		int ret = 0;
 		std::vector	<char> buffer(4096 + 1, 0);
-		while ((ret = read(fd[0], buffer.data(), 4096)) > 0)//need to use something else than read
+		while ((ret = read(fd[0], buffer.data(), 4096)) > 0)
 		{
 			response.setbody(response.getbody() + std::string(buffer.begin(), buffer.end()));
 			buffer.clear();
 			buffer.resize(4096 + 1, 0);
 		}
-		if (ret == -1)
-		{
-			status_code = 500;
-			response.setbody("CGI ERROR");
-		}
 		close(fd[0]);
+		if (ret == -1)
+			throw 500;
 	}
-
-	// std::cout << "after CGI, Body = " << std::endl;
-	// std::cout << response.getbody() << std::endl;
 }
 
-void	Model::mockup_response_object()
-{
-	response.setHTTPCode(404);
-	response.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test.html");
-	response.setLocation("Website/folder/file.extension");
-	response.setCGI(false);
-	response.setbody("\n"
-	"<!DOCTYPE html>\n"
-	"<html lang=\"en\">\n"
-	"<head>\n"
-	"<meta charset=\"utf-8\">\n"
-	"<title>A simple webpage</title>\n"
-	"</head>\n"
-	"<body>\n"
-	"<h1>Simple HTML webpage</h1>\n"
-	"<p>Hello, world!</p>\n"
-	"</body>\n"
-	"</html>\n"
-	"\n"
-	"\n");
-	// response.insertHeaderPair(std::make_pair("HTTP/1.1", "200 OK\n"));
-	response.insertHeaderPair(std::make_pair("Content-Type:", "text/html; charset=utf-8\n"));
-	// response.insertHeaderPair(std::make_pair("Content-Length:", "55743\n"));
-	response.insertHeaderPair(std::make_pair("Connection:", "keep-alive\n"));
-	response.insertHeaderPair(std::make_pair("Content-Language:", "en-US\n"));
-	response.insertHeaderPair(std::make_pair("Date:", "Thu, 06 Dec 2018 17:37:18 GMT\n"));
-	response.insertHeaderPair(std::make_pair("Server:", "meinheld/0.6.1\n"));
-	// std::string test = response.getPath();
-	// test = response.getbody();
-	//ERROR, if i delete last line exec fail immediatly
-	//wich means a memory error usually
-	//i might have made a mistake somewhere with pair or map, maybe an error of initialisation
-}
+// void	Model::mockup_response_object()
+// {
+// 	response.setHTTPCode(404);
+// 	response.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test.html");
+// 	response.setLocation("Website/folder/file.extension");
+// 	response.setCGI(false);
+// 	response.setbody("\n"
+// 	"<!DOCTYPE html>\n"
+// 	"<html lang=\"en\">\n"
+// 	"<head>\n"
+// 	"<meta charset=\"utf-8\">\n"
+// 	"<title>A simple webpage</title>\n"
+// 	"</head>\n"
+// 	"<body>\n"
+// 	"<h1>Simple HTML webpage</h1>\n"
+// 	"<p>Hello, world!</p>\n"
+// 	"</body>\n"
+// 	"</html>\n"
+// 	"\n"
+// 	"\n");
+// 	// response.insertHeaderPair(std::make_pair("HTTP/1.1", "200 OK\n"));
+// 	response.insertHeaderPair(std::make_pair("Content-Type:", "text/html; charset=utf-8\n"));
+// 	// response.insertHeaderPair(std::make_pair("Content-Length:", "55743\n"));
+// 	response.insertHeaderPair(std::make_pair("Connection:", "keep-alive\n"));
+// 	response.insertHeaderPair(std::make_pair("Content-Language:", "en-US\n"));
+// 	response.insertHeaderPair(std::make_pair("Date:", "Thu, 06 Dec 2018 17:37:18 GMT\n"));
+// 	response.insertHeaderPair(std::make_pair("Server:", "meinheld/0.6.1\n"));
+// 	// std::string test = response.getPath();
+// 	// test = response.getbody();
+// 	//ERROR, if i delete last line exec fail immediatly
+// 	//wich means a memory error usually
+// 	//i might have made a mistake somewhere with pair or map, maybe an error of initialisation
+// }

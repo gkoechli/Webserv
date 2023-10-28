@@ -38,7 +38,7 @@ void	fill_basic_content(ClientRequest &obj)
 {
 	std::vector<std::string> temp;
 	temp.push_back("webserv.com");
-	obj.setPath("./demosite/index.html");
+	// obj.setPath("./demosite/index.html");
 	obj.setHttpVersion("HTTP/1.1");
 	obj.setMethod("GET /fr/docs/Glossary/Simple_header HTTP/1.1");
 	obj.setBody("<THIS IS THE BODY>\n");

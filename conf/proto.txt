@@ -4,7 +4,7 @@ index				index.html;
 server
 {
 	server_name webserv.com;
-	listen 8080;
+	listen 127.0.0.1:8080;
 	allow GET, POST, DELETE;
 	autoindex	on;
 	index 		hola;

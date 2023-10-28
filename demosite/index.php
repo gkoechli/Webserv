@@ -3,7 +3,6 @@
     <head>
         <title>Cours PHP & MySQL</title>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="cours.css">
     </head>
 
     <body>
@@ -14,7 +13,7 @@
             /*Affiche
               "Bonjour le Monde
             */
-            echo "Bonjour le Monde"; /*Ceci est un commentaire PHP*/
+            echo "ceci est une page PHP, lue grace a l'execution d'un CGI PHP"; /*Ceci est un commentaire PHP*/
         ?>
         <p>Un paragraphe</p>
     </body>

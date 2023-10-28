@@ -16,7 +16,7 @@
 #include "./multiplexer.hpp"
 
 #define ERROR 1
-#define SUCCESS 0 
+#define SUCCESS 0
 
 class Tcp_handler
 {
@@ -26,7 +26,7 @@ class Tcp_handler
 		Multiplexer multiplex;
 
 	public:
-		Tcp_handler(char *config_file);//builder, will need settings to properly setup
+		Tcp_handler(char *config_file);
 		~Tcp_handler();
 
 		//start of main loop

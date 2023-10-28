@@ -54,11 +54,7 @@ void	Tcp_handler::read_from_client(struct epoll_event current_event)
 	if (buffer.is_request_complete(fd))
 	{
 		std::vector<char> response;
-		// try {
-			response = parse_request(buffer.get_full_request(fd));//To complete, only print full request for now
-		// } catch {
-			// manage_error()
-		// }
+		response = parse_request(buffer.get_full_request(fd));
 		multiplex.update_connection_status(fd, EPOLLOUT);
 		buffer.empty_request_buffer(fd);
 		buffer.add_full_response_to_response_buffer(fd, response);
@@ -101,13 +97,9 @@ void Tcp_handler::write_to_client(struct epoll_event current_event)
 std::vector<char>	Tcp_handler::parse_request(std::vector<char> request)
 {
 	std::string request_as_string(request.begin(), request.end());
-	Exec	current_exec(request_as_string, config_parser);//create with request string and settings as args
-	// current_exec.mockup_response_object();//only for dev, not needed after finished
-	// current_exec.print_response();//only for debug, TODELETE
-
+	Exec	current_exec(request_as_string, config_parser);
 	std::vector<char> response;
 	response = current_exec.return_final_response();
-
 	// std::string output(request.begin(), request.end());//just to print full request
 	// std::cout << "content of request buffer = " << output << std::endl;
 	return(response);

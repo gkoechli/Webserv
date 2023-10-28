@@ -155,7 +155,7 @@ std::string ClientRequest::getHeaderContent(std::string contentkey)
 void	ClientRequest::setPath(const std::string path)
 {
 	int found = 0;
-	std::string tmp = "./demosite/";
+	std::string tmp = "./demosite";
 	tmp += path;
 	if (*tmp.rbegin() == '/') // if autoindex -> on rajoute l'index du server s'il existe, sinon index.html
 	{

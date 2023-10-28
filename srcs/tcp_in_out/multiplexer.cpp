@@ -6,10 +6,19 @@ Multiplexer::Multiplexer(configParsing config_parser) : epoll_instance_fd(-1)
 		std::map<std::string, serverClass>::iterator it = config_parser.getBeginServerListIterator();
 		while (it != config_parser.getEndServerListIterator())
 		{
+			int server_socket;
 			std::string tmp = it->first;
 			std::string value = config_parser.getServerRef(tmp).getKeyContent("listen");
-			 std::cout << value << std::endl;
-			int	server_socket = create_server_socket(atoi(value.c_str()), convert_ip_to_int("127.0.0.1"));
+			std::cout << value << std::endl;
+			//i need to detect if value string contain the character ':'
+			if (value.find(':') != std::string::npos)
+			{
+				int port = ft::lexical_cast<int>(value.substr(value.find(':') + 1));
+				int ip = convert_ip_to_int(value.substr(0, value.find(':')));
+				server_socket = create_server_socket(port, ip);
+			}
+			else
+				server_socket = create_server_socket(atoi(value.c_str()), convert_ip_to_int("127.0.0.1"));
 			list_of_listen_sockets_fd.push_back(server_socket);
 			it++;
 		}
@@ -20,8 +29,6 @@ Multiplexer::Multiplexer(configParsing config_parser) : epoll_instance_fd(-1)
 }
 
 Multiplexer::~Multiplexer() {
-	//TODO
-	// will need a clean fd close loop
 }
 
 	//Start of server

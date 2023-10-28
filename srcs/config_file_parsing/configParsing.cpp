@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:43:02 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/10/26 18:24:08 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/10/28 15:30:19 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ configParsing::configParsing(std::string obj)
 {
 	std::fstream file;
 	std::string tmp;
+	std::string word;
 
 	file.open(obj.c_str());
 	if (!file)
@@ -30,11 +31,25 @@ configParsing::configParsing(std::string obj)
 	while (file.good())
 	{	
 		std::getline(file, tmp);
-		this->_confFile += tmp += "\n";
-		if (tmp != "\n")
+		std::stringstream stmp(tmp);
+		tmp = "";
+		int start = 0;
+		while (stmp >> word)
+		{
+			if (start == 1)
+				tmp += " ";
+			tmp += word;
+			start = 1;
+		}
+		// std::cout << "tmp = |" << tmp << "|\n";
+		if (tmp != "\n" && tmp.size() > 0 && tmp != "")
 			lineList.push_back(tmp);
+		this->_confFile += tmp += "\n";
 	}
 	this->routine();
+	// std::cout << "ROUTINE DONE \n";
+	// this->printLines();
+	// this->printConfFile();
 	this->set_file_values();
 }
 
@@ -58,7 +73,7 @@ void	configParsing::printLines()
 	std::vector<std::string>::iterator it = this->lineList.begin();
 	while (it != this->lineList.end())
 	{
-		std::cout << *it;
+		std::cout << "printline : |" << *it << "|"<< std::endl;
 		it++;
 	}
 }
@@ -167,12 +182,14 @@ void	configParsing::set_file_values()
 	std::vector<std::string>::iterator it = this->lineList.begin();
 	while (it != this->lineList.end())
 	{
-		while (*it == "\n")
-				it++;
-		if (it == this->lineList.end())
-			break;
 		std::vector<std::string> temp;
 		temp = stringSplitIntoWords(*it);
+		// std::vector<std::string>::iterator itemptest = temp.begin();
+		// while (itemptest != temp.end())
+		// {
+		// 	std::cout << *itemptest << std::endl;
+		// 	itemptest++;
+		// }
 		std::vector<std::string>::iterator itemp = temp.begin();
 		if (identifyTokenType(*itemp) == SERVER)
 			set_server_values(it);
@@ -190,10 +207,7 @@ void	configParsing::set_server_values(std::vector<std::string>::iterator itori)
 	std::vector<std::string>::iterator it = itori;
 	while (it != this->lineList.end())
 	{
-		while (*it == "\n")
-			it++;
-		if (it == this->lineList.end())
-			break;
+		// std::cout << "current line = " << *it << std::endl;
 		std::vector<std::string> temp;
 		temp = stringSplitIntoWords(*it);
 		std::vector<std::string>::iterator itemp = temp.begin();
@@ -210,25 +224,35 @@ void	configParsing::set_server_values(std::vector<std::string>::iterator itori)
 				if (itemp != temp.end())
 					two += " ";
 			}
+			// std::cout << "name: " << one << " // " << two << std::endl;
+			// std::cout << "*itemp = " << *itemp << std::endl;
 			new_server.insertPair(pairIt(one, two));
 			two = "";
 		}
-		if (identifyTokenType(*itemp) == LOCATION)
+		else if (identifyTokenType(*itemp) == LOCATION)
 		{
+			// std::cout << "location: " << *itemp << std::endl;
 			new_server.insert_location(set_location_values(it));
-			while (*it != "}\n" && it != this->lineList.end())
+			while (*it != "}" && it != this->lineList.end())
+			{
+				// std::cout << "while blabla.... on est sur : |" << *it << "|" << std::endl;
 				it++;
-			flag = LOCATION;
-			if (it == this->lineList.end())
-				break;
+
+			}
+			// std::cout << "SORTIE DE LOCATION = " << *it << std::endl;
 		}
-		if (identifyTokenType(*itemp) == CLOSEDBRACKET || flag == LOCATION) // end of server scope
+		else if (identifyTokenType(*itemp) == CLOSEDBRACKET) // end of server scope
 		{
+			// std::cout << "bracket: " << *itemp << std::endl;
+			// std::cout << " ->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> adding server " << new_server.getName() << std::endl; ;
+			// new_server.printServerData();
+			// new_server.printLocationList();
 			std::pair<std::string, serverClass> ret(new_server.getName(), new_server);
 			this->serverList.insert(ret);
 			break;
 		}
 		it++;
+		// std::cout << "*it = |" << *it << "|" << std::endl;
 	}
 	// std::map<std::string, serverClass>::iterator mop = this->serverList.begin();
 	// while (mop != serverList.end())
@@ -248,10 +272,10 @@ std::pair<std::string, locationClass>	configParsing::set_location_values(std::ve
 	std::string two;
 	while (it != this->lineList.end())
 	{
-		while (*it == "\n")
-			it++;
-		if (it == this->lineList.end())
-			break;
+		// while (*it == "\n")
+		// 	it++;
+		// if (it == this->lineList.end())
+		// 	break;
 		std::vector<std::string> temp;
 		temp = stringSplitIntoWords(*it); 
 		std::vector<std::string>::iterator itemp = temp.begin();
@@ -259,6 +283,7 @@ std::pair<std::string, locationClass>	configParsing::set_location_values(std::ve
 		{
 			++itemp;
 			new_location.setName(*itemp);
+			// std::cout << "location name = " << new_location.getName() << std::endl;
 		}
 		else if (identifyTokenType(*itemp) == NAME)
 		{
@@ -273,14 +298,17 @@ std::pair<std::string, locationClass>	configParsing::set_location_values(std::ve
 				if (itemp != temp.end())
 					two += " ";
 			}
+			// std::cout << "location values: " << one << " // " << two << std::endl;
 			new_location.insertPair(pairIt(one, two));
 			two = "";
 		}
 		it++;
-		if (identifyTokenType(*itemp) == CLOSEDBRACKET)
+		if (*it == "}")
 			break;
+		// std::cout << "*it before newloop = " << *it << std::endl;
 	}
 	new_location.insertPair(pairIt("index", "index.html"));
+	// new_location.printLocationValues();
 	std::pair<std::string, locationClass> ret(new_location.getName(), new_location);
 	return ret;
 

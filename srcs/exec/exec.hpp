@@ -23,6 +23,7 @@ class Exec {
 		// void	response_build();
 
 		bool is_cgi(ClientRequest &request);
+		std::string error_in_settings(int current_error_code);
 		//void	mockup_response_object();//intermediate system to create a "valid" response //Del
 		std::vector<char> return_final_response();
 		std::vector<char> error_response_constructor(int error_code);

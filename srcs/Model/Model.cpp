@@ -46,6 +46,8 @@ void Model::method_get()
 
 void Model::method_post()
 {
+	std::cerr << "start of post method" << std::endl;
+	std::cerr << "body : " << request.getBody() << std::endl;
 	if (!file.exist())
 		file.create(request.getBody());
 	else
@@ -113,7 +115,7 @@ char** Model::create_envp()
 
 	// REQUEST DEFINED VARIABLES
 	envp["SERVER_PROTOCOL"] = "HTTP/1.1";
-	envp["SERVER_PORT"] = "8080";//need port from current server TODO
+	envp["SERVER_PORT"] = request.getPort();
 	if (request.getMethod() == "GET")
 		envp["REQUEST_METHOD"] = "GET";
 	else if (request.getMethod() == "POST")

@@ -80,9 +80,37 @@ int	identifiy_cases (std::string method)
 
 typedef void(Model::*ptr_func)(void);
 
+// std::string Exec::error_in_settings(int current_error_code)
+// {
+// 	std::string error = config.getServerRef(request.getHost()).getKeyContent("error_page");
+// 	if (error.size() == 0)
+// 		return "";
+// 	std::stringstream wording(error);
+// 	int error_code;
+// 	int first = 1;
+// 	std::string error_path;
+// 	std::string word;
+// 	while (wording >> word)
+// 	{
+// 		if (first == 1) // each first element of line will be the token
+// 		{
+// 			error_code = atoi(word);
+// 			first = 0;
+// 		}
+// 		else
+// 			error_path = word; // the rest is setup as std::vector<string> and added as value to the map
+// 	}
+// 	if (error_code != current_error_code)
+// 		return "";
+// 	if (access(error_path.c_str(), F_OK) == -1)
+// 		return "";
+// 	return error_path;
+// }
+
 std::vector<char> Exec::error_response_constructor(int error_code)
 {
-	// if(error_in_settings() && error_path_defined_valid())
+	// std::string error_path = error_in_settings(error_code);
+	// if(!error_path.empty())
 	// {
 	// 	request.setPath(error_path);
 	// 	model_handler.*functions[0];
@@ -113,6 +141,7 @@ std::vector<char> Exec::return_final_response()
 	try
 	{
 		ClientRequest request(request_as_string, config);
+		std::cerr << "body = " << request.getBody() << std::endl;
 		request.printPath();
 		request.printTarget();
 		request.printHeader();

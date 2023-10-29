@@ -43,7 +43,7 @@ ClientRequest::ClientRequest(std::string obj, configParsing &confptr):ptr(confpt
 				this->body += temp;
 			}
 		}
-		else if (temp == "")
+		else if (temp == "\r")//Carriage return (CRLF) to separate header from body
 		{
 			body = 1;
 			first = 2;

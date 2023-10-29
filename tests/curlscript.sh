@@ -10,7 +10,7 @@ if [ ! -f "$1" ]; then
 	exit 1
 fi
 
-url="localhost:8080"
+url="localhost:8080/testpost.html"
 data=$(cat "$1")
 method=${2:-POST}
 

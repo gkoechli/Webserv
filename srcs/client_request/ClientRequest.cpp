@@ -231,7 +231,6 @@ void	ClientRequest::setTarget(const std::string targ)
 void	ClientRequest::setPort()
 {
 	std::string tmp;
-	
 	if (this->header.find("Host") != this->header.end())
 	{
 		tmp = this->getHeaderContent("Host");

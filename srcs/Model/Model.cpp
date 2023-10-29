@@ -19,19 +19,30 @@ std::string int_to_string(int i)
     ss << i;
     return ss.str();
 }
-std::vector<char> Model::get_full_response_str()
+std::vector<char> Model::get_full_response_str(int is_cgi)
 {
 	response.setHTTPCode(status_code);
 	std::string full_response;
-	response.insertHeaderPair(std::make_pair("Content-Length:", int_to_string(response.getbody().size()) + "\n"));
-	response.insertHeaderPair(std::make_pair("Content-Type:", "text/html; charset=utf-8\n"));
-	response.insertHeaderPair(std::make_pair("server:", "name o server, TODO\n"));//name of server TODO
+	std::string temp = response.getbody();
+	if (is_cgi == 1)
+	{
+		size_t pos = temp.find('\n');
+		if (pos != std::string::npos)
+			temp = temp.substr(pos + 1);
+	}
+	response.insertHeaderPair(std::make_pair("Content-Length:", int_to_string(temp.size()) + "\n"));
+	response.insertHeaderPair(std::make_pair("Content-type:", "text/html; charset=utf-8\n"));
+	std::string port = request.getPort();
+	std::cerr << "port in response constructor= " << port << std::endl;
+	serverClass server = request.getConfigServerRef(port);
+	response.insertHeaderPair(std::make_pair("server:", server.getName() +"\n"));//name of server TODO
 	full_response = request.getHttpVersion();
 	full_response += " ";
 	full_response += int_to_string(response.getHTTPCode());
 	full_response += " OK\n";
 	full_response += response.getFullHeader();
-	full_response += response.getbody();
+	full_response += "\n";
+	full_response += temp;
     std::vector<char> res(full_response.begin(), full_response.end());
 	return (res);
 }
@@ -200,7 +211,6 @@ void Model::cgi_operation()
 			if (WEXITSTATUS(status) == 0)
 			{
 				status_code = 200;
-				response.setbody("CGI OK");
 			}
 			else
 			{

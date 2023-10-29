@@ -7,8 +7,8 @@ Multiplexer::Multiplexer(configParsing config_parser) : epoll_instance_fd(-1)
 		while (it != config_parser.getEndServerListIterator())
 		{
 			int server_socket;
-			std::string tmp = it->first;
-			std::string value = config_parser.getServerRef(tmp).getKeyContent("listen");
+			std::string value = it->second.getKeyContent("listen");
+			// std::string value = config_parser.getServerRef(tmp);
 			std::cout << value << std::endl;
 			//i need to detect if value string contain the character ':'
 			if (value.find(':') != std::string::npos)

@@ -9,57 +9,6 @@ Exec::Exec(std::string request_string, configParsing &settings_arg) : config(set
 Exec::~Exec()
 {}
 
-// void Exec::print_response()
-// {
-// 	std::cout << "current content of response object:" << std::endl;
-// 	// std::string body = response.getbody();
-// 	// std::cout << body << std::endl;
-// 	std::cout << response.getPath() << std::endl;
-// 	std::cout << response.getLocation() << std::endl;
-// 	std::cout << response.getHeaderContent("Content-Type:") << std::endl;
-// 	std::cout << response.getHeaderContent("Content-Length:") << std::endl;
-// 	std::cout << response.getHeaderContent("Connection:") << std::endl;
-// 	std::cout << response.getHeaderContent("Content-Language:") << std::endl;
-// 	std::cout << response.getHeaderContent("Date:") << std::endl;
-// 	std::cout << response.getHeaderContent("Server:") << std::endl;
-// 	std::cout << response.getbody() << std::endl;
-// 	std::cout << "end of response object." << std::endl;
-// }
-
-// void	Exec::mockup_response_object()
-// {
-// 	response.setHTTPCode(404);
-// 	response.setPath("/mnt/nfs/homes/rokerjea/webservRepo/Webserv/demosite/test.html");
-// 	response.setLocation("Website/folder/file.extension");
-// 	response.setCGI(false);
-// 	response.setbody("\n"
-// 	"<!DOCTYPE html>\n"
-// 	"<html lang=\"en\">\n"
-// 	"<head>\n"
-// 	"<meta charset=\"utf-8\">\n"
-// 	"<title>A simple webpage</title>\n"
-// 	"</head>\n"
-// 	"<body>\n"
-// 	"<h1>Simple HTML webpage</h1>\n"
-// 	"<p>Hello, world!</p>\n"
-// 	"</body>\n"
-// 	"</html>\n"
-// 	"\n"
-// 	"\n");
-// 	// response.insertHeaderPair(std::make_pair("HTTP/1.1", "200 OK\n"));
-// 	response.insertHeaderPair(std::make_pair("Content-Type:", "text/html; charset=utf-8\n"));
-// 	response.insertHeaderPair(std::make_pair("Content-Length:", "55743\n"));
-// 	response.insertHeaderPair(std::make_pair("Connection:", "keep-alive\n"));
-// 	response.insertHeaderPair(std::make_pair("Content-Language:", "en-US\n"));
-// 	response.insertHeaderPair(std::make_pair("Date:", "Thu, 06 Dec 2018 17:37:18 GMT\n"));
-// 	response.insertHeaderPair(std::make_pair("Server:", "meinheld/0.6.1\n"));
-// 	// std::string test = response.getPath();
-// 	// test = response.getbody();
-// 	//ERROR, if i delete last line exec fail immediatly
-// 	//wich means a memory error usually
-// 	//i might have made a mistake somewhere with pair or map, maybe an error of initialisation
-// }
-
 std::string int_to_string2(int i)
 {
     std::stringstream ss;
@@ -80,44 +29,45 @@ int	identifiy_cases (std::string method)
 
 typedef void(Model::*ptr_func)(void);
 
-// std::string Exec::error_in_settings(int current_error_code)
-// {
-// 	std::string error = config.getServerRef(request.getHost()).getKeyContent("error_page");
-// 	if (error.size() == 0)
-// 		return "";
-// 	std::stringstream wording(error);
-// 	int error_code;
-// 	int first = 1;
-// 	std::string error_path;
-// 	std::string word;
-// 	while (wording >> word)
-// 	{
-// 		if (first == 1) // each first element of line will be the token
-// 		{
-// 			error_code = atoi(word);
-// 			first = 0;
-// 		}
-// 		else
-// 			error_path = word; // the rest is setup as std::vector<string> and added as value to the map
-// 	}
-// 	if (error_code != current_error_code)
-// 		return "";
-// 	if (access(error_path.c_str(), F_OK) == -1)
-// 		return "";
-// 	return error_path;
-// }
+void Exec::error_in_settings(std::string error_path)
+{
+	if (error_path.size() == 0)
+	{
+		default_error_code = 200;
+		default_error_path = "";
+		return ;
+	}
+	std::stringstream wording(error_path);
+	int first = 1;
+	std::string word;
+	while (wording >> word)
+	{
+		if (first == 1)
+		{
+			default_error_code = atoi(word.c_str());
+			first = 0;
+		}
+		else
+			default_error_path = word;
+	}
+}
 
 std::vector<char> Exec::error_response_constructor(int error_code)
 {
-	// std::string error_path = error_in_settings(error_code);
-	// if(!error_path.empty())
-	// {
-	// 	request.setPath(error_path);
-	// 	model_handler.*functions[0];
-	// 	return (model_handler.get_full_response_str());
-	// }
-	// else //no error page defined in settings
-	// {
+	if(error_code == default_error_code)
+	{
+		std::string error_response;
+		std::ifstream error_file(default_error_path.c_str());
+		std::string error_body = std::string((std::istreambuf_iterator<char>(error_file)), std::istreambuf_iterator<char>());
+		error_response = std::string("HTTP/1.1 " + int_to_string2(error_code) + " " + "\r\n\r\n" + error_body).c_str();
+		error_response += "Content-Length: " + int_to_string2(error_body.size()) + "\r\n";
+		error_response += "Content-Type: text/html\r\n";
+		error_response += error_body;
+		std::vector<char> res(error_response.begin(), error_response.end());
+		return res;
+	}
+	else //no error page defined in settings
+	{
 		HttpCodes code_list;
 		std::string error_message;
 		error_message = code_list.get_code_value(error_code);;
@@ -125,7 +75,7 @@ std::vector<char> Exec::error_response_constructor(int error_code)
 		response_str = std::string("HTTP/1.1 " + int_to_string2(error_code) + " " + error_message + "\r\n\r\n").c_str();
 		std::vector<char> res(response_str.begin(), response_str.end());
 		return res;
-	// }
+	}
 }
 
 bool Exec::is_cgi(ClientRequest &request)
@@ -137,20 +87,25 @@ bool Exec::is_cgi(ClientRequest &request)
 
 std::vector<char> Exec::return_final_response()
 {
+	int is_cgi_flag = 0;
 	std::vector<char> response_str;
 	try
 	{
 		ClientRequest request(request_as_string, config);
-		std::cerr << "body = " << request.getBody() << std::endl;
-		request.printPath();
-		request.printTarget();
-		request.printHeader();
-		// request.setPath("index.php");
-		request.printPath();
+		std::string port = request.getPort();
+		std::cerr << "port = " << port << std::endl;//TODEL
+		serverClass server = config.getServerRef(port);
+		default_error_path = server.getKeyContent("error_page");
+		error_in_settings(default_error_path);
+		std::cerr << "body = " << request.getBody() << std::endl;//TODEL
+		request.printPath();//TODEL
+		request.printTarget();//TODEL
+		request.printHeader();//TODEL
+		request.printPath();//TODEL
 		Model model_handler(request);
-		// model_handler.mockup_response_object(); //will be replaced by "execute request"
 		if (is_cgi(request))
 		{
+			is_cgi_flag = 1;
 			model_handler.cgi_operation();
 		}
 		else
@@ -160,7 +115,7 @@ std::vector<char> Exec::return_final_response()
 			if (cases <= 2)
 				(model_handler.*functions[cases])();
 		}
-		response_str = model_handler.get_full_response_str();
+		response_str = model_handler.get_full_response_str(is_cgi_flag);
 	}
 	catch (int error_code)
 	{

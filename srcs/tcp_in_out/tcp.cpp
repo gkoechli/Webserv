@@ -53,6 +53,7 @@ void	Tcp_handler::read_from_client(struct epoll_event current_event)
 	buffer.add_chunk_to_request_buffer(fd, client_request_chunk);
 	if (buffer.is_request_complete(fd))
 	{
+		std::cout << "request is complete2"<< std::endl;//only for debug, TODELETE
 		std::vector<char> response;
 		response = parse_request(buffer.get_full_request(fd));
 		multiplex.update_connection_status(fd, EPOLLOUT);

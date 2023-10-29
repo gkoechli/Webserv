@@ -8,6 +8,7 @@
 # include <iostream>
 # include <sstream>
 # include <iostream>
+#include "utils.hpp"
 
 # define CHUNK_SIZEMAX  32768
 

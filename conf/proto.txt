@@ -3,7 +3,7 @@ index				index.html;
 
 server
 {
-	server_name webserv.com;
+	server_name localhost;
 	listen 127.0.0.1:8080;
 	allow GET, POST, DELETE;
 	autoindex	on;
@@ -21,7 +21,7 @@ server
 
 server
 {
-	server_name random.com;
+	server_name 127.0.0.1;
 	listen 4343;
 	allow GET;
 	autoindex	on;

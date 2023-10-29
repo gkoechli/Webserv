@@ -7,8 +7,6 @@ ClientBuffer::~ClientBuffer(){}
 void	ClientBuffer::add_chunk_to_request_buffer(int fd, std::vector<char> chunk)
 {
 	std::map<int, std::vector<char> >::iterator it = request_buffer.find(fd);
-	// std::string output(chunk.begin(), chunk.end());
-	// std::cout << output;
 	if (!is_request_existing(fd))
 		request_buffer.insert(std::make_pair(fd, chunk));
 	else {
@@ -62,8 +60,6 @@ std::vector<char>	ClientBuffer::get_next_response_bloc(int fd)//to send next par
     return (chunk);
 }
 
-//will probably need subfunctions to work
-
 //bool function
 bool	ClientBuffer::is_request_existing(int fd)
 {
@@ -72,25 +68,41 @@ bool	ClientBuffer::is_request_existing(int fd)
 	return (true);
 }
 
-// bool	is_request_oversized(int fd)
-// {
-// 	//TODO
-// 	//check num of char and compare to maxsize
-// 	//will need hexa conversion i think
-// }
+int	search_vector_char(std::vector<char> tab, const char *to_find, size_t index)
+{
+	std::vector<char>::iterator it = std::search(tab.begin() + index, tab.end(), to_find, to_find + std::strlen(to_find));
+	if (it == tab.end())
+		return (-1);
+	return (it - tab.begin());
+}
+
 bool	ClientBuffer::is_request_complete(int fd)
 {
-	(void)fd;
-	return (true);
-	//TODO
-	//if maxsize or if end char are expected for end (/r/n or something)
+	std::vector<char>       req = request_buffer.find(fd)->second;
+    size_t                  size_begin = search_vector_char(req, "Content-Length: ", 0) + 16;
+
+    if (size_begin == 15)//if find == -1, there is no content-length, so request is complete
+	{
+        return (true);
+	}
+    size_t                  size_end = search_vector_char(req, "\r\n\r\n", size_begin);
+    size_t                  size = ft::lexical_cast<size_t>(std::string(req.begin() + size_begin, req.begin() + size_end));
+    size_t                  size_body = 0;
+
+    for (std::vector<char>::iterator it = req.begin() + search_vector_char(req, "\r\n\r\n", 0) + 4; it != req.end(); it++)
+        size_body++;
+    if (size_body >= size)
+	{
+        return (true);
+	}
+    return (false);
 }
 
 bool ClientBuffer::is_request_fully_sent(int fd)
 {
 	std::vector<char> response = (response_buffer.find(fd))->second.second;
 	if ((response_buffer.find(fd))->second.first * CHUNK_SIZEMAX >= static_cast<int>(response.size()))
-    return true;
+		return true;
 	return false;
 }
 

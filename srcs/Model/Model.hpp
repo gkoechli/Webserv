@@ -3,6 +3,7 @@
 
 // #include "../exec/exec.hpp"
 #include "../client_request/ClientRequest.hpp"
+#include "../config_file_parsing/serverClass.hpp"
 #include "../exec/response.hpp"
 #include "file_manager.hpp"
 #include <sys/types.h>
@@ -30,7 +31,7 @@ class Model {
 		char** mapToEnvp(const std::map<std::string, std::string>& m);
 		char**	create_envp();
 		void cgi_operation();
-		std::vector<char> get_full_response_str();
+		std::vector<char> get_full_response_str(int is_cgi);
 		void	mockup_response_object();
 		void method_get();
 		void method_delete();

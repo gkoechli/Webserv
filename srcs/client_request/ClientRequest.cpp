@@ -43,7 +43,7 @@ ClientRequest::ClientRequest(std::string obj, configParsing &confptr):ptr(confpt
 				this->body += temp;
 			}
 		}
-		else if (temp == "\r")//Carriage return (CRLF) to separate header from body
+		else if (temp == "\r" || temp == "")//Carriage return (CRLF) to separate header from body
 		{
 			body = 1;
 			first = 2;
@@ -294,6 +294,21 @@ void	ClientRequest::check_method()
 	}
 }
 
+void	ClientRequest::check_body_size()
+{
+	std::string  getHeaderContentRet;
+	std::string tmp;
+	getHeaderContentRet = this->getPort();
+	tmp = ptr.getServerRef(getHeaderContentRet).getKeyContent("cli_max_size");
+	std::stringstream ret(tmp);
+	size_t diff;
+	ret >> diff;
+	if (this->body.size() >= diff)
+	{
+		throw 413;
+	}
+}
+
 void	ClientRequest::check_errors()
 {
 	int i;
@@ -306,6 +321,7 @@ void	ClientRequest::check_errors()
 	// else
 	// 	std::cout << "FOUND " << this->getHeaderContent("Host") << std::endl;
 	this->check_method();
+	this->check_body_size();
 }
 
 void ClientRequest::printAll() const

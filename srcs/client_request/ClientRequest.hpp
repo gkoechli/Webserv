@@ -50,6 +50,7 @@ class ClientRequest
 		void	setPort();
 		void	setHeader(std::pair< std::string, std::vector<std::string> >);
 		void	check_method();
+		void	check_body_size();
 		void	check_errors();
 
 		void printAll() const; // d

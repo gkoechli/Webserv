@@ -47,7 +47,7 @@ class ClientRequest
 		void	setMethod(const std::string);
 		void	setHttpVersion(const std::string);
 		void	setBody(const std::string);
-		void	setPort(const std::string);
+		void	setPort();
 		void	setHeader(std::pair< std::string, std::vector<std::string> >);
 		void	check_method();
 		void	check_errors();

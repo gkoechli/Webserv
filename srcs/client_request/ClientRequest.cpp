@@ -93,6 +93,7 @@ ClientRequest::ClientRequest(std::string obj, configParsing &confptr):ptr(confpt
 			first = 1;
 		}
 	}
+	this->setPort();
 }
 
 
@@ -218,19 +219,21 @@ void	ClientRequest::setBody(const std::string body)
 
 void	ClientRequest::setTarget(const std::string targ)
 {
-	std::string tmp;
-	if (targ.find(":") != std::string::npos)
-	{
-		tmp = targ.substr(targ.find(":") + 1, targ.size());
-		std::cout << "tmp = " <<  tmp << std::endl;
-		setPort(tmp);
-	}
+	
 	this->target = targ;
 }
 
-void	ClientRequest::setPort(const std::string targ)
+void	ClientRequest::setPort()
 {
-	this->port = targ;
+	std::string tmp;
+	
+	if (this->header.find("Host") != this->header.end())
+	{
+		tmp = this->getHeaderContent("Host");
+		if (tmp.find(":") != std::string::npos)
+			tmp = tmp.substr(tmp.find(":") + 1, tmp.size());
+	}
+	this->port = tmp;
 }
 
 void	ClientRequest::setHeader(std::pair<std::string, std::vector<std::string> > head)
@@ -280,7 +283,7 @@ void	ClientRequest::check_method()
 {
 	std::string  getHeaderContentRet;
 	std::string allowed;
-	getHeaderContentRet = this->getHeaderContent("Host");
+	getHeaderContentRet = this->getPort();
 	allowed = ptr.getServerRef(getHeaderContentRet).getKeyContent("allow");
 	// std::cout << "allowed = " << allowed << std::endl;  
 	// std::cout << "getmethod = " << this->getMethod() << std::endl;
@@ -294,10 +297,10 @@ void	ClientRequest::check_method()
 void	ClientRequest::check_errors()
 {
 	int i;
-	i = ptr.findServer(this->getHeaderContent("Host"));
+	i = ptr.findServer(this->getPort());
 	if ( i != 200)
 	{
-		std::cerr << "Couldn't find " << this->getHeaderContent("Host") << std::endl;
+		std::cerr << "Couldn't find server, wrong port" << std::endl;
 		throw std::exception();
 	}
 	// else

@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:43:02 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/10/28 15:30:19 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/10/29 19:09:52 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,23 +358,31 @@ void	configParsing::printServerList()
 }
 
 
-serverClass&	configParsing::getServerRef(std::string name)
+serverClass&	configParsing::getServerRef(std::string port)
 {
-	if (this->serverList.find(name) != this->serverList.end())
-		return this->serverList[name];
-	else
-		throw std::exception();
+	std::map<std::string, serverClass>::iterator it = this->getBeginServerListIterator();
+	std::map<std::string, serverClass>::iterator ite = this->getEndServerListIterator();
+	while (it != ite)
+	{
+		if (it->second.getKeyContent("listen").find(port) != std::string::npos)
+			return this->serverList[it->first];
+		it++;
+	}
+	throw std::exception();
 }
 
-int		configParsing::findServer(std::string name)
+int		configParsing::findServer(std::string port)
 {
-	if (name.empty() == true)
+	if (this->getServerRef(port).getName() != "")
+		return 200;
+	std::cout << "YO\n";
+	if (port.empty() == true)
 		return (3500);
-	if (this->serverList.find(name) != this->serverList.end())
-	{
-		// std::cout <<  "server found : " << this->serverList.find(name)->first << std::endl;
-		return (200);
-	}
+	// if (this->serverList.find(it->first) != this->serverList.end())
+	// {
+	// 	// std::cout <<  "server found : " << this->serverList.find(name)->first << std::endl;
+	// 	return (200);
+	// }
 	return (5000);
 }
 

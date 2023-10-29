@@ -136,6 +136,11 @@ const std::string ClientRequest::getTarget() const
 	return (target);
 }
 
+serverClass& ClientRequest::getConfigServerRef(std::string port)
+{
+	return ptr.getServerRef(port);
+}
+
 std::string ClientRequest::getHeaderContent(std::string contentkey)
 {
 	std::string ret = "";

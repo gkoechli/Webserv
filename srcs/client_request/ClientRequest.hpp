@@ -39,6 +39,7 @@ class ClientRequest
 		const std::string getBody() const;
 		const std::string getTarget() const;
 		const std::string getPort() const;
+		serverClass& getConfigServerRef(std::string);
 		std::string getHeaderContent(std::string);
 
 		//set

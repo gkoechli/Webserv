@@ -152,6 +152,12 @@ std::string ClientRequest::getHeaderContent(std::string contentkey)
 	return ret;
 }
 
+const std::string ClientRequest::getPort() const
+{
+	return (port);
+}
+
+
 void	ClientRequest::setPath(const std::string path)
 {
 	int found = 0;
@@ -212,7 +218,19 @@ void	ClientRequest::setBody(const std::string body)
 
 void	ClientRequest::setTarget(const std::string targ)
 {
+	std::string tmp;
+	if (targ.find(":") != std::string::npos)
+	{
+		tmp = targ.substr(targ.find(":") + 1, targ.size());
+		std::cout << "tmp = " <<  tmp << std::endl;
+		setPort(tmp);
+	}
 	this->target = targ;
+}
+
+void	ClientRequest::setPort(const std::string targ)
+{
+	this->port = targ;
 }
 
 void	ClientRequest::setHeader(std::pair<std::string, std::vector<std::string> > head)

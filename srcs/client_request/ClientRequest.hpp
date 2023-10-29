@@ -19,6 +19,7 @@ class ClientRequest
 		std::string											http_version;
 		std::string											body;
 		std::string											target;
+		std::string											port;
 		std::map<std::string, std::vector<std::string> >	header;
 		configParsing 										&ptr;
 
@@ -37,14 +38,16 @@ class ClientRequest
 		const std::string getHttpVersion() const;
 		const std::string getBody() const;
 		const std::string getTarget() const;
+		const std::string getPort() const;
 		std::string getHeaderContent(std::string);
 
 		//set
-		void	setPath(const std::string path);
-		void	setTarget(const std::string path);
-		void	setMethod(const std::string method);
-		void	setHttpVersion(const std::string http_version);
-		void	setBody(const std::string body);
+		void	setPath(const std::string);
+		void	setTarget(const std::string);
+		void	setMethod(const std::string);
+		void	setHttpVersion(const std::string);
+		void	setBody(const std::string);
+		void	setPort(const std::string);
 		void	setHeader(std::pair< std::string, std::vector<std::string> >);
 		void	check_method();
 		void	check_errors();

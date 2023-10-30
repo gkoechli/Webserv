@@ -81,7 +81,7 @@ bool file_manager::is_directory()
 bool file_manager::exist()
 {
 	struct stat file_stat;
-	std::cout << "path: " << path << std::endl;
+	// std::cout << "path: " << path << std::endl;
 	return stat(path.c_str(), &file_stat) == 0;
 }
 

@@ -19,7 +19,7 @@ void	ClientBuffer::add_full_response_to_response_buffer(int fd, std::vector<char
 
 	std::vector<char> response_in_buffer = (response_buffer.find(fd))->second.second;
 	std::string output(response_in_buffer.begin(), response_in_buffer.end());
-	std::cout << "content of response buffer added = " << output << std::endl;
+	// std::cout << "content of response buffer added = " << output << std::endl;//TODEL
 }
 
 void	ClientBuffer::empty_request_buffer(int fd)

@@ -9,7 +9,7 @@ Multiplexer::Multiplexer(configParsing config_parser) : epoll_instance_fd(-1)
 			int server_socket;
 			std::string value = it->second.getKeyContent("listen");
 			// std::string value = config_parser.getServerRef(tmp);
-			std::cout << value << std::endl;
+			// std::cout << value << std::endl;
 			//i need to detect if value string contain the character ':'
 			if (value.find(':') != std::string::npos)
 			{
@@ -120,10 +120,10 @@ struct epoll_event Multiplexer::get_ready_event(int i)
 
 void	Multiplexer::add_new_client_fd(struct epoll_event current_event)
 {
-	std::cout << "start of add client op"<< std::endl;
+	// std::cout << "start of add client op"<< std::endl;
 	int new_fd = current_event.data.fd;
 	int	new_connection = accept_new_fd(new_fd);
-	std::cout << "fd = " << new_fd <<" socket= " <<new_connection<< std::endl;
+	// std::cout << "fd = " << new_fd <<" socket= " <<new_connection<< std::endl;
 
 	setup_connection(new_connection);
 	add_socket_to_epoll_list(new_connection);
@@ -169,12 +169,12 @@ bool	Multiplexer::is_event_response(struct epoll_event current_event)
 
 std::vector<char> Multiplexer::read_request(int client_fd)
 {
-	std::cout << "start of client rcv string op"<< std::endl;
+	// std::cout << "start of client rcv string op"<< std::endl;
 	std::vector<char> bufferres(MAXBUF, '\0');
 
 	int ret;
 
-	std::cout << "gate0 fd = "<< client_fd << std::endl;
+	// std::cout << "gate0 fd = "<< client_fd << std::endl;
 	if ((ret = recv(client_fd, &bufferres[0], bufferres.size(), 0)) < 0)
     {
 		//destroy buffer and close fd for current client

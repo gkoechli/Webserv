@@ -3,7 +3,7 @@
 Exec::Exec(std::string request_string, configParsing &settings_arg) : config(settings_arg)
 {
 	request_as_string = request_string;
-	std::cout << "request string received in exec : \n" << request_as_string << std::endl; //Del
+	// std::cout << "request string received in exec : \n" << request_as_string << std::endl; //Del
 }
 
 Exec::~Exec()
@@ -93,15 +93,15 @@ std::vector<char> Exec::return_final_response()
 	{
 		ClientRequest request(request_as_string, config);
 		std::string port = request.getPort();
-		std::cerr << "port = " << port << std::endl;//TODEL
+		// std::cerr << "port = " << port << std::endl;//TODEL
 		serverClass server = config.getServerRef(port);
 		default_error_path = server.getKeyContent("error_page");
 		error_in_settings(default_error_path);
-		std::cerr << "body = " << request.getBody() << std::endl;//TODEL
-		request.printPath();//TODEL
-		request.printTarget();//TODEL
-		request.printHeader();//TODEL
-		request.printPath();//TODEL
+		// std::cerr << "body = " << request.getBody() << std::endl;//TODEL
+		// request.printPath();//TODEL
+		// request.printTarget();//TODEL
+		// request.printHeader();//TODEL
+		// request.printPath();//TODEL
 		Model model_handler(request);
 		if (is_cgi(request))
 		{

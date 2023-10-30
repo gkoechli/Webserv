@@ -33,7 +33,7 @@ std::vector<char> Model::get_full_response_str(int is_cgi)
 	response.insertHeaderPair(std::make_pair("Content-Length:", int_to_string(temp.size()) + "\n"));
 	response.insertHeaderPair(std::make_pair("Content-type:", "text/html; charset=utf-8\n"));
 	std::string port = request.getPort();
-	std::cerr << "port in response constructor= " << port << std::endl;
+	// std::cerr << "port in response constructor= " << port << std::endl;
 	serverClass server = request.getConfigServerRef(port);
 	response.insertHeaderPair(std::make_pair("server:", server.getName() +"\n"));//name of server TODO
 	full_response = request.getHttpVersion();
@@ -57,8 +57,8 @@ void Model::method_get()
 
 void Model::method_post()
 {
-	std::cerr << "start of post method" << std::endl;
-	std::cerr << "body : " << request.getBody() << std::endl;
+	// std::cerr << "start of post method" << std::endl;
+	// std::cerr << "body : " << request.getBody() << std::endl;
 	if (!file.exist())
 		file.create(request.getBody());
 	else

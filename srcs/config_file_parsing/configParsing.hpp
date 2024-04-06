@@ -6,7 +6,7 @@
 /*   By: gkoechli <gkoechli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 10:42:09 by gkoechli          #+#    #+#             */
-/*   Updated: 2023/08/06 16:39:09 by gkoechli         ###   ########.fr       */
+/*   Updated: 2023/10/24 16:09:11 by gkoechli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,37 @@
 # define LOCATION 4
 # define NAME 5
 # define VALUE 6
+# include "serverClass.hpp"
+# include "locationClass.hpp"
 
-class configParsing 
+class configParsing
 {
 	public:
-		configParsing();
 		~configParsing();
 		configParsing(std::string);
+		configParsing(configParsing &);
 		void	printConfFile();
 		void	printLines();
 		int		routine();
 		std::vector<std::string> stringSplitIntoWords(std::string);
 		int		identifyTokenType(std::string);
+		std::pair<std::string, std::string> getListenPort();
+		std::string getKeyContent(std::string);
+		std::map<std::string, serverClass>::iterator getBeginServerListIterator();
+		std::map<std::string, serverClass>::iterator getEndServerListIterator();
+		void	set_file_values();
+		void	set_server_values(std::vector<std::string>::iterator);
+		std::pair<std::string, locationClass> set_location_values(std::vector<std::string>::iterator);
+		int		findServer(std::string);
+		void	printServerInfo();
+		void	printServerList();
+		serverClass&	getServerRef(std::string);
+
 	private:
+		std::map<std::string, serverClass> serverList;
 		std::string _confFile;
 		std::vector<std::string> lineList;
-		
+		std::map<std::string, std::string> file;
 };
 
 #endif

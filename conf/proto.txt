@@ -1,0 +1,21 @@
+server
+{
+	server_name localhost;
+	listen 127.0.0.1:8080;
+	allow GET, DELETE, POST;
+	autoindex	on;
+	root ./demosite/redirected;
+	cli_max_size	80000;
+	error_page 404 ./error_page/error_page_404.html;
+
+}
+
+server
+{
+	server_name localhost2;
+	listen 127.0.0.1:8083;
+	allow GET;
+	autoindex	on;
+	cli_max_size	777777;
+	error_page 401 error_page/error_page_404.html;
+}
